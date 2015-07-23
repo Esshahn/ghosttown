@@ -1,0 +1,2 @@
+save "/Users/ingo/Dropbox/awsm/ghosttown/resources/c64-data/screen-.bin" 0 0c00 0fe7
+save "/Users/ingo/Dropbox/awsm/ghosttown/resources/c64-data/col-.bin" 0 0800 0be7
