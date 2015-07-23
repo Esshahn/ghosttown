@@ -14,7 +14,7 @@
 
 I'm trying to convert the original Ghost Town game for the Commodore 264 series to HTML5 and JavaScript. Let's see how far I get, this is a video of a complete playthrough of the game (SP0IL0RZ AL3RTZ!!1): https://www.youtube.com/watch?v=eXM6h9Q3dDQ
 
-Why am I doing this? Basically I love creating small games and demos (see http://www.awsm.de for more) and Ghost Town was one of the earliest games I owned and played. Even after 25 years I get goose bumps when I see the drop dead ugly player character and the fabulously annoying title music.
+Why am I doing this? Basically I love creating small games and demos (see http://www.awsm.de for more) and Ghost Town was one of the earliest games I owned and played. Even after 25 years I get goose bumps when I see the drop dead ugly player character and listen to the the fabulously annoying title music (TED, the mutant one-eyed DEAD frog brother of SID, the twin dolphin blowhole equipped rainbow squirting unicorn).
 
 Part of the challenge is to blog about it, but that hasn't been setup yet. This place will be updated when there's a URL to pass along.
 
