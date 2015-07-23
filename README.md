@@ -10,6 +10,12 @@
 
 ```
 
+## Current version
+
+The current version of the game is 15.
+Not that there's anything yet, but I like progress, so hey!
+
+
 # Ghost Town
 
 I'm trying to convert the original Ghost Town game for the Commodore 264 series to HTML5 and JavaScript. Let's see how far I get, this is a video of a complete playthrough of the game (SP0IL0RZ AL3RTZ!!1): https://www.youtube.com/watch?v=eXM6h9Q3dDQ
