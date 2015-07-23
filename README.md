@@ -18,7 +18,7 @@ Why am I doing this? Basically, I love creating small games and demos (see http:
 
 Part of the challenge is to blog about it, but that hasn't been setup yet. This place will be updated when there's a URL to pass along.
 
-Anyway, feel free to drop me a comment or participate in whatever way you may fancy (that's four consecutive words with a "y" in it), I'm happy to get some motivation along the way, especially in those dark hours when I run out of fine quality liquers and ask myself who wrote that code I'm looking at for an hour or ten.
+Anyway, feel free to drop me a comment or participate in whatever way you may fancy (that's four consecutive words with a "y" in it), I'm happy to get some motivation along the way, especially in those dark hours when I run out of fine quality liquers and ask myself who wrote that code I'm looking at since an hour or ten.
 
 
 ## Technology
@@ -26,7 +26,7 @@ Anyway, feel free to drop me a comment or participate in whatever way you may fa
 Not sure which technology to use along the way, but it will probably be something like
 
 * HTML (duh!)
-* JavaScript (finally a project with a high class programming language)
+* JavaScript (finally a project with a high class programming language here on GitHub)
 * CoffeeScript (honestly, I don't like it yet, but it's part of the plan to get used to it)
 * Pixi.js
 * Maybe Phaser ( http://phaser.io/ )
