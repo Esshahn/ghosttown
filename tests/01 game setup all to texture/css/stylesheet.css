@@ -1,0 +1,53 @@
+
+html, body
+{
+  margin: 0;
+  padding: 0;
+}
+
+body
+{
+  background-color: #888888;
+  font-size: 10px;
+  font-family: sans-serif;
+}
+
+#ui_container
+{
+  width:  210px;
+  height: 400px;
+  float: left;
+  margin-right: 10px;
+}
+
+#ui_info
+{
+  width:  200px;
+  height: 280px;
+  background-color: #eeeeee;
+  margin-right: 10px;
+  padding:     5px;
+  color:      #338800;
+}
+
+#ui_system
+{
+  width:  200px;
+  height: 95px;
+  background-color: #eeeeee;
+  float: left;
+  margin-right: 10px;
+  padding:     5px;
+  color:      #ee3300;
+}
+
+a
+{
+  color: #8AD284;
+  text-decoration: none;
+}
+
+#mainscreen{
+
+  padding: 10px;
+}
