@@ -96,8 +96,8 @@ Generate_charset = function ( texture , char_width , char_height , xstep , ystep
     for(var i=0; i<this.texture.width; i=i+this.xstep){
       // first we convert the hexcounter into its 2 digit char value
       // by adding "0" to all digits and then only taking the last two
-      var charname = ("0"+this.counter.toString(16)).slice(-2);
-      this.all_chars[charname] = Generate_character(i,j,this.char_width,this.char_height,this.texture);
+      var char_name = ("0"+this.counter.toString(16)).slice(-2);
+      this.all_chars[char_name] = Generate_character(i,j,this.char_width,this.char_height,this.texture);
       this.counter++;
     }
   }
