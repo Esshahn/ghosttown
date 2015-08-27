@@ -19,8 +19,8 @@ function ready(){
 
 init_game = function() { 
 
-  LEFT_BORDER = 64;
-  TOP_BORDER = 80;
+  LEFT_BORDER  = 64;
+  TOP_BORDER   = 80;
   SCALE_FACTOR = 2;
   
   // the main stage is including all borders and set to double size
@@ -30,7 +30,7 @@ init_game = function() {
   stage = new PIXI.Container();
 
   // the main screen where the game displays in (320x200)
-  screen = new PIXI.Container();
+  screen            = new PIXI.Container();
   screen.position.x = LEFT_BORDER;
   screen.position.y = TOP_BORDER;
   screen.scale.set (SCALE_FACTOR,SCALE_FACTOR);
@@ -40,7 +40,7 @@ init_game = function() {
   myMask.beginFill();
   myMask.drawRect(LEFT_BORDER, TOP_BORDER, 640, 400);
   myMask.endFill();
-  screen.mask = myMask;
+  //screen.mask = myMask; 
 
   stage.addChild(screen);
 };
@@ -48,24 +48,27 @@ init_game = function() {
 
 draw_stuff = function () {
 
-  bg_tx = PIXI.Texture.fromImage('img/start.png');
-  bg = new PIXI.Sprite(bg_tx);
+  // draw a test background
+  bg_tx    = PIXI.Texture.fromImage('img/start.png');
+  bg       = new PIXI.Sprite(bg_tx);
   screen.addChild(bg);
-
+  
+  // load in the charmap
   chars_tx = new PIXI.Texture.fromImage('img/chars_black.png');
-  chars = new PIXI.Sprite(chars_tx);
-  //screen.addChild(chars);
+  chars    = new PIXI.Sprite(chars_tx);
+  
+  // generate the charset
+  charset  = new Generate_charset(chars_tx,8,8,16,16);
 
-  charset = new Generate_charset(chars_tx,8,8,16,16);
 };
 
-Generate_charset = function (texture,char_width,char_height,xstep,ystep){
-  this.texture = texture;
-  this.char_width = char_width;
+Generate_charset = function ( texture , char_width , char_height , xstep , ystep ){
+  this.texture     = texture;
+  this.char_width  = char_width;
   this.char_height = char_height;
-  this.xstep = xstep;
-  this.ystep = ystep;
-  this.all_chars = [];
+  this.xstep       = xstep;
+  this.ystep       = ystep;
+  this.all_chars   = [];
 
   for(var j=0; j<this.texture.height; j=j+this.ystep){
     for(var i=0; i<this.texture.width; i=i+this.xstep){
@@ -77,7 +80,7 @@ Generate_charset = function (texture,char_width,char_height,xstep,ystep){
   }
 };
 
-Generate_character = function (x,y,char_width,char_height,texture){
+Generate_character = function ( x , y , char_width , char_height , texture ){
   /*
       Generates a sprite character based on the x,y position of a texture
       x,y = x or y position of the character on the given texture
@@ -85,15 +88,15 @@ Generate_character = function (x,y,char_width,char_height,texture){
       @return: the sprite
   */
 
-  this.x = x;
-  this.y = y;
-  this.char_width = char_width;
+  this.x           = x;
+  this.y           = y;
+  this.char_width  = char_width;
   this.char_height = char_height;
-  this.texture = texture;
+  this.texture     = texture;
 
   // generate a new texture at the specified x,y coordinates
   this.char_tx = new PIXI.Texture( this.texture, new PIXI.Rectangle( this.x , this.y , this.char_width , this.char_height ));
-  this.char = new PIXI.Sprite(this.char_tx);
+  this.char    = new PIXI.Sprite(this.char_tx);
 
   return this.char;
 };
@@ -101,8 +104,6 @@ Generate_character = function (x,y,char_width,char_height,texture){
 
 
 renderloop = function() {
-    //chars.position.x += 1;
-    chars.position.y = 9;
     renderer.render(stage);
     requestAnimationFrame(renderloop);
 };
