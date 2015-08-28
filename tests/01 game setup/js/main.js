@@ -4,8 +4,8 @@ function init(){
   PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
   var loader = PIXI.loader;
-  loader.add('bg_texture',"img/start.png");
-  loader.add('chars',"img/chars_black.png");
+  loader.add('bg_texture',"img/screen-bg.png");
+  loader.add('chars',"img/chars.png");
   loader.once('complete', ready);
   loader.load();
 }
@@ -24,7 +24,7 @@ init_game = function() {
   SCALE_FACTOR = 2;
   
   // the main stage is including all borders and set to double size
-  renderer = new PIXI.autoDetectRenderer(768, 576, {backgroundColor : 0xbba3ff});
+  renderer = new PIXI.autoDetectRenderer(768, 576, {backgroundColor : 0x792e1d});
   document.body.appendChild(renderer.view);
 
   stage = new PIXI.Container();
@@ -49,29 +49,19 @@ init_game = function() {
 draw_stuff = function () {
 
   // draw a test background
-  bg_tx = PIXI.Texture.fromImage('img/start.png');
+  bg_tx = PIXI.Texture.fromImage('img/screen-bg.png');
   bg    = new PIXI.Sprite(bg_tx);
   screen.addChild(bg);
   
   // load in the charmap
-  chars_tx = new PIXI.Texture.fromImage('img/chars_black.png');
+  chars_tx = new PIXI.Texture.fromImage('img/chars.png');
   chars    = new PIXI.Sprite(chars_tx);
   //screen.addChild(chars);
 
   // generate the charset
   charset  = new Generate_charset(chars_tx,8,8,16,16);
 
-  bibo = new PIXI.Sprite(charset["a9"]);
-  bibo.position.x = 0;
-  bibo.position.y = 0;
-  screen.addChild(bibo);
-
-  bibo1 = new PIXI.Sprite(charset["a9"]);
-  bibo1.position.x = 20;
-  bibo1.position.y = 20;
-  screen.addChild(bibo1);
-
-  get_level_data("data/screen-title.bin");
+  get_level_data("data/screen-lvl-03.bin");
 
 };
 
