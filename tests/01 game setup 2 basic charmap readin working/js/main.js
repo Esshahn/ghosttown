@@ -49,8 +49,8 @@ init_game = function() {
 draw_stuff = function () {
 
   // draw a test background
-  bg_tx = PIXI.Texture.fromImage('img/start.png');
-  bg    = new PIXI.Sprite(bg_tx);
+  bg_tx    = PIXI.Texture.fromImage('img/start.png');
+  bg       = new PIXI.Sprite(bg_tx);
   screen.addChild(bg);
   
   // load in the charmap
@@ -70,53 +70,6 @@ draw_stuff = function () {
   bibo1.position.x = 20;
   bibo1.position.y = 20;
   screen.addChild(bibo1);
-
-  get_level_data("data/screen-title.bin");
-
-};
-
-
-get_level_data = function(filename){
-
-  level_data = [];
-
-  var oReq = new XMLHttpRequest();
-  oReq.open("GET", filename, true);
-  oReq.responseType = "arraybuffer";
-
-  oReq.onload = function (oEvent) {
-    var arrayBuffer = oReq.response; // Note: not oReq.responseText
-    if (arrayBuffer) {
-      var byteArray = new Uint8Array(arrayBuffer);
-      // start i=2 -> skip the first two values, they are not needed
-      for (var i = 2; i < byteArray.byteLength; i++) {
-        level_data.push(("0"+byteArray[i].toString(16)).slice(-2));
-      }      
-    }
-    display_level(level_data);
-  };
-
-  oReq.send(null);
-};
-
-
-display_level = function (level_data){
-  var level_sprites = [];
-  var xpos = 0;
-  var ypos = 0;
-
-  for(i=0; i<level_data.length;i++){
-    level_sprites[i] = new PIXI.Sprite(charset[level_data[i]]);
-    if (xpos >=320){
-      xpos = 0;
-      ypos += 8;
-    }
-    level_sprites[i].position.x = xpos;
-    level_sprites[i].position.y = ypos;
-    screen.addChild(level_sprites[i]);
-
-    xpos += 8;
-  }
 
 };
 
@@ -170,6 +123,7 @@ Generate_character = function ( x , y , char_width , char_height , texture ){
   this.char_tx = new PIXI.Texture( this.texture, new PIXI.Rectangle( this.x , this.y , this.char_width , this.char_height ));
   return this.char_tx;
 };
+
 
 
 renderloop = function() {
