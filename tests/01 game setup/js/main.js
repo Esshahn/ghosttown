@@ -61,12 +61,12 @@ draw_stuff = function () {
   // generate the charset
   charset  = new Generate_charset(chars_tx,8,8,16,16);
 
-  get_level_data("data/screen-lvl-03.bin");
+  get_level_data("data/screen-lvl-07.bin");
 
 };
 
 
-get_level_data = function(filename){
+get_level_data = function (filename){
 
   level_data = [];
 
@@ -80,7 +80,15 @@ get_level_data = function(filename){
       var byteArray = new Uint8Array(arrayBuffer);
       // start i=2 -> skip the first two values, they are not needed
       for (var i = 2; i < byteArray.byteLength; i++) {
-        level_data.push(("0"+byteArray[i].toString(16)).slice(-2));
+        
+        // convert the number to 2 digit hex
+        char = ("0"+byteArray[i].toString(16)).slice(-2);
+        
+        // erase the player character from the level data
+        if (char >= "93" && char <= "9b") char = "df";
+        
+        // put all hex data in level_data
+        level_data.push(char);
       }      
     }
     display_level(level_data);
@@ -92,8 +100,8 @@ get_level_data = function(filename){
 
 display_level = function (level_data){
   var level_sprites = [];
-  var xpos = 0;
-  var ypos = 0;
+  var xpos          = 0;
+  var ypos          = 0;
 
   for(i=0; i<level_data.length;i++){
     level_sprites[i] = new PIXI.Sprite(charset[level_data[i]]);
@@ -107,7 +115,6 @@ display_level = function (level_data){
 
     xpos += 8;
   }
-
 };
 
 Generate_charset = function ( texture , char_width , char_height , xstep , ystep ){
@@ -127,7 +134,7 @@ Generate_charset = function ( texture , char_width , char_height , xstep , ystep
   this.xstep       = xstep;
   this.ystep       = ystep;
   this.all_chars   = [];
-  this.counter  = 0;
+  this.counter     = 0;
 
   for(var j=0; j<this.texture.height; j=j+this.ystep){
     for(var i=0; i<this.texture.width; i=i+this.xstep){
