@@ -61,7 +61,7 @@ draw_stuff = function () {
   // generate the charset
   charset  = new Generate_charset(chars_tx,8,8,16,16);
 
-  get_level_data("data/screen-lvl-07.bin");
+  get_level_data("data/screen-lvl-09.bin");
 
 };
 
