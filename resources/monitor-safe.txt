@@ -14,4 +14,4 @@ Büro
 save "/Users/ingohinterding/Dropbox/awsm/ghosttown/screen-lvl-02.bin" 0 0c00 0fe7
 
 direkt im github projekt speichern
-save "/Applications/XAMPP/xamppfiles/htdocs/ghosttown/resources/leveldata/screen-lvl-02.bin" 0 0c00 0fe7
+save "/Applications/XAMPP/xamppfiles/htdocs/ghosttown/resources/leveldata/ghost-town-unpacked" 0 1000 3fff
