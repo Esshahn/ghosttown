@@ -61,7 +61,7 @@ import_screen_data = function (filename){
       }
       
     }   
-    display_level(level_data);
+    
   };
 
   oReq.send(null); 

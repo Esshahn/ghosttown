@@ -50,12 +50,14 @@ draw_stuff = function () {
   screen.addChild(bg);
 
   current_level = new Level("data/screen-lvl-16.bin");
+  
  
 };
 
 
 
 renderloop = function() {
+    display_level(current_level.screen);
 
     renderer.render(stage);
     requestAnimationFrame(renderloop);
