@@ -56,7 +56,7 @@ draw_stuff = function () {
 
 
 renderloop = function() {
-    //console.log(current_level.screen);
+
     renderer.render(stage);
     requestAnimationFrame(renderloop);
 };

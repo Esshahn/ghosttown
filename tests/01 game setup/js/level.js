@@ -6,9 +6,6 @@
 */
 
 
-
-console.log(levels.filename);
-
 Level = function(filename){
   console.log("creating level");
   this.filename = filename;
@@ -62,7 +59,9 @@ import_screen_data = function (filename){
         // put all hex data in level_data
         level_data.push(char);
       }
+      
     }   
+    display_level(level_data);
   };
 
   oReq.send(null); 
