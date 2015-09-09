@@ -1,11 +1,13 @@
 
 function init(){
+  status("Welcome to Ghost Town JS.");
   load_assets();
 }
 
 function ready(){
   init_game();
   draw_stuff();
+
   renderloop();
 }
 
@@ -49,7 +51,7 @@ draw_stuff = function () {
   bg    = new PIXI.Sprite(bg_tx);
   screen.addChild(bg);
 
-  current_level = new Level("data/screen-lvl-16.bin");
+  current_level = new Level("14");
   
  
 };
@@ -57,7 +59,7 @@ draw_stuff = function () {
 
 
 renderloop = function() {
-    display_level(current_level.screen);
+    //display_level(current_level.screen);
 
     renderer.render(stage);
     requestAnimationFrame(renderloop);

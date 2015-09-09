@@ -7,10 +7,9 @@
 
 
 Level = function(filename){
-  console.log("creating level");
+  status("loading level "+filename);
   this.filename = filename;
   this.screen = import_screen_data(this.filename);
-
 };
 
 
@@ -36,11 +35,11 @@ display_level = function (level_data){
 import_screen_data = function (filename){
 
   // loads in a level binary file
-
+  file_fullpath = "data/screen-lvl-"+filename+".bin";
   var level_data = [];
 
   var oReq = new XMLHttpRequest();
-  oReq.open("GET", filename, true);
+  oReq.open("GET", file_fullpath, true);
   oReq.responseType = "arraybuffer";
 
   oReq.onload = function (oEvent) {
