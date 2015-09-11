@@ -5,19 +5,36 @@
 
 */
 
+Levels = function(){
+  status("loading all levels into memory");
 
-Level = function(filename){
-  status("loading level "+filename);
-  this.filename = filename;
-  this.screen = import_screen_data(this.filename);
+  this.screen = [];
+
+  for (var i=1;i<=20;i++){
+    this.screen[i] = import_screen_data(levels_config[i].filename);
+  }
 };
 
+display_level = function (level){
+  // will need to get more sophisticated, especially when parsing level data like object to show
 
-display_level = function (level_data){
   var level_sprites = [];
   var xpos          = 0;
   var ypos          = 0;
+  var level_data = all_levels.screen[level];
 
+
+  // first remove all elements on screen
+  // todo: might be better to have each level as a different container
+  // and just switch containers to show
+  for (var i = screen.children.length - 1; i >= 0; i--) {
+    screen.removeChild(screen.children[i]);
+  }
+
+  // then draw the background
+  screen.addChild(bg);
+
+  // and finally the level data
   for(i=0; i<level_data.length;i++){
     level_sprites[i] = new PIXI.Sprite(charset[level_data[i]]);
     if (xpos >= SCREEN_WIDTH){

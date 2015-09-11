@@ -1,13 +1,12 @@
 
 function init(){
-  status("Welcome to Ghost Town JS.");
+  status("<b>Welcome to Ghost Town JS.</b>");
   load_assets();
 }
 
-function ready(){
+function asset_loader_ready(){
+  status("assets loaded.");
   init_game();
-  draw_stuff();
-
   renderloop();
 }
 
@@ -35,26 +34,25 @@ init_game = function() {
 
   stage.addChild(screen);
 
+  status("stage created");
+
   // load in the charmap
-  chars_tx = new PIXI.Texture.fromImage('img/chars.png');
+  chars_tx = new PIXI.Texture.fromImage('img/chars1.png');
   chars    = new PIXI.Sprite(chars_tx);
 
   // generate the charset
   charset  = new Generate_charset(chars_tx,8,8,16,16);
-};
 
+  status("charset generated");
 
-draw_stuff = function () {
+  // load in all levels
+  all_levels = new Levels();
 
-  // draw a test background
+  // background texture
   bg_tx = PIXI.Texture.fromImage('img/screen-bg.png');
   bg    = new PIXI.Sprite(bg_tx);
-  screen.addChild(bg);
-
-  current_level = new Level("14");
-  
- 
 };
+
 
 
 
