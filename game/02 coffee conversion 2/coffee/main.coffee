@@ -26,9 +26,9 @@ init_game = ->
   # generate a mask that limits the screen to 320x200
   @myMask = new (PIXI.Graphics)
   myMask.beginFill()
-  myMask.drawRect LEFT_BORDER, TOP_BORDER, SCREEN_WIDTH * SCALE_FACTOR, SCREEN_HEIGHT * SCALE_FACTOR
+  myMask.drawRect LEFT_BORDER, TOP_BORDER, (SCREEN_WIDTH - 8) * SCALE_FACTOR , (SCREEN_HEIGHT - 8) * SCALE_FACTOR 
   myMask.endFill()
-  #screen.mask = myMask; 
+  screen.mask = myMask; 
   stage.addChild screen
   log 'stage created'
 
@@ -38,7 +38,6 @@ init_game = ->
   
   # generate the charset
   @charset = new Generate_charset(chars_tx, 8, 8, 16, 16).all_chars
-
 
   # load in all levels
   @all_levels = new Levels
