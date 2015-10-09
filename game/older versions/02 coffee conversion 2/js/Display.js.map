@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "Display.js",
+  "sourceRoot": "..",
+  "sources": [
+    "coffee/Display.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA;;;GAAA;AAAA"
+}

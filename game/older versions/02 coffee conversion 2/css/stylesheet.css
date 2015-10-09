@@ -1,0 +1,70 @@
+
+html, body
+{
+  margin: 0;
+  padding: 0;
+}
+
+#status
+{
+  float: right;
+}
+
+body
+{
+  background-color: #777777;
+  font-size: 12px;
+  font-family: sans-serif;
+}
+
+#ui_container
+{
+  margin-top : 10px;
+  margin-left: 10px;
+  width      :  20%;
+  height     : 576px;
+  float      : left;
+  overflow   :auto;
+}
+
+.ui_time
+{
+  font-size: 9px;
+  color: #000000;
+  font-weight:normal;
+}
+
+.ui_info
+{ 
+  border-left     : 4px solid #00aa00;
+  color           : #338800;
+  background-color: #f8fff8;
+  min-height      : 20px;
+  padding         : 4px;
+  margin-bottom   : 2px;
+
+
+}
+
+.ui_system
+{
+  color           : #dd2200;
+  font-weight     : bold;
+  border-left     : 4px solid #aa0000;
+  background-color: #ffeeee;
+  min-height      : 20px;
+  padding         : 4px;
+  margin-bottom   : 2px;
+
+}
+
+
+a
+{
+  color: #8AD284;
+  text-decoration: none;
+}
+
+canvas{
+  padding: 10px;
+}
