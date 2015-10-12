@@ -39,8 +39,8 @@ class Levels
           # convert the number to 2 digit hex
           char = ('0' + byteArray[i].toString(16)).slice(-2)
           # erase the player character from the level data
-          if char >= '93' and char <= '9b'
-            char = 'df'
+          #if char >= '93' and char <= '9b'
+          #  char = 'df'
           # put all hex data in level_data
           level_data.push char
           i++
