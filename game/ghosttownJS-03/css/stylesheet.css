@@ -1,0 +1,77 @@
+
+html, body
+{
+  margin: 0;
+  padding: 0;
+}
+
+#status
+{
+  float: right;
+}
+
+body
+{
+  background-color: #777777;
+  font-size: 12px;
+  font-family: sans-serif;
+}
+
+#ui_container
+{
+  margin-top : 10px;
+  margin-left: 10px;
+  width      :  20%;
+  height     : 576px;
+  float      : left;
+  overflow   :auto;
+}
+
+.ui_time
+{
+  font-size: 9px;
+  color: #000000;
+  font-weight:normal;
+}
+
+.notification
+{
+  border-left     : 4px solid #333333;
+  color           : #333333;
+  background-color: #f8fff8;
+  min-height      : 20px;
+  padding         : 4px;
+  margin-bottom   : 2px;
+}
+
+.notif-green
+{ 
+  border-left     : 4px solid #00aa00;
+  color           : #338800;
+  background-color: #f8fff8;
+}
+
+.notif-blue
+{ 
+  border-left     : 4px solid #0066cc;
+  color           : #003388;
+  background-color: #f8f8ff;
+}
+
+.notif-red
+{
+  color           : #dd2200;
+  border-left     : 4px solid #aa0000;
+  background-color: #ffeeee;
+}
+
+
+a
+{
+  color: #8AD284;
+  text-decoration: none;
+}
+
+canvas{
+  padding: 10px;
+}
