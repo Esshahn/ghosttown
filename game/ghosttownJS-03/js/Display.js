@@ -26,23 +26,22 @@ Display = (function() {
     this.myMask.endFill();
     this.screen.mask = this.myMask;
     this.stage.addChild(this.screen);
-    log('stage created');
+    ui_log('stage created');
     bg_tx = PIXI.Texture.fromImage('img/screen-bg.png');
     this.bg = new PIXI.Sprite(bg_tx);
   }
 
-  Display.prototype.show_level = function(level) {
-    var i, level_data, level_sprites, xpos, ypos, _results;
-    log("Level: " + level, 1);
+  Display.prototype.show_level = function() {
+    var i, level_sprites, xpos, ypos, _results;
     level_sprites = [];
     xpos = 0;
     ypos = 0;
-    level_data = all_levels.screens[level];
+    this.level_data = room.get();
     this.clear();
     i = 0;
     _results = [];
-    while (i < level_data.length) {
-      level_sprites[i] = new PIXI.Sprite(charset[level_data[i]]);
+    while (i < this.level_data.length) {
+      level_sprites[i] = new PIXI.Sprite(charset[this.level_data[i]]);
       if (xpos >= SCREEN_WIDTH) {
         xpos = 0;
         ypos += 8;

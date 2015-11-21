@@ -19,4 +19,4 @@ TOP_BORDER = 80;
 
 SCALE_FACTOR = 2;
 
-//# sourceMappingURL=config.js.map
+//# sourceMappingURL=config-game.js.map

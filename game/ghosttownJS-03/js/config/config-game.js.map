@@ -1,9 +1,9 @@
 {
   "version": 3,
-  "file": "config.js",
+  "file": "config-game.js",
   "sourceRoot": "../..",
   "sources": [
-    "coffee/config/config.coffee"
+    "coffee/config/config-game.coffee"
   ],
   "names": [],
   "mappings": ";AAAA;AAAA;;;;GAAA;AAAA,IAAA,kEAAA;;AAAA,IAQI,CAAC,WAAW,CAAC,OAAjB,GAA2B,IAAI,CAAC,WAAW,CAAC,OAR5C,CAAA;;AAAA,YAYA,GAAe,GAZf,CAAA;;AAAA,aAcA,GAAgB,GAdhB,CAAA;;AAAA,WAgBA,GAAc,EAhBd,CAAA;;AAAA,UAkBA,GAAa,EAlBb,CAAA;;AAAA,YAoBA,GAAe,CApBf,CAAA"

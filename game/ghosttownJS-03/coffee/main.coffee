@@ -8,28 +8,29 @@
 
 
 init = ->
-  log '<b>Welcome to Ghost Town JS.</b>','green'
+  ui_log '<b>Welcome to Ghost Town JS.</b>','green'
   load_assets()
   return      
 
 asset_loader_ready = ->
-  log 'assets loaded.'
+  ui_log 'assets loaded.'
   init_game()
   return
 
 
 init_game = ->
 
-  @display = new Display()
+  document.addEventListener('keydown',    onkeydown,    false)
 
   # load in the charmap
   chars_tx = new (PIXI.Texture.fromImage)('img/chars1.png')
-  @charset = new Generate_charset(chars_tx, 8, 8, 16, 16).all_chars
-
-
+  @charset = new Generate_charset(chars_tx, 8, 8, 16, 16)
+  
   # load in all levels
-  @all_levels = new Levels()
-
+  @world = new Levels()
+  @room = new Room()
+  @player = new Player()
+  @display = new Display()
   @display.renderloop()
   
 

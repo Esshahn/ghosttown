@@ -8,21 +8,23 @@ class Levels
 
   ###
 
-  screens : []
 
   constructor: -> 
+
+    @screen_data = []
+    @level_data = levels_config
+
     # load in the levels
     i = 0
     while i < 20
       i++
-      @screens[i] = @import_screen_data(levels_config[i].filename) 
-    log 'loaded ' + i + ' levels into memory'
+      @screen_data[i] = @import_screen_data(@level_data[i].filename) 
 
 
   import_screen_data: (filename) ->
     # loads in a level binary file
     file_fullpath = 'data/screen-lvl-' + filename + '.bin'
-    leveldat = []
+    screendat = []
     oReq = new XMLHttpRequest
     oReq.open 'GET', file_fullpath, true
     oReq.responseType = 'arraybuffer'
@@ -40,13 +42,14 @@ class Levels
           # erase the player character from the level data
           #if char >= '93' and char <= '9b'
           #  char = 'df'
+          
           # put all hex data in level_data
-          leveldat.push char
+          screendat.push char
           i++
       return
 
     oReq.send null
-    leveldat
+    screendat
 
 
   

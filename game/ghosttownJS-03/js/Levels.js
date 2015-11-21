@@ -8,22 +8,21 @@ Levels = (function() {
     GHOST TOWN JS
     LEVEL GENERATOR
    */
-  Levels.prototype.screens = [];
-
   function Levels() {
     var i;
+    this.screen_data = [];
+    this.level_data = levels_config;
     i = 0;
     while (i < 20) {
       i++;
-      this.screens[i] = this.import_screen_data(levels_config[i].filename);
+      this.screen_data[i] = this.import_screen_data(this.level_data[i].filename);
     }
-    log('loaded ' + i + ' levels into memory');
   }
 
   Levels.prototype.import_screen_data = function(filename) {
-    var file_fullpath, leveldat, oReq;
+    var file_fullpath, oReq, screendat;
     file_fullpath = 'data/screen-lvl-' + filename + '.bin';
-    leveldat = [];
+    screendat = [];
     oReq = new XMLHttpRequest;
     oReq.open('GET', file_fullpath, true);
     oReq.responseType = 'arraybuffer';
@@ -35,13 +34,13 @@ Levels = (function() {
         i = 2;
         while (i < byteArray.byteLength) {
           char = ('0' + byteArray[i].toString(16)).slice(-2);
-          leveldat.push(char);
+          screendat.push(char);
           i++;
         }
       }
     };
     oReq.send(null);
-    return leveldat;
+    return screendat;
   };
 
   return Levels;

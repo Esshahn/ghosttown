@@ -28,3 +28,5 @@ class Generate_charset
         i = i + @xstep
       j = j + @ystep
 
+    return @all_chars
+

@@ -19,12 +19,38 @@ body
 
 #ui_container
 {
-  margin-top : 10px;
+  margin-top : 0;
   margin-left: 10px;
   width      :  20%;
   height     : 576px;
   float      : left;
   overflow   :auto;
+  background-color: #332222;
+}
+
+#ui_screen_selector
+{
+
+  margin: 10px;
+   background-color: #332222;
+}
+
+#ui_inventory
+{
+  border-left     : 4px solid #eeee00;
+  background-color: #ffffff;
+  padding         : 4px;
+  margin-bottom   : 4px;
+  min-height: 60px;
+}
+
+#ui_room
+{
+  border-left     : 4px solid #4488ee;
+  background-color: #ffffff;
+  padding         : 4px;
+  margin-bottom   : 4px;
+  min-height: 60px;
 }
 
 .ui_time
@@ -41,7 +67,7 @@ body
   background-color: #f8fff8;
   min-height      : 20px;
   padding         : 4px;
-  margin-bottom   : 2px;
+  margin-bottom   : 1px;
 }
 
 .notif-green
@@ -73,5 +99,21 @@ a
 }
 
 canvas{
-  padding: 10px;
+
 }
+
+button
+{
+  background-color: #ffffff;
+  font-weight: bold;
+  margin: 0;
+  padding: 10px;
+  font-size: 12px;
+  border: 0;
+}
+
+button:hover
+{
+  background-color: #55ddff;
+}
+

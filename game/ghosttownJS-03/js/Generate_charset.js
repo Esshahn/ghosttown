@@ -33,6 +33,7 @@ Generate_charset = (function() {
       }
       j = j + this.ystep;
     }
+    return this.all_chars;
   }
 
   return Generate_charset;

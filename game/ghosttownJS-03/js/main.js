@@ -9,21 +9,24 @@
 var asset_loader_ready, init, init_game;
 
 init = function() {
-  log('<b>Welcome to Ghost Town JS.</b>', 'green');
+  ui_log('<b>Welcome to Ghost Town JS.</b>', 'green');
   load_assets();
 };
 
 asset_loader_ready = function() {
-  log('assets loaded.');
+  ui_log('assets loaded.');
   init_game();
 };
 
 init_game = function() {
   var chars_tx;
-  this.display = new Display();
+  document.addEventListener('keydown', onkeydown, false);
   chars_tx = new PIXI.Texture.fromImage('img/chars1.png');
-  this.charset = new Generate_charset(chars_tx, 8, 8, 16, 16).all_chars;
-  this.all_levels = new Levels();
+  this.charset = new Generate_charset(chars_tx, 8, 8, 16, 16);
+  this.world = new Levels();
+  this.room = new Room();
+  this.player = new Player();
+  this.display = new Display();
   return this.display.renderloop();
 };
 

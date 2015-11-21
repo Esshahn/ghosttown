@@ -26,30 +26,28 @@ class Display
     @myMask.endFill()
     @screen.mask = @myMask; 
     @stage.addChild @screen
-    log 'stage created'
+    ui_log 'stage created'
 
     # background texture
     bg_tx = PIXI.Texture.fromImage('img/screen-bg.png')
     @bg = new (PIXI.Sprite)(bg_tx)
 
-  show_level : (level) ->
-    log "Level: "+level,1
+  show_level : () ->
+
     # will need to get more sophisticated, especially when parsing level data like object to show
     level_sprites = []
     xpos = 0
     ypos = 0
 
-    # read in the give level from the all levels data
-    # level_data is now the current worksheet to work with
-    level_data = all_levels.screens[level]
+    @level_data = room.get()
 
     # clear the screen
     @clear()
 
     # and finally the level data
     i = 0
-    while i < level_data.length
-      level_sprites[i] = new (PIXI.Sprite)(charset[level_data[i]])
+    while i < @level_data.length
+      level_sprites[i] = new (PIXI.Sprite)(charset[@level_data[i]])
       if xpos >= SCREEN_WIDTH
         xpos = 0
         ypos += 8
@@ -58,6 +56,7 @@ class Display
       @screen.addChild level_sprites[i]
       xpos += 8
       i++
+
 
   clear : ->
 
@@ -71,6 +70,7 @@ class Display
       i--
     # then draw the background
     @screen.addChild @bg
+
 
   renderloop : =>
   
