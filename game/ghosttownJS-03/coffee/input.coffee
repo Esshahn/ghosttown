@@ -25,11 +25,7 @@ KEY =
     TILDA:    192
  
 
-onkeydown = (event) ->
+event_keydown = (event) ->
   if event.keyCode == KEY.LEFT || event.keyCode == KEY.RIGHT || event.keyCode == KEY.UP || event.keyCode == KEY.DOWN
-  	player.set_position(event.keyCode)
-  event.preventDefault();
-
-
-onkeyup = (event) ->
-  event.preventDefault();
+    event.preventDefault()
+    player.set_position(event.keyCode)

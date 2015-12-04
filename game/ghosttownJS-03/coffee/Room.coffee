@@ -9,28 +9,30 @@ class Room
 
   constructor : ->
 
-  	@screen_data = []
-  	@room_number
-  	@room_info
+    @screen_data = []
+    @room_number = 1
+    @room_info
+    @room_updated_tiles = []
 
-  set : (@room_number) ->
+  set : (@room_number,player_entry_pos = "forward") ->
   	# changes the room
   	# read in the given level from the all levels data
     # level_data is now the current worksheet to work with
 
-    @screen_data = clone(world.screen_data[@room_number])
-    @room_info = world.level_data[@room_number]
-    player.position = @room_info.playerpos1
-    @update(@room_info.playerpos1)
+    @screen_data = clone(all_levels.screen_data[@room_number])
+    @room_info = all_levels.level_data[@room_number]
+    player.position = @room_info.playerpos1 if player_entry_pos == "forward"
+    player.position = @room_info.playerpos2 if player_entry_pos == "back"
+    @update(player.position)
 
   update : (position) ->
-  	@screen_data = clone(world.screen_data[@room_number])
+  	@screen_data = clone(all_levels.screen_data[@room_number])
+
   	@insert_player(position)
   	display.show_level()
 
   	msg = 'Room ' + @room_number + ' "' + @room_info.name + '"'
-  	#msg += '<br>Player Start: '+@room_info.playerpos1
-  	msg += '<br>Inventory: '+@room_info.inventory
+  	msg += '<br>Inventory: '+@room_info.objects
   	ui_room msg
 
 
@@ -50,13 +52,43 @@ class Room
   	@screen_data[position + 2*40 + 1] = "9a"
   	@screen_data[position + 2*40 + 2] = "9b"
 
-  can_player_go : (direction) ->
-  	if direction == KEY.LEFT
-  		return true if @screen_data[player.position + 0*40 -1] == "df" && @screen_data[player.position + 1*40 -1] == "df" && @screen_data[player.position + 2*40 -1] == "df" 
-  	if direction == KEY.RIGHT
-  		return true if @screen_data[player.position + 0*40 +3] == "df" && @screen_data[player.position + 1*40 +3] == "df" && @screen_data[player.position + 2*40 +3] == "df"
-  	if direction == KEY.UP
-  		return true if @screen_data[player.position - 1*40 +0] == "df" && @screen_data[player.position - 1*40 +1] == "df" && @screen_data[player.position - 1*40 +2] == "df" 
-  	if direction == KEY.DOWN
-  		return true if @screen_data[player.position + 3*40 +0] == "df" && @screen_data[player.position + 3*40 +1] == "df" && @screen_data[player.position + 3*40 +2] == "df" 
 
+
+  check_room : (direction) ->
+    # we take a look at the position hte player wants to go to and return true or the tile code
+
+    new_position_tiles = []
+
+    # step 1: read in the 4 tiles that the player wants to move to
+    if direction == KEY.LEFT
+      new_position_tiles = [ @screen_data[player.position + 0*40 -1] , @screen_data[player.position + 1*40 -1] , @screen_data[player.position + 2*40 -1] ]
+    if direction == KEY.RIGHT
+      new_position_tiles = [ @screen_data[player.position + 0*40 +3] , @screen_data[player.position + 1*40 +3] , @screen_data[player.position + 2*40 +3] ]
+    if direction == KEY.UP
+      new_position_tiles = [ @screen_data[player.position - 1*40 +0] , @screen_data[player.position - 1*40 +1] , @screen_data[player.position - 1*40 +2] ]
+    if direction == KEY.DOWN
+      new_position_tiles = [ @screen_data[player.position + 3*40 +0] , @screen_data[player.position + 3*40 +1] , @screen_data[player.position + 3*40 +2] ]
+
+    # are they all empty ("df" == empty)? then return true
+    # player will move in that direction then
+    return true if new_position_tiles[0] == "df" && new_position_tiles[1] == "df" && new_position_tiles[2] == "df"
+    
+    # DOOR to previous room
+    if "05" && "08" && "0b" in new_position_tiles
+      new_room = @room_number - 1
+      @set(new_room,"back")
+
+    # DOOR to next room
+    if "03" && "06" && "09" in new_position_tiles
+      new_room = @room_number + 1
+      @set(new_room,"forward")
+
+    # check for the gloves
+    # this is the right place to build a full objects check
+    if "a9" in new_position_tiles
+      player.inventory.push("gloves")
+      ui_inventory(player.inventory)
+     
+    ui_room("Tiles: " + new_position_tiles[0] + " | "+ new_position_tiles[1] + " | "+ new_position_tiles[2])
+
+    false

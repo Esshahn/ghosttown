@@ -20,18 +20,15 @@ asset_loader_ready = ->
 
 init_game = ->
 
-  document.addEventListener('keydown',    onkeydown,    false)
+  document.addEventListener('keydown',    event_keydown,    false)
 
   # load in the charmap
   chars_tx = new (PIXI.Texture.fromImage)('img/chars1.png')
   @charset = new Generate_charset(chars_tx, 8, 8, 16, 16)
   
   # load in all levels
-  @world = new Levels()
+  @all_levels = new Levels()
   @room = new Room()
   @player = new Player()
   @display = new Display()
   @display.renderloop()
-  
-
-
