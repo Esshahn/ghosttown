@@ -25,7 +25,7 @@ class Room
     player.position = @room_info.playerpos2 if player_entry_pos == "back"
     @update(player.position)
 
-  update : (position) ->
+  update : (position = player.get_position()) ->
   	@screen_data = clone(all_levels.screen_data[@room_number])
 
   	@insert_player(position)
@@ -38,7 +38,6 @@ class Room
 
   get : (room_number) ->
   	# returns the current room data after it is processed
-
   	@screen_data
 
   insert_player : (position = @room_info.playerpos1) ->
@@ -52,7 +51,19 @@ class Room
   	@screen_data[position + 2*40 + 1] = "9a"
   	@screen_data[position + 2*40 + 2] = "9b"
 
+  replace : (tile,tile_code) ->
+    # replaces a tile by another
+    # tile can be a position on screen (number, e.g. 297) or a tile code (string, e.g. "a9")
+    # tile_code is the tile code that replaces the original tile
 
+    tile = @find tile if typeof tile is "string"
+    all_levels.screen_data[@room_number][tile] = tile_code
+    @update(player.get_position())
+
+  find : (tile) ->
+    # returns the first position (e.g. 294) of a give tile_code (e.g. "a9" on the screen)
+    if tile in @screen_data
+      return @screen_data.indexOf(tile)
 
   check_room : (direction) ->
     # we take a look at the position hte player wants to go to and return true or the tile code
@@ -88,6 +99,7 @@ class Room
     if "a9" in new_position_tiles
       player.inventory.push("gloves")
       ui_inventory(player.inventory)
+      @replace("a9","6b")
      
     ui_room("Tiles: " + new_position_tiles[0] + " | "+ new_position_tiles[1] + " | "+ new_position_tiles[2])
 
