@@ -38,6 +38,16 @@ Player = (function() {
     return console.log((this.position + (3 * 40)) + " : " + (this.position + (3 * 40) + 3));
   };
 
+  Player.prototype.add = function(item) {
+    this.inventory.push(item);
+    return ui_inventory(this.inventory);
+  };
+
+  Player.prototype.remove = function(item) {
+    this.inventory.splice(this.inventory.indexOf(item), 1);
+    return ui_inventory(this.inventory);
+  };
+
   return Player;
 
 })();

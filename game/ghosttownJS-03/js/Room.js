@@ -79,37 +79,87 @@ Room = (function() {
   };
 
   Room.prototype.check_room = function(direction) {
-    var new_position_tiles, new_room;
-    new_position_tiles = [];
+    var new_position, new_room;
+    new_position = [];
     if (direction === KEY.LEFT) {
-      new_position_tiles = [this.screen_data[player.position + 0 * 40 - 1], this.screen_data[player.position + 1 * 40 - 1], this.screen_data[player.position + 2 * 40 - 1]];
+      new_position = [this.screen_data[player.position + 0 * 40 - 1], this.screen_data[player.position + 1 * 40 - 1], this.screen_data[player.position + 2 * 40 - 1]];
     }
     if (direction === KEY.RIGHT) {
-      new_position_tiles = [this.screen_data[player.position + 0 * 40 + 3], this.screen_data[player.position + 1 * 40 + 3], this.screen_data[player.position + 2 * 40 + 3]];
+      new_position = [this.screen_data[player.position + 0 * 40 + 3], this.screen_data[player.position + 1 * 40 + 3], this.screen_data[player.position + 2 * 40 + 3]];
     }
     if (direction === KEY.UP) {
-      new_position_tiles = [this.screen_data[player.position - 1 * 40 + 0], this.screen_data[player.position - 1 * 40 + 1], this.screen_data[player.position - 1 * 40 + 2]];
+      new_position = [this.screen_data[player.position - 1 * 40 + 0], this.screen_data[player.position - 1 * 40 + 1], this.screen_data[player.position - 1 * 40 + 2]];
     }
     if (direction === KEY.DOWN) {
-      new_position_tiles = [this.screen_data[player.position + 3 * 40 + 0], this.screen_data[player.position + 3 * 40 + 1], this.screen_data[player.position + 3 * 40 + 2]];
+      new_position = [this.screen_data[player.position + 3 * 40 + 0], this.screen_data[player.position + 3 * 40 + 1], this.screen_data[player.position + 3 * 40 + 2]];
     }
-    if (new_position_tiles[0] === "df" && new_position_tiles[1] === "df" && new_position_tiles[2] === "df") {
+    if (new_position[0] === "df" && new_position[1] === "df" && new_position[2] === "df") {
       return true;
     }
-    if ("05" && "08" && __indexOf.call(new_position_tiles, "0b") >= 0) {
+    if ("05" && "08" && __indexOf.call(new_position, "0b") >= 0) {
       new_room = this.room_number - 1;
       this.set(new_room, "back");
     }
-    if ("03" && "06" && __indexOf.call(new_position_tiles, "09") >= 0) {
+    if ("03" && "06" && __indexOf.call(new_position, "09") >= 0) {
       new_room = this.room_number + 1;
       this.set(new_room, "forward");
     }
-    if (__indexOf.call(new_position_tiles, "a9") >= 0) {
-      player.inventory.push("gloves");
-      ui_inventory(player.inventory);
-      this.replace("a9", "6b");
+    if (this.room_number === 1) {
+      if (__indexOf.call(new_position, "a9") >= 0 && __indexOf.call(player.inventory, "ladder") >= 0) {
+        player.add("gloves");
+        player.remove("ladder");
+        this.replace("a9", "6b");
+      }
     }
-    ui_room("Tiles: " + new_position_tiles[0] + " | " + new_position_tiles[1] + " | " + new_position_tiles[2]);
+    if (this.room_number === 2) {
+      if (__indexOf.call(new_position, "e0") >= 0 || __indexOf.call(new_position, "e1") >= 0) {
+        player.add("key");
+        this.replace("e0", "aa");
+        this.replace("e1", "ab");
+      }
+      if ((("ac" && __indexOf.call(new_position, "ad") >= 0) || ("ad" && __indexOf.call(new_position, "af") >= 0)) && __indexOf.call(player.inventory, "gloves") >= 0) {
+        player.add("wirecutter");
+        player.remove("gloves");
+        this.replace("ad", "29");
+        this.replace("af", "2c");
+        this.replace("ac", "28");
+        this.replace("ae", "2b");
+      }
+    }
+    if (this.room_number === 3) {
+      if (__indexOf.call(new_position, "a6") >= 0 && __indexOf.call(player.inventory, "key") >= 0) {
+        player.remove("key");
+        this.replace(723, "df");
+        this.replace(724, "df");
+        this.replace(725, "df");
+        this.replace(726, "df");
+      }
+      if ("b0" && __indexOf.call(new_position, "b1") >= 0) {
+        player.add("ladder");
+        this.replace(804, "df");
+        this.replace(805, "df");
+        this.replace(804 + 40, "df");
+        this.replace(805 + 40, "df");
+        this.replace(804 + 80, "df");
+        this.replace(805 + 80, "df");
+      }
+      if (__indexOf.call(new_position, "f5") >= 0 && __indexOf.call(player.inventory, "wirecutter") >= 0) {
+        player.remove("wirecutter");
+        this.replace(493, "df");
+        this.replace(493 + 1 * 40, "df");
+        this.replace(493 + 2 * 40, "df");
+        this.replace(493 + 3 * 40, "df");
+        this.replace(493 + 4 * 40, "df");
+        this.replace(493 + 5 * 40, "df");
+        this.replace(493 + 6 * 40, "df");
+        this.replace(493 + 7 * 40, "df");
+        this.replace(493 + 8 * 40, "df");
+        this.replace(493 + 9 * 40, "df");
+        this.replace(493 + 10 * 40, "df");
+        this.replace(493 + 11 * 40, "df");
+      }
+    }
+    ui_room("Tiles: " + new_position[0] + " | " + new_position[1] + " | " + new_position[2]);
     return false;
   };
 

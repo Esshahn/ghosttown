@@ -68,39 +68,117 @@ class Room
   check_room : (direction) ->
     # we take a look at the position hte player wants to go to and return true or the tile code
 
-    new_position_tiles = []
+    new_position = []
 
     # step 1: read in the 4 tiles that the player wants to move to
     if direction == KEY.LEFT
-      new_position_tiles = [ @screen_data[player.position + 0*40 -1] , @screen_data[player.position + 1*40 -1] , @screen_data[player.position + 2*40 -1] ]
+      new_position = [ @screen_data[player.position + 0*40 -1] , @screen_data[player.position + 1*40 -1] , @screen_data[player.position + 2*40 -1] ]
     if direction == KEY.RIGHT
-      new_position_tiles = [ @screen_data[player.position + 0*40 +3] , @screen_data[player.position + 1*40 +3] , @screen_data[player.position + 2*40 +3] ]
+      new_position = [ @screen_data[player.position + 0*40 +3] , @screen_data[player.position + 1*40 +3] , @screen_data[player.position + 2*40 +3] ]
     if direction == KEY.UP
-      new_position_tiles = [ @screen_data[player.position - 1*40 +0] , @screen_data[player.position - 1*40 +1] , @screen_data[player.position - 1*40 +2] ]
+      new_position = [ @screen_data[player.position - 1*40 +0] , @screen_data[player.position - 1*40 +1] , @screen_data[player.position - 1*40 +2] ]
     if direction == KEY.DOWN
-      new_position_tiles = [ @screen_data[player.position + 3*40 +0] , @screen_data[player.position + 3*40 +1] , @screen_data[player.position + 3*40 +2] ]
+      new_position = [ @screen_data[player.position + 3*40 +0] , @screen_data[player.position + 3*40 +1] , @screen_data[player.position + 3*40 +2] ]
 
+#-------------------------------------------------------------------
+#   EMPTY WAY
+#-------------------------------------------------------------------
+#
     # are they all empty ("df" == empty)? then return true
     # player will move in that direction then
-    return true if new_position_tiles[0] == "df" && new_position_tiles[1] == "df" && new_position_tiles[2] == "df"
-    
+    return true if new_position[0] == "df" && new_position[1] == "df" && new_position[2] == "df"
+
+#-------------------------------------------------------------------
+#   DOORS
+#-------------------------------------------------------------------
+#    
     # DOOR to previous room
-    if "05" && "08" && "0b" in new_position_tiles
+    if "05" and "08" and "0b" in new_position
       new_room = @room_number - 1
       @set(new_room,"back")
 
     # DOOR to next room
-    if "03" && "06" && "09" in new_position_tiles
+    if "03" and "06" and "09" in new_position
       new_room = @room_number + 1
       @set(new_room,"forward")
 
-    # check for the gloves
-    # this is the right place to build a full objects check
-    if "a9" in new_position_tiles
-      player.inventory.push("gloves")
-      ui_inventory(player.inventory)
-      @replace("a9","6b")
+#-------------------------------------------------------------------
+#   ROOM 1 LOGIC
+#-------------------------------------------------------------------
+
+    if @room_number is 1
+      
+      # GLOVES
+      if "a9" in new_position and "ladder" in player.inventory
+        player.add("gloves")
+        player.remove("ladder")
+        @replace("a9","6b")
+
+#-------------------------------------------------------------------
+#   ROOM 2 LOGIC
+#-------------------------------------------------------------------
+
+    if @room_number is 2
+      
+      # KEY
+      if "e0" in new_position or "e1" in new_position
+        player.add("key")
+        @replace("e0","aa")
+        @replace("e1","ab")
+
+      # WIRECUTTER
+      if (("ac" and "ad" in new_position) or ("ad" and "af" in new_position)) and "gloves" in player.inventory
+        player.add("wirecutter")
+        player.remove("gloves")
+        @replace("ad","29")
+        @replace("af","2c")
+        @replace("ac","28")
+        @replace("ae","2b")
+
+#-------------------------------------------------------------------
+#   ROOM 3 LOGIC
+#-------------------------------------------------------------------
+
+    if @room_number is 3
+      
+      # LOCK TO THE LADDER
+      if "a6" in new_position and "key" in player.inventory
+        player.remove("key")
+        @replace(723,"df")
+        @replace(724,"df")
+        @replace(725,"df")
+        @replace(726,"df")
+
+      # LADDER
+      if "b0" and "b1" in new_position
+        player.add("ladder")        
+        @replace(804,"df")
+        @replace(805,"df")
+        @replace(804+40,"df")
+        @replace(805+40,"df")
+        @replace(804+80,"df")
+        @replace(805+80,"df")
+
+      # FENCE
+      if "f5" in new_position and "wirecutter" in player.inventory
+        player.remove("wirecutter")
+        @replace(493,"df")
+        @replace(493+1*40,"df")
+        @replace(493+2*40,"df")
+        @replace(493+3*40,"df")
+        @replace(493+4*40,"df")
+        @replace(493+5*40,"df")
+        @replace(493+6*40,"df")
+        @replace(493+7*40,"df")
+        @replace(493+8*40,"df")
+        @replace(493+9*40,"df")
+        @replace(493+10*40,"df")
+        @replace(493+11*40,"df")
+
+#-------------------------------------------------------------------
+#   FINISH
+#-------------------------------------------------------------------
      
-    ui_room("Tiles: " + new_position_tiles[0] + " | "+ new_position_tiles[1] + " | "+ new_position_tiles[2])
+    ui_room("Tiles: " + new_position[0] + " | "+ new_position[1] + " | "+ new_position[2])
 
     false

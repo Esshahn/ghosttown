@@ -38,4 +38,13 @@ class Player
     console.log("---------")
     console.log(@position + " : " + (@position+3))
     console.log((@position+(3*40)) + " : " + (@position+(3*40)+3))
+
+  add : (item) ->
+    @inventory.push(item)
+    ui_inventory(@inventory)
+  
+  remove : (item) ->
+    @inventory.splice(@inventory.indexOf(item),1)
+    ui_inventory(@inventory)
+
       
