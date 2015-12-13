@@ -16,14 +16,14 @@ class Levels
 
     # load in the levels
     i = 0
-    while i < 20
+    while i < 19
       i++
       @screen_data[i] = @import_screen_data(@level_data[i].filename) 
 
 
   import_screen_data: (filename) ->
     # loads in a level binary file
-    file_fullpath = 'data/screen-lvl-' + filename + '.bin'
+    file_fullpath = 'data/lvl/lvl-' + filename + '.bin'
     screendat = []
     oReq = new XMLHttpRequest
     oReq.open 'GET', file_fullpath, true

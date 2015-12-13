@@ -98,8 +98,3 @@ levels_config =
     name: 'Almost there!'
     playerpos1: 123
     playerpos2: 88
-  20:
-    filename: '20'
-    name: 'You made it!'
-    playerpos1: 243
-    playerpos2: 88

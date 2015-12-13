@@ -53,6 +53,7 @@ class Player
   remove : (item) ->
     @inventory.splice(@inventory.indexOf(item),1)
     ui_inventory(@inventory)
+    ui_log("You dropped the <b>"+item+"</b>","green")
 
 #-------------------------------------------------------------------
 

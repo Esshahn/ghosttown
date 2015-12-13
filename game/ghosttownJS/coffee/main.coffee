@@ -29,5 +29,8 @@ init_game = ->
   @room = new Room()
   @player = new Player()
   @display = new Display()
-
   @display.renderloop()
+
+  setTimeout( =>
+    @room.set(2)
+  ,500)

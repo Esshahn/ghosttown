@@ -60,7 +60,7 @@ class Room
 #-------------------------------------------------------------------
 
   die : (deathID) ->
-    ui_log("You would be dead.","red")
+    ui_log("You would have died by the <b>"+deathID+"</b>", "red")
 
 #-------------------------------------------------------------------
 
@@ -102,12 +102,12 @@ class Room
 #-------------------------------------------------------------------
    
     # DOOR to previous room
-    if "05" and "08" and "0b" in new_position
+    if "05" in new_position and "08" in new_position and "0b" in new_position and @room_number isnt 1
       new_room = @room_number - 1
       @set(new_room,"back")
 
     # DOOR to next room
-    if "03" and "06" and "09" in new_position
+    if "03" in new_position and "06" in new_position and "09" in new_position
       new_room = @room_number + 1
       @set(new_room,"forward")
 
@@ -120,13 +120,10 @@ class Room
       # GLOVES
       if "a9" in new_position 
         if "ladder" in player.inventory
-          player.add("gloves")
           player.remove("ladder")
+          player.add("gloves")          
           @replace("a9","6b")
-        else
-          @die("gloves")
-
-
+        
 #-------------------------------------------------------------------
 #   ROOM 2 LOGIC
 #-------------------------------------------------------------------
@@ -146,13 +143,16 @@ class Room
 
 
       # WIRECUTTER
-      if (("ac" and "ad" in new_position) or ("ad" and "af" in new_position)) and "gloves" in player.inventory
-        player.add("wirecutter")
-        player.remove("gloves")
-        @replace("ad","29")
-        @replace("af","2c")
-        @replace("ac","28")
-        @replace("ae","2b")
+      if (("ac" and "ad" in new_position) or ("ad" and "af" in new_position))
+        if "gloves" in player.inventory
+          player.remove("gloves")
+          player.add("wirecutter")          
+          @replace("ad","29")
+          @replace("af","2c")
+          @replace("ac","28")
+          @replace("ae","2b")
+        else
+          @die("wirecutter")
 
 #-------------------------------------------------------------------
 #   ROOM 3 LOGIC
@@ -179,20 +179,23 @@ class Room
         @replace(805+80,"df")
 
       # FENCE
-      if "f5" in new_position and "wirecutter" in player.inventory
-        player.remove("wirecutter")
-        @replace(493,"df")
-        @replace(493+1*40,"df")
-        @replace(493+2*40,"df")
-        @replace(493+3*40,"df")
-        @replace(493+4*40,"df")
-        @replace(493+5*40,"df")
-        @replace(493+6*40,"df")
-        @replace(493+7*40,"df")
-        @replace(493+8*40,"df")
-        @replace(493+9*40,"df")
-        @replace(493+10*40,"df")
-        @replace(493+11*40,"df")
+      if "f5" in new_position 
+        if "wirecutter" in player.inventory
+          player.remove("wirecutter")
+          @replace(493,"df")
+          @replace(493+1*40,"df")
+          @replace(493+2*40,"df")
+          @replace(493+3*40,"df")
+          @replace(493+4*40,"df")
+          @replace(493+5*40,"df")
+          @replace(493+6*40,"df")
+          @replace(493+7*40,"df")
+          @replace(493+8*40,"df")
+          @replace(493+9*40,"df")
+          @replace(493+10*40,"df")
+          @replace(493+11*40,"df")
+        else
+          @die("fence")
 
 #-------------------------------------------------------------------
 #   EMPTY WAY
