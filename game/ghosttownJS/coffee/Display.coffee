@@ -31,7 +31,7 @@ class Display
     bg_tx = PIXI.Texture.fromImage('img/screen-bg.png')
     @bg = new (PIXI.Sprite)(bg_tx)
 
-  show_level : () ->
+  show_data : (charset = charset_game) ->
 
     # will need to get more sophisticated, especially when parsing level data like object to show
     level_sprites = []

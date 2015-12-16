@@ -11,9 +11,10 @@ class Generate_charset
       @return: the char texture
   ###
 
-  all_chars : []
-
+  
   constructor: (@texture, @char_width = 8, @char_height = 8, @xstep = 16, @ystep = 16) ->
+
+    @all_chars = []
 
     @counter = 0
     j = 0

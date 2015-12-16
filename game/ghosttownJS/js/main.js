@@ -15,10 +15,12 @@ init = function() {
 };
 
 init_game = function() {
-  var chars_tx;
+  var chars_commodore_tx, chars_game_tx;
   document.addEventListener('keydown', event_keydown, false);
-  chars_tx = new PIXI.Texture.fromImage('img/chars1.png');
-  this.charset = new Generate_charset(chars_tx, 8, 8, 16, 16);
+  chars_game_tx = new PIXI.Texture.fromImage('img/chars1.png');
+  this.charset_game = new Generate_charset(chars_game_tx, 8, 8, 16, 16);
+  chars_commodore_tx = new PIXI.Texture.fromImage('img/chars-commodore.png');
+  this.charset_commodore = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16);
   this.all_levels = new Levels();
   this.room = new Room();
   this.player = new Player();

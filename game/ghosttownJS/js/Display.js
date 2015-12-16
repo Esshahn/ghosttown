@@ -30,8 +30,11 @@ Display = (function() {
     this.bg = new PIXI.Sprite(bg_tx);
   }
 
-  Display.prototype.show_level = function() {
+  Display.prototype.show_data = function(charset) {
     var i, level_sprites, xpos, ypos, _results;
+    if (charset == null) {
+      charset = charset_game;
+    }
     level_sprites = [];
     xpos = 0;
     ypos = 0;

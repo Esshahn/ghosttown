@@ -21,9 +21,12 @@ init_game = ->
   
 
   # load in the charmap
-  chars_tx = new (PIXI.Texture.fromImage)('img/chars1.png')
-  @charset = new Generate_charset(chars_tx, 8, 8, 16, 16)
+  chars_game_tx = new (PIXI.Texture.fromImage)('img/chars1.png')
+  @charset_game = new Generate_charset(chars_game_tx, 8, 8, 16, 16)
+  chars_commodore_tx = new (PIXI.Texture.fromImage)('img/chars-commodore.png')
+  @charset_commodore = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16)
   
+
   # load in all levels
   @all_levels = new Levels()
   @room = new Room()

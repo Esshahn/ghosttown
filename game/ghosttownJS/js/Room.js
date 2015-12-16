@@ -39,7 +39,7 @@ Room = (function() {
     }
     this.screen_data = clone(all_levels.screen_data[this.room_number]);
     this.insert_player(position);
-    display.show_level();
+    display.show_data();
     msg = 'Room ' + this.room_number + ' "' + this.room_info.name + '"';
     return ui_room(msg);
   };

@@ -12,6 +12,7 @@ load_assets = function(cb) {
   loader = PIXI.loader;
   loader.add('bg_texture', 'img/start.png');
   loader.add('chars', 'img/chars1.png');
+  loader.add('chars_commodore', 'img/chars-commodore.png');
   loader.once('complete', function() {
     return cb();
   });

@@ -33,7 +33,7 @@ class Room
   	@screen_data = clone(all_levels.screen_data[@room_number])
 
   	@insert_player(position)
-  	display.show_level()
+  	display.show_data()
 
   	msg = 'Room ' + @room_number + ' "' + @room_info.name + '"'
   	ui_room msg

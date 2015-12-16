@@ -1,0 +1,17 @@
+5 scnclr
+10 a = 0
+11 b = 0
+13 c = 0
+20 poke 3072+a,b
+40 a = a + 2
+50 b = b + 1
+60 c = c + 1
+70 if c = 16 then a = a + 8 
+80 if c = 16 then c = 0
+85 if b = 256 then goto 100
+90 goto 20
+100 goto 100
+
+Zeigt alle Character des Plus/4 auf dem Bildschirm an.
+
+
