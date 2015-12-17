@@ -10,8 +10,9 @@ var Display,
 Display = (function() {
   function Display() {
     this.renderloop = __bind(this.renderloop, this);
+    var bg_tx;
     this.renderer = new PIXI.autoDetectRenderer(768, 576, {
-      backgroundColor: COLOR_RED
+      backgroundColor: 0x792e1d
     });
     document.body.appendChild(this.renderer.view);
     this.stage = new PIXI.Container;
@@ -25,14 +26,8 @@ Display = (function() {
     this.myMask.endFill();
     this.screen.mask = this.myMask;
     this.stage.addChild(this.screen);
-    this.bg_black = new PIXI.Graphics;
-    this.bg_black.beginFill(COLOR_BLACK);
-    this.bg_black.drawRect(0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR, (SCREEN_HEIGHT - 8) * SCALE_FACTOR);
-    this.bg_black.endFill();
-    this.bg_blue = new PIXI.Graphics;
-    this.bg_blue.beginFill(COLOR_BLUE);
-    this.bg_blue.drawRect(0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR, (SCREEN_HEIGHT - 8) * SCALE_FACTOR);
-    this.bg_blue.endFill();
+    bg_tx = PIXI.Texture.fromImage('img/screen-bg.png');
+    this.bg = new PIXI.Sprite(bg_tx);
   }
 
   Display.prototype.show_data = function(charset) {
@@ -40,42 +35,11 @@ Display = (function() {
     if (charset == null) {
       charset = charset_game;
     }
-    this.renderer.backgroundColor = COLOR_RED;
     level_sprites = [];
     xpos = 0;
     ypos = 0;
     this.level_data = room.get();
     this.clear();
-    this.screen.addChild(this.bg_black);
-    i = 0;
-    _results = [];
-    while (i < this.level_data.length) {
-      level_sprites[i] = new PIXI.Sprite(charset[this.level_data[i]]);
-      if (xpos >= SCREEN_WIDTH) {
-        xpos = 0;
-        ypos += 8;
-      }
-      level_sprites[i].position.x = xpos;
-      level_sprites[i].position.y = ypos;
-      this.screen.addChild(level_sprites[i]);
-      xpos += 8;
-      _results.push(i++);
-    }
-    return _results;
-  };
-
-  Display.prototype.show_msg = function(msg_number, charset) {
-    var i, level_sprites, xpos, ypos, _results;
-    if (charset == null) {
-      charset = charset_commodore;
-    }
-    this.renderer.backgroundColor = COLOR_BLUE;
-    level_sprites = [];
-    xpos = 0;
-    ypos = 0;
-    this.level_data = all_msg.screen_data[msg_number];
-    this.clear();
-    this.screen.addChild(this.bg_blue);
     i = 0;
     _results = [];
     while (i < this.level_data.length) {
@@ -94,14 +58,13 @@ Display = (function() {
   };
 
   Display.prototype.clear = function() {
-    var i, _results;
+    var i;
     i = this.screen.children.length - 1;
-    _results = [];
     while (i >= 0) {
       this.screen.removeChild(this.screen.children[i]);
-      _results.push(i--);
+      i--;
     }
-    return _results;
+    return this.screen.addChild(this.bg);
   };
 
   Display.prototype.renderloop = function() {
