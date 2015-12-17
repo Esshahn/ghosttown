@@ -34,6 +34,7 @@ What's not implemented:
 * final/win screen
 * death
 * gameplay logic for all rooms
+* animations (Boris, Belegro, Boulder)
 * music (I need help on this...)
 
 
