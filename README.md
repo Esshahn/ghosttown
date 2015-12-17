@@ -58,12 +58,9 @@ Anyway, feel free to drop me a comment or participate in whatever way you may fa
 
 Not sure which technology to use along the way, but it will probably be something like
 
-* HTML (duh!)
-* JavaScript (finally a project with a high class programming language here on GitHub)
-* CoffeeScript (honestly, I don't like it yet, but it's part of the plan to get used to it)
+* HTML
+* CoffeeScript 
 * Pixi.js
-* Maybe Phaser ( http://phaser.io/ )
-* Some other shit I find useful on the way
 
 
 ## Installing the project & dependencies
