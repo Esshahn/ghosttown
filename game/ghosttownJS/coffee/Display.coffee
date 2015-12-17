@@ -8,7 +8,7 @@ class Display
 
   constructor : ->
     # the main stage is including all borders and set to double size
-    @renderer = new (PIXI.autoDetectRenderer)(768, 576, backgroundColor: 0x792e1d)
+    @renderer = new (PIXI.autoDetectRenderer)(768, 576, backgroundColor: COLOR_RED)
     
     document.body.appendChild @renderer.view
     @stage = new (PIXI.Container)
@@ -27,11 +27,22 @@ class Display
     @screen.mask = @myMask; 
     @stage.addChild @screen
 
-    # background texture
-    bg_tx = PIXI.Texture.fromImage('img/screen-bg.png')
-    @bg = new (PIXI.Sprite)(bg_tx)
+    # background textures
+    @bg_black = new (PIXI.Graphics)
+    @bg_black.beginFill(COLOR_BLACK)
+    @bg_black.drawRect 0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR , (SCREEN_HEIGHT - 8) * SCALE_FACTOR 
+    @bg_black.endFill()
+
+    @bg_blue = new (PIXI.Graphics)
+    @bg_blue.beginFill(COLOR_BLUE)
+    @bg_blue.drawRect 0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR , (SCREEN_HEIGHT - 8) * SCALE_FACTOR 
+    @bg_blue.endFill()
+
+
 
   show_data : (charset = charset_game) ->
+
+    @renderer.backgroundColor = COLOR_RED
 
     # will need to get more sophisticated, especially when parsing level data like object to show
     level_sprites = []
@@ -42,6 +53,36 @@ class Display
 
     # clear the screen
     @clear()
+    # then draw the background
+    @screen.addChild @bg_black
+
+    # and finally the level data
+    i = 0
+    while i < @level_data.length
+      level_sprites[i] = new (PIXI.Sprite)(charset[@level_data[i]])
+      if xpos >= SCREEN_WIDTH
+        xpos = 0
+        ypos += 8
+      level_sprites[i].position.x = xpos
+      level_sprites[i].position.y = ypos
+      @screen.addChild level_sprites[i]
+      xpos += 8
+      i++
+
+
+  show_msg : (msg_number, charset = charset_commodore) ->
+    @renderer.backgroundColor = COLOR_BLUE
+
+    level_sprites = []
+    xpos = 0
+    ypos = 0
+
+    @level_data = all_msg.screen_data[msg_number]
+
+    # clear the screen
+    @clear()
+    # then draw the background
+    @screen.addChild @bg_blue
 
     # and finally the level data
     i = 0
@@ -67,12 +108,11 @@ class Display
     while i >= 0
       @screen.removeChild @screen.children[i]
       i--
-    # then draw the background
-    @screen.addChild @bg
+
 
 
   renderloop : =>
-  
+
     @renderer.render @stage
     requestAnimationFrame @renderloop
     return

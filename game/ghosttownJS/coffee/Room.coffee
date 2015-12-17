@@ -21,8 +21,8 @@ class Room
   	# read in the given level from the all levels data
     # level_data is now the current worksheet to work with
 
-    @screen_data = clone(all_levels.screen_data[@room_number])
-    @room_info = all_levels.level_data[@room_number]
+    @screen_data = clone(all_lvl.screen_data[@room_number])
+    @room_info = levels_config[@room_number]
     player.position = @room_info.playerpos1 if player_entry_pos == "forward"
     player.position = @room_info.playerpos2 if player_entry_pos == "back"
     @update(player.position)
@@ -30,7 +30,7 @@ class Room
 #-------------------------------------------------------------------
 
   update : (position = player.get_position()) ->
-  	@screen_data = clone(all_levels.screen_data[@room_number])
+  	@screen_data = clone(all_lvl.screen_data[@room_number])
 
   	@insert_player(position)
   	display.show_data()
@@ -59,8 +59,9 @@ class Room
 
 #-------------------------------------------------------------------
 
-  die : (deathID) ->
+  die : (deathID,msgID = 1) ->
     ui_log("You would have died by the <b>"+deathID+"</b>", "red")
+    display.show_msg(msgID)
 
 #-------------------------------------------------------------------
 
@@ -70,7 +71,7 @@ class Room
     # tile_code is the tile code that replaces the original tile
 
     tile = @find tile if typeof tile is "string"
-    all_levels.screen_data[@room_number][tile] = tile_code
+    all_lvl.screen_data[@room_number][tile] = tile_code
     @update(player.get_position())
 
 #-------------------------------------------------------------------
@@ -152,7 +153,7 @@ class Room
           @replace("ac","28")
           @replace("ae","2b")
         else
-          @die("wirecutter")
+          @die("wirecutter",1)
 
 #-------------------------------------------------------------------
 #   ROOM 3 LOGIC
@@ -195,7 +196,7 @@ class Room
           @replace(493+10*40,"df")
           @replace(493+11*40,"df")
         else
-          @die("fence")
+          @die("fence",3)
 
 #-------------------------------------------------------------------
 #   EMPTY WAY

@@ -21,19 +21,29 @@ init_game = ->
   
 
   # load in the charmap
-  chars_game_tx = new (PIXI.Texture.fromImage)('img/chars1.png')
-  @charset_game = new Generate_charset(chars_game_tx, 8, 8, 16, 16)
+  chars_game_tx      = new (PIXI.Texture.fromImage)('img/chars.png')
+  @charset_game      = new Generate_charset(chars_game_tx, 8, 8, 16, 16)
   chars_commodore_tx = new (PIXI.Texture.fromImage)('img/chars-commodore.png')
   @charset_commodore = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16)
   
 
-  # load in all levels
-  @all_levels = new Levels()
-  @room = new Room()
-  @player = new Player()
+  # load in all levels, messages and other stuff
+  @all_lvl   = new BinaryImport("lvl")
+  @all_msg   = new BinaryImport("msg")
+  @all_other = new BinaryImport("other")
+
+  # setup the main classes
+  @room    = new Room()
+  @player  = new Player()
   @display = new Display()
   @display.renderloop()
 
+  # some UI status to kick notifications off
+  ui_log("Ghost Town JS. Current build: 15.12.17","green")
+  ui_log("User cursor keys to move the player.","green")
+
+  # hacky ugly timeout to make the first level being loaded
+  # a bit more likely. still needs proper asset loading
   setTimeout( =>
-    @room.set(2)
-  ,500)
+    @room.set(1)
+  ,1)
