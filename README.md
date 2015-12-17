@@ -12,8 +12,35 @@
 
 ## Current version
 
-The current version of the game is 15.
-Not that there's anything yet, but I like progress, so hey!
+The game is in a very early version.
+
+What's implemented:
+* loading in the original binary data of the C16 game
+* parsing the binary data into JS and display it with pixi.js
+* all 19 rooms can be accessed
+* move the player with the cursor keys
+* entering and leaving rooms through the doors
+* player inventory (normally not shown to the player in the original)
+* basic logic for picking up and using items
+* basic logic for dying
+* multiple charset support
+* first three rooms are playable
+
+What's not implemented:
+* display the original death messages
+* display info messages (e.g. from the question marks)
+* title screen
+* intro/story screen
+* final/win screen
+* death
+* gameplay logic for all rooms
+* music (I need help on this...)
+
+
+# Playable build
+
+It may or may not work currently, but you can give it a try:
+http://www.awsm.de/gt/
 
 
 # Ghost Town
