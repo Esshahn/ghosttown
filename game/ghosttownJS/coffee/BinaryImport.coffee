@@ -25,7 +25,7 @@ class BinaryImport
       @file_path = 'data/lvl/lvl-'
 
     if @binary_type is "msg"
-      @amount_of_files_to_load = 3
+      @amount_of_files_to_load = 4
       @file_path = 'data/msg/msg-'
 
     if @binary_type is "other"

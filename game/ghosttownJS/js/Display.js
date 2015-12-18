@@ -13,7 +13,27 @@ Display = (function() {
     this.renderer = new PIXI.autoDetectRenderer(768, 576, {
       backgroundColor: COLOR_RED
     });
-    document.body.appendChild(this.renderer.view);
+    codefCRTemulator.setup(this.renderer.view, "game");
+    this.crt_emulation = true;
+    if (this.crt_emulation === true) {
+      codefCRTemulator.set.scanlines(true);
+      codefCRTemulator.set.gaussian(0.6);
+      codefCRTemulator.set.light(8);
+      codefCRTemulator.set.curvature(true);
+      codefCRTemulator.set.gamma(1);
+      codefCRTemulator.set.contrast(0.9);
+      codefCRTemulator.set.saturation(0.8);
+      codefCRTemulator.set.brightness(1.4);
+    } else {
+      codefCRTemulator.set.scanlines(false);
+      codefCRTemulator.set.gaussian(0);
+      codefCRTemulator.set.light(0);
+      codefCRTemulator.set.curvature(false);
+      codefCRTemulator.set.gamma(1);
+      codefCRTemulator.set.contrast(1);
+      codefCRTemulator.set.saturation(1);
+      codefCRTemulator.set.brightness(1);
+    }
     this.stage = new PIXI.Container;
     this.screen = new PIXI.Container;
     this.screen.position.x = LEFT_BORDER;
@@ -106,6 +126,7 @@ Display = (function() {
 
   Display.prototype.renderloop = function() {
     this.renderer.render(this.stage);
+    codefCRTemulator.draw();
     requestAnimationFrame(this.renderloop);
   };
 

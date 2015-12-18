@@ -10,7 +10,34 @@ class Display
     # the main stage is including all borders and set to double size
     @renderer = new (PIXI.autoDetectRenderer)(768, 576, backgroundColor: COLOR_RED)
     
-    document.body.appendChild @renderer.view
+    # the line below should be used when not using the CRT shader
+    #document.getElementById("game").appendChild @renderer.view
+
+    # this is used for the CRT shader effect
+    codefCRTemulator.setup(@renderer.view,"game")
+
+    # set this to on or off for the crt emulation
+    @crt_emulation = on
+
+    if @crt_emulation is on 
+      codefCRTemulator.set.scanlines true
+      codefCRTemulator.set.gaussian 0.6
+      codefCRTemulator.set.light 8
+      codefCRTemulator.set.curvature true
+      codefCRTemulator.set.gamma 1
+      codefCRTemulator.set.contrast 0.9
+      codefCRTemulator.set.saturation 0.8
+      codefCRTemulator.set.brightness 1.4
+    else 
+      codefCRTemulator.set.scanlines false
+      codefCRTemulator.set.gaussian 0
+      codefCRTemulator.set.light 0
+      codefCRTemulator.set.curvature false
+      codefCRTemulator.set.gamma 1
+      codefCRTemulator.set.contrast 1
+      codefCRTemulator.set.saturation 1
+      codefCRTemulator.set.brightness 1
+    
     @stage = new (PIXI.Container)
 
     # the main screen where the game displays in (320x200)
@@ -114,5 +141,6 @@ class Display
   renderloop : =>
 
     @renderer.render @stage
+    codefCRTemulator.draw()
     requestAnimationFrame @renderloop
     return

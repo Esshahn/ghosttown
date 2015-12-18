@@ -150,7 +150,7 @@ Room = (function() {
         this.replace(725, "df");
         this.replace(726, "df");
       }
-      if ("b0" && __indexOf.call(new_position, "b1") >= 0) {
+      if (__indexOf.call(new_position, "b0") >= 0 && __indexOf.call(new_position, "b1") >= 0) {
         player.add("ladder");
         this.replace(804, "df");
         this.replace(805, "df");
@@ -176,6 +176,13 @@ Room = (function() {
           this.replace(493 + 11 * 40, "df");
         } else {
           this.die("fence", 3);
+        }
+      }
+      if (__indexOf.call(new_position, "b9") >= 0 && __indexOf.call(new_position, "bb") >= 0) {
+        if (__indexOf.call(player.inventory, "hammer") >= 0) {
+          player.add("treasure key");
+        } else {
+          this.die("poison", 4);
         }
       }
     }

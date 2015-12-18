@@ -170,7 +170,7 @@ class Room
         @replace(726,"df")
 
       # LADDER
-      if "b0" and "b1" in new_position
+      if "b0" in new_position and "b1" in new_position
         player.add("ladder")        
         @replace(804,"df")
         @replace(805,"df")
@@ -197,6 +197,15 @@ class Room
           @replace(493+11*40,"df")
         else
           @die("fence",3)
+
+
+      # POISON BOTTLE
+      if "b9" in new_position and "bb" in new_position 
+        if "hammer" in player.inventory
+          player.add("treasure key")
+        else
+          @die("poison",4)
+
 
 #-------------------------------------------------------------------
 #   EMPTY WAY
