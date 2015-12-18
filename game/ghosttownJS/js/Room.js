@@ -14,6 +14,7 @@ Room = (function() {
     this.room_number = 1;
     this.room_info;
     this.room_updated_tiles = [];
+    this.room_inventory = [];
   }
 
   Room.prototype.set = function(_at_room_number, player_entry_pos) {
@@ -68,6 +69,13 @@ Room = (function() {
       msgID = 1;
     }
     ui_log("You would have died by the <b>" + deathID + "</b>", "red");
+    return display.show_death(msgID);
+  };
+
+  Room.prototype.msg = function(msgID) {
+    if (msgID == null) {
+      msgID = 1;
+    }
     return display.show_msg(msgID);
   };
 
@@ -141,6 +149,9 @@ Room = (function() {
           this.die("wirecutter", 1);
         }
       }
+      if (__indexOf.call(new_position, "1e") >= 0 || __indexOf.call(new_position, "1f") >= 0 || __indexOf.call(new_position, "20") >= 0 || __indexOf.call(new_position, "21") >= 0 || __indexOf.call(new_position, "24") >= 0 || __indexOf.call(new_position, "25") >= 0 || __indexOf.call(new_position, "26") >= 0) {
+        this.msg(2);
+      }
     }
     if (this.room_number === 3) {
       if (__indexOf.call(new_position, "a6") >= 0 && __indexOf.call(player.inventory, "key") >= 0) {
@@ -184,6 +195,11 @@ Room = (function() {
         } else {
           this.die("poison", 4);
         }
+      }
+    }
+    if (this.room_number === 4) {
+      if (__indexOf.call(new_position, "1e") >= 0 || __indexOf.call(new_position, "1f") >= 0 || __indexOf.call(new_position, "20") >= 0 || __indexOf.call(new_position, "21") >= 0 || __indexOf.call(new_position, "24") >= 0 || __indexOf.call(new_position, "25") >= 0 || __indexOf.call(new_position, "26") >= 0) {
+        this.msg(5);
       }
     }
     if (new_position[0] === "df" && new_position[1] === "df" && new_position[2] === "df") {

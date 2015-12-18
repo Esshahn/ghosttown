@@ -13,6 +13,7 @@ class Room
     @room_number = 1
     @room_info
     @room_updated_tiles = []
+    @room_inventory = []
 
 #-------------------------------------------------------------------
 
@@ -61,6 +62,11 @@ class Room
 
   die : (deathID,msgID = 1) ->
     ui_log("You would have died by the <b>"+deathID+"</b>", "red")
+    display.show_death(msgID)
+
+#-------------------------------------------------------------------
+
+  msg : (msgID = 1) ->
     display.show_msg(msgID)
 
 #-------------------------------------------------------------------
@@ -113,7 +119,7 @@ class Room
       @set(new_room,"forward")
 
 #-------------------------------------------------------------------
-#   ROOM 1 LOGIC
+#   ROOM 1 - START
 #-------------------------------------------------------------------
 
     if @room_number is 1
@@ -126,7 +132,7 @@ class Room
           @replace("a9","6b")
         
 #-------------------------------------------------------------------
-#   ROOM 2 LOGIC
+#   ROOM 2 - WIRECUTTER
 #-------------------------------------------------------------------
 
     if @room_number is 2
@@ -155,8 +161,13 @@ class Room
         else
           @die("wirecutter",1)
 
+      # QUESTION MARK
+      if "1e" in new_position or "1f" in new_position or "20" in new_position or "21" in new_position or "24" in new_position or "25" in new_position or "26" in new_position
+        @msg(2)
+
+
 #-------------------------------------------------------------------
-#   ROOM 3 LOGIC
+#   ROOM 3 - THE LADDER
 #-------------------------------------------------------------------
 
     if @room_number is 3
@@ -206,6 +217,15 @@ class Room
         else
           @die("poison",4)
 
+#-------------------------------------------------------------------
+#   ROOM 4 - SPIRAL
+#-------------------------------------------------------------------
+
+    if @room_number is 4
+      
+      # QUESTION MARK
+      if "1e" in new_position or "1f" in new_position or "20" in new_position or "21" in new_position or "24" in new_position or "25" in new_position or "26" in new_position
+        @msg(5)
 
 #-------------------------------------------------------------------
 #   EMPTY WAY

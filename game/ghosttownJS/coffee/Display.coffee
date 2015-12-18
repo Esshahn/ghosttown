@@ -97,8 +97,35 @@ class Display
       i++
 
 
-  show_msg : (msg_number, charset = charset_commodore) ->
+  show_death : (msg_number, charset = charset_commodore) ->
     @renderer.backgroundColor = COLOR_BLUE
+
+    level_sprites = []
+    xpos = 0
+    ypos = 0
+
+    @level_data = all_msg.screen_data[msg_number]
+
+    # clear the screen
+    @clear()
+    # then draw the background
+    @screen.addChild @bg_blue
+
+    # and finally the level data
+    i = 0
+    while i < @level_data.length
+      level_sprites[i] = new (PIXI.Sprite)(charset[@level_data[i]])
+      if xpos >= SCREEN_WIDTH
+        xpos = 0
+        ypos += 8
+      level_sprites[i].position.x = xpos
+      level_sprites[i].position.y = ypos
+      @screen.addChild level_sprites[i]
+      xpos += 8
+      i++
+
+  show_msg : (msg_number, charset = charset_commodore) ->
+    @renderer.backgroundColor = COLOR_RED
 
     level_sprites = []
     xpos = 0

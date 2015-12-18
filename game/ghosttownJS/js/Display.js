@@ -84,12 +84,41 @@ Display = (function() {
     return _results;
   };
 
-  Display.prototype.show_msg = function(msg_number, charset) {
+  Display.prototype.show_death = function(msg_number, charset) {
     var i, level_sprites, xpos, ypos, _results;
     if (charset == null) {
       charset = charset_commodore;
     }
     this.renderer.backgroundColor = COLOR_BLUE;
+    level_sprites = [];
+    xpos = 0;
+    ypos = 0;
+    this.level_data = all_msg.screen_data[msg_number];
+    this.clear();
+    this.screen.addChild(this.bg_blue);
+    i = 0;
+    _results = [];
+    while (i < this.level_data.length) {
+      level_sprites[i] = new PIXI.Sprite(charset[this.level_data[i]]);
+      if (xpos >= SCREEN_WIDTH) {
+        xpos = 0;
+        ypos += 8;
+      }
+      level_sprites[i].position.x = xpos;
+      level_sprites[i].position.y = ypos;
+      this.screen.addChild(level_sprites[i]);
+      xpos += 8;
+      _results.push(i++);
+    }
+    return _results;
+  };
+
+  Display.prototype.show_msg = function(msg_number, charset) {
+    var i, level_sprites, xpos, ypos, _results;
+    if (charset == null) {
+      charset = charset_commodore;
+    }
+    this.renderer.backgroundColor = COLOR_RED;
     level_sprites = [];
     xpos = 0;
     ypos = 0;
