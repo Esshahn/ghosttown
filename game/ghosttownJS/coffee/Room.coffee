@@ -104,19 +104,12 @@ class Room
     if direction == KEY.DOWN
       new_position = [ @screen_data[player.position + 3*40 +0] , @screen_data[player.position + 3*40 +1] , @screen_data[player.position + 3*40 +2] ]
 
-#-------------------------------------------------------------------
-#   DOORS
-#-------------------------------------------------------------------
-   
-    # DOOR to previous room
-    if "05" in new_position and "08" in new_position and "0b" in new_position and @room_number isnt 1
-      new_room = @room_number - 1
-      @set(new_room,"back")
 
-    # DOOR to next room
-    if "03" in new_position and "06" in new_position and "09" in new_position
-      new_room = @room_number + 1
-      @set(new_room,"forward")
+
+
+
+
+
 
 #-------------------------------------------------------------------
 #   ROOM 1 - START
@@ -136,7 +129,7 @@ class Room
 #-------------------------------------------------------------------
 
     if @room_number is 2
-      
+      console.log("hey")
       # KEY
       if "e0" in new_position or "e1" in new_position
         player.add("key")
@@ -214,6 +207,7 @@ class Room
       if "b9" in new_position and "bb" in new_position 
         if "hammer" in player.inventory
           player.add("treasure key")
+          @msg(9)
         else
           @die("poison",4)
 
@@ -222,10 +216,198 @@ class Room
 #-------------------------------------------------------------------
 
     if @room_number is 4
-      
+   
       # QUESTION MARK
       if "1e" in new_position or "1f" in new_position or "20" in new_position or "21" in new_position or "24" in new_position or "25" in new_position or "26" in new_position
+        # TODO
+        # RANDOM A-H
+        # MSG 5 POSITION UBERSCHREIBEN
+        # GLOBALE VARIABLE FUER BUCHSTABEN
         @msg(5)
+
+#-------------------------------------------------------------------
+#   ROOM 5
+#-------------------------------------------------------------------
+
+    #if @room_number is 5
+
+
+#-------------------------------------------------------------------
+#   ROOM 6 
+#-------------------------------------------------------------------
+
+    if @room_number is 6
+
+      # BREATHING TUBE
+      if "fd" in new_position
+        if "spade" in player.inventory
+          player.remove("spade")
+          player.add("breathing tube")
+          @msg(10)
+
+      # QUESTION MARK
+      if "1e" in new_position or "1f" in new_position or "20" in new_position or "21" in new_position or "22" in new_position or "23" in new_position or "24" in new_position or "25" in new_position or "26" in new_position
+        @msg(11)
+
+#-------------------------------------------------------------------
+#   ROOM 7 - FOUR DOORS
+#-------------------------------------------------------------------
+
+    if @room_number is 7
+        
+      # DEADLY DOORS    
+      if "f6" in new_position and "06" in new_position and "09" in new_position
+        @die("snake pit",6)
+
+#-------------------------------------------------------------------
+#   ROOM 8 - SACRED COLUMN
+#-------------------------------------------------------------------
+
+    if @room_number is 8
+        
+      # DEADLY DOORS    
+      if "e3" in new_position  
+        @die("sacred column",7)
+
+      # BULB HOLDER
+      if "e0" in new_position
+        player.add("buld holder")
+        @replace(721,"bc")
+        @replace(722,"bd")
+        @replace(721+40,"be")
+        @replace(722+40,"bf")
+        # remove the bulb holder after 1 second again
+        setTimeout( =>
+          @replace("bc","df")
+          @replace("bd","df")
+          @replace("be","df")
+          @replace("bf","df")
+        ,1000)
+
+#-------------------------------------------------------------------
+#   ROOM 9 - SPADE
+#-------------------------------------------------------------------
+
+    if @room_number is 9
+       
+      # SPADE 
+      if "c1" in new_position or "c5" in new_position
+        player.add("spade")          
+        @replace("c0","df")
+        @replace("c1","df")
+        @replace("c2","df")
+        @replace("c3","df")
+        @replace("c4","df")
+        @replace("c5","df")
+
+      # WATER LEFT
+      if "4b" in new_position
+        if "breathing pipe" in player.inventory
+          # TODO
+          # SMALL BUG IN ORIGINAL GAME
+          # if the player enters and crosses the river for the first time
+          # his position is 504 and not 505
+          player.position = 505
+          @update(player.get_position())
+        else
+          @die("water",8)
+
+      # WATER RIGHT
+      if "59" in new_position
+        if "breathing pipe" in player.inventory
+          player.position = 492
+          @update(player.get_position())
+        else
+          @die("water",8)
+
+      # VASE WITH BOOTS 
+      if "c6" in new_position or "c7" in new_position or "c8" in new_position or "c9" in new_position or "ca" in new_position or "cb" in new_position
+        if "hammer" in player.inventory
+          player.add("boots")          
+          @replace("c6","df")
+          @replace("c7","df")
+          @replace("c8","df")
+          @replace("c9","df")
+          @replace("ca","df")
+          @replace("cb","df")
+
+#-------------------------------------------------------------------
+#   ROOM 10 
+#-------------------------------------------------------------------
+
+    #if @room_number is 10
+      
+#-------------------------------------------------------------------
+#   ROOM 11 
+#-------------------------------------------------------------------
+
+    #if @room_number is 11
+  
+#-------------------------------------------------------------------
+#   ROOM 12 
+#-------------------------------------------------------------------
+
+    if @room_number is 12
+      if "d0" in new_position and "d1" in new_position
+        @replace("d0","df")
+        @replace("d1","df")
+        player.add("hammer")
+    
+#-------------------------------------------------------------------
+#   ROOM 13 
+#-------------------------------------------------------------------
+
+    #if @room_number is 13
+    
+#-------------------------------------------------------------------
+#   ROOM 14 
+#-------------------------------------------------------------------
+
+    #if @room_number is 14
+    
+#-------------------------------------------------------------------
+#   ROOM 15 
+#-------------------------------------------------------------------
+
+    #if @room_number is 15
+    
+#-------------------------------------------------------------------
+#   ROOM 16 
+#-------------------------------------------------------------------
+
+    #if @room_number is 16
+    
+#-------------------------------------------------------------------
+#   ROOM 17 
+#-------------------------------------------------------------------
+
+    #if @room_number is 17
+    
+#-------------------------------------------------------------------
+#   ROOM 18 
+#-------------------------------------------------------------------
+
+    #if @room_number is 18
+    
+#-------------------------------------------------------------------
+#   ROOM 19 
+#-------------------------------------------------------------------
+
+    #if @room_number is 19
+    
+#-------------------------------------------------------------------
+#   DOORS
+#-------------------------------------------------------------------
+   
+    # DOOR to previous room
+    if "05" in new_position and "08" in new_position and "0b" in new_position and @room_number isnt 1
+      new_room = @room_number - 1
+      @set(new_room,"back")
+
+    # DOOR to next room
+    if "03" in new_position and "06" in new_position and "09" in new_position
+      new_room = @room_number + 1
+      @set(new_room,"forward")
 
 #-------------------------------------------------------------------
 #   EMPTY WAY
@@ -240,5 +422,4 @@ class Room
 #-------------------------------------------------------------------
      
     ui_room("Tiles: " + new_position[0] + " | "+ new_position[1] + " | "+ new_position[2])
-
     false

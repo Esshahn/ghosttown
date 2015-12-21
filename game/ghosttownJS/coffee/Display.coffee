@@ -17,7 +17,7 @@ class Display
     codefCRTemulator.setup(@renderer.view,"game")
 
     # set this to on or off for the crt emulation
-    @crt_emulation = on
+    @crt_emulation = off
 
     if @crt_emulation is on 
       codefCRTemulator.set.scanlines true
@@ -46,13 +46,19 @@ class Display
     @screen.position.y = TOP_BORDER
     @screen.scale.set SCALE_FACTOR, SCALE_FACTOR
 
-    # generate a mask that limits the screen to 320x200
-    @myMask = new (PIXI.Graphics)
-    @myMask.beginFill()
-    @myMask.drawRect LEFT_BORDER, TOP_BORDER, (SCREEN_WIDTH - 8) * SCALE_FACTOR , (SCREEN_HEIGHT - 8) * SCALE_FACTOR 
-    @myMask.endFill()
-    @screen.mask = @myMask; 
+    # generate a mask that limits the screen to 312x192
+    @maskGame = new (PIXI.Graphics)
+    @maskGame.beginFill()
+    @maskGame.drawRect LEFT_BORDER, TOP_BORDER, (SCREEN_WIDTH - 8) * SCALE_FACTOR , (SCREEN_HEIGHT - 8) * SCALE_FACTOR 
+    @maskGame.endFill()
+    @screen.mask = @maskGame
     @stage.addChild @screen
+
+    # generate a mask that limits the screen to 320x200
+    @maskFull = new (PIXI.Graphics)
+    @maskFull.beginFill()
+    @maskFull.drawRect LEFT_BORDER, TOP_BORDER, (SCREEN_WIDTH) * SCALE_FACTOR , (SCREEN_HEIGHT) * SCALE_FACTOR 
+    @maskFull.endFill()
 
     # background textures
     @bg_black = new (PIXI.Graphics)
@@ -70,6 +76,7 @@ class Display
   show_data : (charset = charset_game) ->
 
     @renderer.backgroundColor = COLOR_RED
+    @screen.mask = @maskGame
 
     # will need to get more sophisticated, especially when parsing level data like object to show
     level_sprites = []
@@ -99,6 +106,7 @@ class Display
 
   show_death : (msg_number, charset = charset_commodore) ->
     @renderer.backgroundColor = COLOR_BLUE
+    @screen.mask = @maskFull
 
     level_sprites = []
     xpos = 0
@@ -124,8 +132,9 @@ class Display
       xpos += 8
       i++
 
-  show_msg : (msg_number, charset = charset_commodore) ->
+  show_msg : (msg_number, charset = charset_hint) ->
     @renderer.backgroundColor = COLOR_RED
+    @screen.mask = @maskFull
 
     level_sprites = []
     xpos = 0
@@ -136,7 +145,7 @@ class Display
     # clear the screen
     @clear()
     # then draw the background
-    @screen.addChild @bg_blue
+    @screen.addChild @bg_black
 
     # and finally the level data
     i = 0

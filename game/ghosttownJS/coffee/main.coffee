@@ -25,6 +25,8 @@ init_game = ->
   @charset_game      = new Generate_charset(chars_game_tx, 8, 8, 16, 16)
   chars_commodore_tx = new (PIXI.Texture.fromImage)('img/chars-commodore.png')
   @charset_commodore = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16)
+  chars_hint_tx = new (PIXI.Texture.fromImage)('img/chars-hint.png')
+  @charset_hint = new Generate_charset(chars_hint_tx, 8, 8, 16, 16)
   
 
   # load in all levels, messages and other stuff
