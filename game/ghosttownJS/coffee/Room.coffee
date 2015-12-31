@@ -13,7 +13,18 @@ class Room
     @room_number = 1
     @room_info
     @room_updated_tiles = []
-    @room_inventory = []
+    
+    # here we define the random game data for each round of the game
+    # this is information specific to one play round e.g. the coffin number
+    # it might not be the best place to define this, needs rethinking
+    
+    @playround_data = []
+
+    # choose random coffin number for room 5
+    @playround_data.coffin_all = ["A","B","C","D","E","F","G","H"]
+    @playround_data.coffin = @playround_data.coffin_all[ Math.floor( Math.random() * @playround_data.coffin_all.length )]
+    @playround_data.coffin_hex = @playround_data.coffin.charCodeAt(0)-24 # turns ascii code into petscii code
+
 
 #-------------------------------------------------------------------
 
@@ -219,17 +230,41 @@ class Room
    
       # QUESTION MARK
       if "1e" in new_position or "1f" in new_position or "20" in new_position or "21" in new_position or "24" in new_position or "25" in new_position or "26" in new_position
-        # TODO
-        # RANDOM A-H
-        # MSG 5 POSITION UBERSCHREIBEN
-        # GLOBALE VARIABLE FUER BUCHSTABEN
+        # we replace the code char in the message binary with the
+        # random new char (A to H) we generated in the constructor
+        # it's a bit ugly as it happens every time, but we shouldn't give a fuck
+        all_msg.screen_data[5][470] = @playround_data.coffin_hex
         @msg(5)
+        
 
 #-------------------------------------------------------------------
-#   ROOM 5
+#   ROOM 5 - CEMETRY
 #-------------------------------------------------------------------
 
-    #if @room_number is 5
+    if @room_number is 5
+
+      # COFFINS
+      if "3b" in new_position or "42" in new_position
+
+        # check if the player stands in front of the right coffin
+        if (player.position is 123 and @playround_data.coffin is "A") or
+        (player.position is 363 and @playround_data.coffin is "B") or
+        (player.position is 603 and @playround_data.coffin is "C") or
+        (player.position is 843 and @playround_data.coffin is "D") or
+        (player.position is 153 and @playround_data.coffin is "E") or
+        (player.position is 393 and @playround_data.coffin is "F") or
+        (player.position is 633 and @playround_data.coffin is "G") or
+        (player.position is 873 and @playround_data.coffin is "H")
+          @msg(12)
+          player.add("coffin key")
+        else
+          @die("zombie",13)
+
+      # DOOR to next room
+      if "f6" in new_position and "06" in new_position and "09" in new_position
+        if "coffin key" in player.inventory
+          new_room = @room_number + 1
+          @set(new_room,"forward")
 
 
 #-------------------------------------------------------------------

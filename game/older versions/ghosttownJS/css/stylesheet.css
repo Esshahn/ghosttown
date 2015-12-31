@@ -5,52 +5,65 @@ html, body
   padding: 0;
 }
 
-#status
-{
-  float: right;
-}
 
 body
 {
   background-color: #777777;
   font-size: 12px;
   font-family: sans-serif;
+
 }
 
 #ui_container
 {
-  margin-top : 0;
-  margin-left: 10px;
-  width      :  20%;
-  height     : 576px;
-  float      : left;
-  overflow   :auto;
-  background-color: #332222;
+  margin    : 0px 10px 0px 10px;
+  width     : 300px;
+  height    : 576px;
+  float     : left;
+  overflow  : hidden;
+  background: url("../img/ghosttown.gif")  no-repeat center bottom;
+
+}
+
+#ui_notification
+{
+  overflow   : auto;
+
+
 }
 
 #ui_screen_selector
 {
 
-  margin: 10px;
-   background-color: #332222;
+ margin-bottom: 10px;
+
 }
+
 
 #ui_inventory
 {
   border-left     : 4px solid #eeee00;
   background-color: #ffffff;
   padding         : 4px;
-  margin-bottom   : 4px;
-  min-height: 60px;
+  margin-bottom   : 10px;
+  min-height      : 60px;
+
+  -webkit-box-shadow: 0px 11px 18px -4px rgba(0,0,0,0.7);
+  -moz-box-shadow:    0px 11px 18px -4px rgba(0,0,0,0.7);
+  box-shadow:         0px 11px 18px -4px rgba(0,0,0,0.7);
 }
 
 #ui_room
 {
-  border-left     : 4px solid #4488ee;
-  background-color: #ffffff;
-  padding         : 4px;
-  margin-bottom   : 4px;
-  min-height: 60px;
+  border-left       : 4px solid #4488ee;
+  background-color  : #ffffff;
+  padding           : 4px;
+  margin-bottom     : 4px;
+  min-height        : 20px;
+  font-weight       :  bold;
+  -webkit-box-shadow: 0px 11px 18px -4px rgba(0,0,0,0.7);
+  -moz-box-shadow   : 0px 11px 18px -4px rgba(0,0,0,0.7);
+  box-shadow        : 0px 11px 18px -4px rgba(0,0,0,0.7);
 }
 
 .ui_time
@@ -68,6 +81,10 @@ body
   min-height      : 20px;
   padding         : 4px;
   margin-bottom   : 1px;
+  -webkit-box-shadow: 0px 11px 18px -4px rgba(0,0,0,0.7);
+  -moz-box-shadow:    0px 11px 18px -4px rgba(0,0,0,0.7);
+  box-shadow:         0px 11px 18px -4px rgba(0,0,0,0.7);
+  
 }
 
 .notif-green
@@ -75,6 +92,7 @@ body
   border-left     : 4px solid #00aa00;
   color           : #338800;
   background-color: #f8fff8;
+
 }
 
 .notif-blue
@@ -82,6 +100,7 @@ body
   border-left     : 4px solid #0066cc;
   color           : #003388;
   background-color: #f8f8ff;
+
 }
 
 .notif-red
@@ -89,6 +108,11 @@ body
   color           : #dd2200;
   border-left     : 4px solid #aa0000;
   background-color: #ffeeee;
+
+}
+
+#top-spacer{
+  margin: 10px;
 }
 
 
@@ -99,21 +123,30 @@ a
 }
 
 canvas{
-
+  -webkit-box-shadow: 0px 11px 23px -1px rgba(0,0,0,0.7);
+  -moz-box-shadow:    0px 11px 23px -1px rgba(0,0,0,0.7);
+  box-shadow:         0px 11px 23px -1px rgba(0,0,0,0.7);
 }
 
 button
 {
   background-color: #ffffff;
   font-weight: bold;
-  margin: 0;
-  padding: 10px;
   font-size: 12px;
   border: 0;
+  width: 45px;
+  margin: 1px;
+  -webkit-box-shadow: 0px 11px 18px -4px rgba(0,0,0,0.7);
+  -moz-box-shadow:    0px 11px 18px -4px rgba(0,0,0,0.7);
+  box-shadow:         0px 11px 18px -4px rgba(0,0,0,0.7);
 }
 
 button:hover
 {
   background-color: #55ddff;
+}
+
+#game{
+
 }
 

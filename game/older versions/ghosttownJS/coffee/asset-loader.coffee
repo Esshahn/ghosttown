@@ -5,11 +5,12 @@
 
 ###
 
-
-load_assets = -> 
+load_assets = (cb) -> 
   loader = PIXI.loader
-  loader.add 'bg_texture', 'img/start.png'
-  loader.add 'chars', 'img/chars1.png'
-  loader.once 'complete', asset_loader_ready
+  loader.add 'chars', 'img/chars.png'
+  loader.add 'chars_commodore', 'img/chars-commodore.png'
+  loader.add 'chars_hint', 'img/chars-hint.png'
+  loader.once 'complete', ->
+    cb()
   loader.load()
   return

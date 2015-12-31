@@ -11,11 +11,13 @@ class Player
   	@position
   	@inventory = []
 
-  
+#-------------------------------------------------------------------
+ 
   get_position : ->
 
   	@position
 
+#-------------------------------------------------------------------
 
   set_position : (direction) ->
     if direction is KEY.LEFT && room.check_room(KEY.LEFT)
@@ -39,12 +41,20 @@ class Player
     console.log(@position + " : " + (@position+3))
     console.log((@position+(3*40)) + " : " + (@position+(3*40)+3))
 
+#-------------------------------------------------------------------
+
   add : (item) ->
     @inventory.push(item)
     ui_inventory(@inventory)
+    ui_log("You picked up a <b>"+item+"</b>","green")
+
+#-------------------------------------------------------------------
   
   remove : (item) ->
     @inventory.splice(@inventory.indexOf(item),1)
     ui_inventory(@inventory)
+    ui_log("You dropped the <b>"+item+"</b>","green")
+
+#-------------------------------------------------------------------
 
       

@@ -19,7 +19,7 @@ ui_log = (message, message_type = '') ->
 
 ui_inventory = (message = "Your inventory is empty.") ->
   # updates the inventory field of the UI
-  document.getElementById('ui_inventory').innerHTML = message
+  document.getElementById('ui_inventory').innerHTML = "Inventory:<br /><b>" + message + "</b>"
 
 
 ui_room = (message = "Room") ->

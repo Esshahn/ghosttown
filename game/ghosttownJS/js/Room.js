@@ -14,7 +14,10 @@ Room = (function() {
     this.room_number = 1;
     this.room_info;
     this.room_updated_tiles = [];
-    this.room_inventory = [];
+    this.playround_data = [];
+    this.playround_data.coffin_all = ["A", "B", "C", "D", "E", "F", "G", "H"];
+    this.playround_data.coffin = this.playround_data.coffin_all[Math.floor(Math.random() * this.playround_data.coffin_all.length)];
+    this.playround_data.coffin_hex = this.playround_data.coffin.charCodeAt(0) - 24;
   }
 
   Room.prototype.set = function(room_number1, player_entry_pos) {
@@ -193,7 +196,24 @@ Room = (function() {
     }
     if (this.room_number === 4) {
       if (indexOf.call(new_position, "1e") >= 0 || indexOf.call(new_position, "1f") >= 0 || indexOf.call(new_position, "20") >= 0 || indexOf.call(new_position, "21") >= 0 || indexOf.call(new_position, "24") >= 0 || indexOf.call(new_position, "25") >= 0 || indexOf.call(new_position, "26") >= 0) {
+        all_msg.screen_data[5][470] = this.playround_data.coffin_hex;
         this.msg(5);
+      }
+    }
+    if (this.room_number === 5) {
+      if (indexOf.call(new_position, "3b") >= 0 || indexOf.call(new_position, "42") >= 0) {
+        if ((player.position === 123 && this.playround_data.coffin === "A") || (player.position === 363 && this.playround_data.coffin === "B") || (player.position === 603 && this.playround_data.coffin === "C") || (player.position === 843 && this.playround_data.coffin === "D") || (player.position === 153 && this.playround_data.coffin === "E") || (player.position === 393 && this.playround_data.coffin === "F") || (player.position === 633 && this.playround_data.coffin === "G") || (player.position === 873 && this.playround_data.coffin === "H")) {
+          this.msg(12);
+          player.add("coffin key");
+        } else {
+          this.die("zombie", 13);
+        }
+      }
+      if (indexOf.call(new_position, "f6") >= 0 && indexOf.call(new_position, "06") >= 0 && indexOf.call(new_position, "09") >= 0) {
+        if (indexOf.call(player.inventory, "coffin key") >= 0) {
+          new_room = this.room_number + 1;
+          this.set(new_room, "forward");
+        }
       }
     }
     if (this.room_number === 6) {
