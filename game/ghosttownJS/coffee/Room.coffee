@@ -337,7 +337,7 @@ class Room
 
       # WATER LEFT
       if "4b" in new_position
-        if "breathing pipe" in player.inventory
+        if "breathing tube" in player.inventory
           # TODO
           # SMALL BUG IN ORIGINAL GAME
           # if the player enters and crosses the river for the first time
@@ -370,13 +370,37 @@ class Room
 #   ROOM 10 
 #-------------------------------------------------------------------
 
-    #if @room_number is 10
+    if @room_number is 10
+
+      # QUESTION MARK
+      if "1e" in new_position or 
+      "1f" in new_position or 
+      "20" in new_position or 
+      "21" in new_position or 
+      "22" in new_position or 
+      "23" in new_position or 
+      "24" in new_position or 
+      "25" in new_position or 
+      "26" in new_position
+        @msg(14)
       
 #-------------------------------------------------------------------
 #   ROOM 11 
 #-------------------------------------------------------------------
 
-    #if @room_number is 11
+    if @room_number is 11
+
+      # QUESTION MARK
+      if "1e" in new_position or 
+      "1f" in new_position or 
+      "20" in new_position or 
+      "21" in new_position or 
+      "22" in new_position or 
+      "23" in new_position or 
+      "24" in new_position or 
+      "25" in new_position or 
+      "26" in new_position
+        @msg(15)
   
 #-------------------------------------------------------------------
 #   ROOM 12 

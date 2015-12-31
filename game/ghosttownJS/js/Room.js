@@ -264,7 +264,7 @@ Room = (function() {
         this.replace("c5", "df");
       }
       if (indexOf.call(new_position, "4b") >= 0) {
-        if (indexOf.call(player.inventory, "breathing pipe") >= 0) {
+        if (indexOf.call(player.inventory, "breathing tube") >= 0) {
           player.position = 505;
           this.update(player.get_position());
         } else {
@@ -289,6 +289,16 @@ Room = (function() {
           this.replace("ca", "df");
           this.replace("cb", "df");
         }
+      }
+    }
+    if (this.room_number === 10) {
+      if (indexOf.call(new_position, "1e") >= 0 || indexOf.call(new_position, "1f") >= 0 || indexOf.call(new_position, "20") >= 0 || indexOf.call(new_position, "21") >= 0 || indexOf.call(new_position, "22") >= 0 || indexOf.call(new_position, "23") >= 0 || indexOf.call(new_position, "24") >= 0 || indexOf.call(new_position, "25") >= 0 || indexOf.call(new_position, "26") >= 0) {
+        this.msg(14);
+      }
+    }
+    if (this.room_number === 11) {
+      if (indexOf.call(new_position, "1e") >= 0 || indexOf.call(new_position, "1f") >= 0 || indexOf.call(new_position, "20") >= 0 || indexOf.call(new_position, "21") >= 0 || indexOf.call(new_position, "22") >= 0 || indexOf.call(new_position, "23") >= 0 || indexOf.call(new_position, "24") >= 0 || indexOf.call(new_position, "25") >= 0 || indexOf.call(new_position, "26") >= 0) {
+        this.msg(15);
       }
     }
     if (this.room_number === 12) {
