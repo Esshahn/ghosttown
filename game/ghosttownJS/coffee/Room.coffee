@@ -416,32 +416,79 @@ class Room
 #   ROOM 13 
 #-------------------------------------------------------------------
 
-    #if @room_number is 13
+    if @room_number is 13
+
+      # QUESTION MARK
+      if "1e" in new_position or 
+      "1f" in new_position or 
+      "20" in new_position or 
+      "21" in new_position or 
+      "22" in new_position or 
+      "23" in new_position or 
+      "24" in new_position or 
+      "25" in new_position or 
+      "26" in new_position
+        @msg(16)
     
 #-------------------------------------------------------------------
 #   ROOM 14 
 #-------------------------------------------------------------------
 
-    #if @room_number is 14
+    if @room_number is 14
+
+      # QUESTION MARK
+      if "1e" in new_position or 
+      "1f" in new_position or 
+      "20" in new_position or 
+      "21" in new_position or 
+      "22" in new_position or 
+      "23" in new_position or 
+      "24" in new_position or 
+      "25" in new_position or 
+      "26" in new_position
+        @msg(17)
     
 #-------------------------------------------------------------------
 #   ROOM 15 
 #-------------------------------------------------------------------
 
-    #if @room_number is 15
+    if @room_number is 15
+
+      # FOOT TRAP
+      if "d7" in new_position
+        @die('foot trap',18)
     
 #-------------------------------------------------------------------
 #   ROOM 16 
 #-------------------------------------------------------------------
 
-    #if @room_number is 16
+    if @room_number is 16
+
+      # QUESTION MARK
+      if "1e" in new_position or 
+      "1f" in new_position or 
+      "20" in new_position or 
+      "21" in new_position or 
+      "22" in new_position or 
+      "23" in new_position or 
+      "24" in new_position or 
+      "25" in new_position or 
+      "26" in new_position
+        @msg(19)
     
 #-------------------------------------------------------------------
 #   ROOM 17 
 #-------------------------------------------------------------------
 
-    #if @room_number is 17
-    
+    if @room_number is 17
+ 
+      # LEFT PRISON CELL
+      if "f4" in new_position
+        @die('starving',21)   
+
+      # RIGHT PRISON CELL
+      if "d9" in new_position or "da" in new_position or "db" in new_position or "dc" in new_position
+        @die('wizard',20)  
 #-------------------------------------------------------------------
 #   ROOM 18 
 #-------------------------------------------------------------------

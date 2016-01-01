@@ -308,6 +308,34 @@ Room = (function() {
         player.add("hammer");
       }
     }
+    if (this.room_number === 13) {
+      if (indexOf.call(new_position, "1e") >= 0 || indexOf.call(new_position, "1f") >= 0 || indexOf.call(new_position, "20") >= 0 || indexOf.call(new_position, "21") >= 0 || indexOf.call(new_position, "22") >= 0 || indexOf.call(new_position, "23") >= 0 || indexOf.call(new_position, "24") >= 0 || indexOf.call(new_position, "25") >= 0 || indexOf.call(new_position, "26") >= 0) {
+        this.msg(16);
+      }
+    }
+    if (this.room_number === 14) {
+      if (indexOf.call(new_position, "1e") >= 0 || indexOf.call(new_position, "1f") >= 0 || indexOf.call(new_position, "20") >= 0 || indexOf.call(new_position, "21") >= 0 || indexOf.call(new_position, "22") >= 0 || indexOf.call(new_position, "23") >= 0 || indexOf.call(new_position, "24") >= 0 || indexOf.call(new_position, "25") >= 0 || indexOf.call(new_position, "26") >= 0) {
+        this.msg(17);
+      }
+    }
+    if (this.room_number === 15) {
+      if (indexOf.call(new_position, "d7") >= 0) {
+        this.die('foot trap', 18);
+      }
+    }
+    if (this.room_number === 16) {
+      if (indexOf.call(new_position, "1e") >= 0 || indexOf.call(new_position, "1f") >= 0 || indexOf.call(new_position, "20") >= 0 || indexOf.call(new_position, "21") >= 0 || indexOf.call(new_position, "22") >= 0 || indexOf.call(new_position, "23") >= 0 || indexOf.call(new_position, "24") >= 0 || indexOf.call(new_position, "25") >= 0 || indexOf.call(new_position, "26") >= 0) {
+        this.msg(19);
+      }
+    }
+    if (this.room_number === 17) {
+      if (indexOf.call(new_position, "f4") >= 0) {
+        this.die('starving', 21);
+      }
+      if (indexOf.call(new_position, "d9") >= 0 || indexOf.call(new_position, "da") >= 0 || indexOf.call(new_position, "db") >= 0 || indexOf.call(new_position, "dc") >= 0) {
+        this.die('wizard', 20);
+      }
+    }
     if (indexOf.call(new_position, "05") >= 0 && indexOf.call(new_position, "08") >= 0 && indexOf.call(new_position, "0b") >= 0 && this.room_number !== 1) {
       new_room = this.room_number - 1;
       this.set(new_room, "back");
