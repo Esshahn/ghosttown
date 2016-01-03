@@ -12,6 +12,7 @@ BinaryImport = (function() {
     var filename, i;
     this.binary_type = binary_type != null ? binary_type : "lvl";
     this.screen_data = [];
+    this.screen_data_copy = [];
     if (this.binary_type === "lvl") {
       this.amount_of_files_to_load = 19;
       this.file_path = 'data/lvl/lvl-';

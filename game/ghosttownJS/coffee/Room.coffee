@@ -25,6 +25,12 @@ class Room
     @playround_data.coffin = @playround_data.coffin_all[ Math.floor( Math.random() * @playround_data.coffin_all.length )]
     @playround_data.coffin_hex = @playround_data.coffin.charCodeAt(0)-24 # turns ascii code into petscii code
 
+#-------------------------------------------------------------------
+
+  reset : (@room_number) ->
+    # resets the screen data of the room
+
+    all_lvl.screen_data[@room_number] = clone(all_lvl.screen_data_copy[@room_number])
 
 #-------------------------------------------------------------------
 
@@ -33,22 +39,76 @@ class Room
   	# read in the given level from the all levels data
     # level_data is now the current worksheet to work with
 
+    # stops all intervals when entering a room
+    clearInterval @animation_interval
+
+    # INIT FOR ROOMS
+    # Some rooms need to be reset when entering (nails room, laser room)
+    if @room_number in [11,14,15]
+      @reset(@room_number)
+
+
     @screen_data = clone(all_lvl.screen_data[@room_number])
+
     @room_info = levels_config[@room_number]
     player.position = @room_info.playerpos1 if player_entry_pos == "forward"
     player.position = @room_info.playerpos2 if player_entry_pos == "back"
     @update(player.position)
 
+    # INIT FOR ROOM 11 - LASER FENCE
+    if @room_number is 11
+      @trigger = -1
+      @animation_interval = setInterval((=>
+        @trigger = @trigger * -1
+        
+        if @trigger is 1
+          # Shut the laser fence down
+          @replace(379+0*40,"df") 
+          @replace(379+1*40,"df")
+          @replace(379+2*40,"df")
+          @replace(379+3*40,"df")
+          @replace(379+4*40,"df")
+          @replace(379+5*40,"df")
+          @playround_data.laser = off
+        else
+          # Activate the laser fence
+          @replace(379+0*40,"d8")
+          @replace(379+1*40,"d8")
+          @replace(379+2*40,"d8")
+          @replace(379+3*40,"d8")
+          @replace(379+4*40,"d8")
+          @replace(379+5*40,"d8")
+          @playround_data.laser = on
+        
+        # checks if the laser is "on" and if the player is standing in the danger zone
+        if @playround_data.laser is on and player.position in [377,378,379,417,418,419,457,458,459,497,498,499]
+          clearInterval @animation_interval
+          @die('laser',24)
+
+      ), 1482)
+      # TODO: when the player movement script is improved
+      # the interval of the laser has to be set to 482
+      # which is the original speed
+    
+    # INIT FOR ROOM 15 - TRAPS
+    if @room_number is 15
+      if "bulb holder" not in player.inventory or
+      "light bulb" not in player.inventory or
+      "socket" not in player.inventory
+        # make all traps invisible
+        @replace("d7","ff") for [0...24]
+
 #-------------------------------------------------------------------
 
   update : (position = player.get_position()) ->
-  	@screen_data = clone(all_lvl.screen_data[@room_number])
 
-  	@insert_player(position)
-  	display.show_data()
+    @screen_data = clone(all_lvl.screen_data[@room_number])
 
-  	msg = 'Room ' + @room_number + ' "' + @room_info.name + '"'
-  	ui_room msg
+    @insert_player(position)
+    display.show_data()
+
+    msg = 'Room ' + @room_number + ' "' + @room_info.name + '"'
+    ui_room msg
 
 #-------------------------------------------------------------------
 
@@ -116,12 +176,6 @@ class Room
       new_position = [ @screen_data[player.position + 3*40 +0] , @screen_data[player.position + 3*40 +1] , @screen_data[player.position + 3*40 +2] ]
 
 
-
-
-
-
-
-
 #-------------------------------------------------------------------
 #   ROOM 1 - START
 #-------------------------------------------------------------------
@@ -140,7 +194,7 @@ class Room
 #-------------------------------------------------------------------
 
     if @room_number is 2
-      console.log("hey")
+
       # KEY
       if "e0" in new_position or "e1" in new_position
         player.add("key")
@@ -306,7 +360,7 @@ class Room
 
       # BULB HOLDER
       if "e0" in new_position
-        player.add("buld holder")
+        player.add("bulb holder")
         @replace(721,"bc")
         @replace(722,"bd")
         @replace(721+40,"be")
@@ -401,12 +455,36 @@ class Room
       "25" in new_position or 
       "26" in new_position
         @msg(15)
+
+      # LASER
+      # The script for the laser is an interval script
+      # defined in the "set" method above
+      if "d8" in new_position
+          clearInterval @animation_interval
+          @die('laser',24)
+
+        
+      # SOCKET
+      if "cc" in new_position or 
+      "cd" in new_position or 
+      "ce" in new_position or
+      "cf" in new_position
+        if "light bulb" in player.inventory and "bulb holder" in player.inventory
+          player.add("socket")
+          @replace("cc","df")
+          @replace("cd","df")
+          @replace("ce","df")
+          @replace("cf","df")
+        else
+          @die("220 volts",22)
   
 #-------------------------------------------------------------------
 #   ROOM 12 
 #-------------------------------------------------------------------
 
     if @room_number is 12
+
+      # HAMMER
       if "d0" in new_position and "d1" in new_position
         @replace("d0","df")
         @replace("d1","df")
@@ -429,12 +507,54 @@ class Room
       "25" in new_position or 
       "26" in new_position
         @msg(16)
+
+
+      # LIGHT BULB
+      if "d2" in new_position or 
+      "d3" in new_position or 
+      "d5" in new_position 
+        player.add("light bulb")
+        @replace("d2","df")
+        @replace("d3","df")
+        @replace("d4","df")
+        @replace("d5","df")
     
 #-------------------------------------------------------------------
 #   ROOM 14 
 #-------------------------------------------------------------------
 
     if @room_number is 14
+
+      # NAILS
+      if "d6" in new_position
+        if "boots" in player.inventory
+          if direction is KEY.DOWN
+            @replace(player.position+120,"df")
+            @replace(player.position+121,"df")
+            @replace(player.position+122,"df")
+            player.set_position(KEY.DOWN)
+
+          if direction is KEY.LEFT
+            @replace(player.position-1,"df")
+            @replace(player.position-1+40,"df")
+            @replace(player.position-1+80,"df")
+            player.set_position(KEY.LEFT)
+
+          if direction is KEY.RIGHT
+            @replace(player.position+3,"df")
+            @replace(player.position+3+40,"df")
+            @replace(player.position+3+80,"df")
+            player.set_position(KEY.RIGHT)
+
+          if direction is KEY.UP
+            @replace(player.position-40,"df")
+            @replace(player.position+1-40,"df")
+            @replace(player.position+2-40,"df")
+            player.set_position(KEY.UP)
+
+        else
+          @die("nails",23)
+        
 
       # QUESTION MARK
       if "1e" in new_position or 
@@ -455,7 +575,7 @@ class Room
     if @room_number is 15
 
       # FOOT TRAP
-      if "d7" in new_position
+      if "d7" in new_position or "ff" in new_position
         @die('foot trap',18)
     
 #-------------------------------------------------------------------
@@ -493,13 +613,21 @@ class Room
 #   ROOM 18 
 #-------------------------------------------------------------------
 
-    #if @room_number is 18
-    
+    if @room_number is 18
+
+      # SWORD
+      if "dd" in new_position or "de" in new_position
+        @replace("dd","df")
+        @replace("de","df")
+        player.add("sword")
+
 #-------------------------------------------------------------------
 #   ROOM 19 
 #-------------------------------------------------------------------
 
     #if @room_number is 19
+
+
     
 #-------------------------------------------------------------------
 #   DOORS

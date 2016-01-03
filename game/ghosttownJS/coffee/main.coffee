@@ -44,8 +44,15 @@ init_game = ->
   ui_log("Ghost Town JS. Current build: 15.12.17","green")
   ui_log("User cursor keys to move the player.","green")
 
+
   # hacky ugly timeout to make the first level being loaded
   # a bit more likely. still needs proper asset loading
   setTimeout( =>
+
+    # create a copy of the screen data to use when a room needs to be reset
+    # TODO: make sure the data for copying is actually there (race condition)
+    @all_lvl.screen_data_copy = clone (@all_lvl.screen_data)
+
+    # start with this room
     @room.set(1)
-  ,1)
+  ,300)

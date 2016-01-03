@@ -34,9 +34,10 @@ init_game = function() {
   ui_log("User cursor keys to move the player.", "green");
   return setTimeout((function(_this) {
     return function() {
+      _this.all_lvl.screen_data_copy = clone(_this.all_lvl.screen_data);
       return _this.room.set(1);
     };
-  })(this), 1);
+  })(this), 300);
 };
 
 //# sourceMappingURL=main.js.map
