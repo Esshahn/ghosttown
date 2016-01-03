@@ -131,6 +131,13 @@ Room = (function() {
     return display.show_msg(msgID);
   };
 
+  Room.prototype.other = function(msgID) {
+    if (msgID == null) {
+      msgID = 1;
+    }
+    return display.show_other(msgID);
+  };
+
   Room.prototype.replace = function(tile, tile_code) {
     if (typeof tile === "string") {
       tile = this.find(tile);
@@ -441,6 +448,13 @@ Room = (function() {
         this.replace("dd", "df");
         this.replace("de", "df");
         player.add("sword");
+      }
+    }
+    if (this.room_number === 19) {
+      if (indexOf.call(player.inventory, "treasure key") >= 0) {
+        if (indexOf.call(new_position, "81") >= 0 || indexOf.call(new_position, "84") >= 0 || indexOf.call(new_position, "87") >= 0 || indexOf.call(new_position, "82") >= 0 || indexOf.call(new_position, "83") >= 0 || indexOf.call(new_position, "8a") >= 0 || indexOf.call(new_position, "8b") >= 0 || indexOf.call(new_position, "8c") >= 0 || indexOf.call(new_position, "8f") >= 0 || indexOf.call(new_position, "92") >= 0) {
+          this.other(3);
+        }
       }
     }
     if (indexOf.call(new_position, "05") >= 0 && indexOf.call(new_position, "08") >= 0 && indexOf.call(new_position, "0b") >= 0 && this.room_number !== 1) {

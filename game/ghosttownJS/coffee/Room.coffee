@@ -142,6 +142,11 @@ class Room
 
 #-------------------------------------------------------------------
 
+  other : (msgID = 1) ->
+    display.show_other(msgID)
+
+#-------------------------------------------------------------------
+
   replace : (tile,tile_code) ->
     # replaces a tile by another
     # tile can be a position on screen (number, e.g. 297) or a tile code (string, e.g. "a9")
@@ -456,6 +461,7 @@ class Room
       "26" in new_position
         @msg(15)
 
+
       # LASER
       # The script for the laser is an interval script
       # defined in the "set" method above
@@ -584,6 +590,9 @@ class Room
 
     if @room_number is 16
 
+      # MONSTER
+      # msg(25)
+
       # QUESTION MARK
       if "1e" in new_position or 
       "1f" in new_position or 
@@ -625,10 +634,22 @@ class Room
 #   ROOM 19 
 #-------------------------------------------------------------------
 
-    #if @room_number is 19
+    if @room_number is 19
+      
+      # TREASURE CHEST
+      if "treasure key" in player.inventory
+        if "81" in new_position or 
+        "84" in new_position or 
+        "87" in new_position or
+        "82" in new_position or 
+        "83" in new_position or
+        "8a" in new_position or
+        "8b" in new_position or
+        "8c" in new_position or
+        "8f" in new_position or
+        "92" in new_position
+          @other(3)
 
-
-    
 #-------------------------------------------------------------------
 #   DOORS
 #-------------------------------------------------------------------

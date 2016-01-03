@@ -10,6 +10,7 @@ load_assets = (cb) ->
   loader.add 'chars', 'img/chars.png'
   loader.add 'chars_commodore', 'img/chars-commodore.png'
   loader.add 'chars_hint', 'img/chars-hint.png'
+  loader.add 'chars_other', 'img/chars-other.png'
   loader.once 'complete', ->
     cb()
   loader.load()

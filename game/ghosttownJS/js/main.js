@@ -15,7 +15,7 @@ init = function() {
 };
 
 init_game = function() {
-  var chars_commodore_tx, chars_game_tx, chars_hint_tx;
+  var chars_commodore_tx, chars_game_tx, chars_hint_tx, chars_other_tx;
   document.addEventListener('keydown', event_keydown, false);
   chars_game_tx = new PIXI.Texture.fromImage('img/chars.png');
   this.charset_game = new Generate_charset(chars_game_tx, 8, 8, 16, 16);
@@ -23,6 +23,8 @@ init_game = function() {
   this.charset_commodore = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16);
   chars_hint_tx = new PIXI.Texture.fromImage('img/chars-hint.png');
   this.charset_hint = new Generate_charset(chars_hint_tx, 8, 8, 16, 16);
+  chars_other_tx = new PIXI.Texture.fromImage('img/chars-other.png');
+  this.charset_other = new Generate_charset(chars_other_tx, 8, 8, 16, 16);
   this.all_lvl = new BinaryImport("lvl");
   this.all_msg = new BinaryImport("msg");
   this.all_other = new BinaryImport("other");

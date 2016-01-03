@@ -14,7 +14,7 @@ Display = (function() {
       backgroundColor: COLOR_RED
     });
     codefCRTemulator.setup(this.renderer.view, "game");
-    this.crt_emulation = false;
+    this.crt_emulation = true;
     if (this.crt_emulation === true) {
       codefCRTemulator.set.scanlines(true);
       codefCRTemulator.set.gaussian(0.6);
@@ -57,81 +57,66 @@ Display = (function() {
     this.bg_blue.beginFill(COLOR_BLUE);
     this.bg_blue.drawRect(0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR, (SCREEN_HEIGHT - 8) * SCALE_FACTOR);
     this.bg_blue.endFill();
+    this.bg_yellow = new PIXI.Graphics;
+    this.bg_yellow.beginFill(COLOR_YELLOW);
+    this.bg_yellow.drawRect(0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR, (SCREEN_HEIGHT - 8) * SCALE_FACTOR);
+    this.bg_yellow.endFill();
   }
 
   Display.prototype.show_data = function(charset) {
-    var i, level_sprites, results, xpos, ypos;
     if (charset == null) {
       charset = charset_game;
     }
     this.renderer.backgroundColor = COLOR_RED;
     this.screen.mask = this.maskGame;
-    level_sprites = [];
-    xpos = 0;
-    ypos = 0;
     this.level_data = room.get();
     this.clear();
     this.screen.addChild(this.bg_black);
-    i = 0;
-    results = [];
-    while (i < this.level_data.length) {
-      level_sprites[i] = new PIXI.Sprite(charset[this.level_data[i]]);
-      if (xpos >= SCREEN_WIDTH) {
-        xpos = 0;
-        ypos += 8;
-      }
-      level_sprites[i].position.x = xpos;
-      level_sprites[i].position.y = ypos;
-      this.screen.addChild(level_sprites[i]);
-      xpos += 8;
-      results.push(i++);
-    }
-    return results;
+    return this.create_level_data(this.level_data, charset);
   };
 
   Display.prototype.show_death = function(msg_number, charset) {
-    var i, level_sprites, results, xpos, ypos;
     if (charset == null) {
       charset = charset_commodore;
     }
     this.renderer.backgroundColor = COLOR_BLUE;
     this.screen.mask = this.maskFull;
-    level_sprites = [];
-    xpos = 0;
-    ypos = 0;
     this.level_data = all_msg.screen_data[msg_number];
     this.clear();
     this.screen.addChild(this.bg_blue);
-    i = 0;
-    results = [];
-    while (i < this.level_data.length) {
-      level_sprites[i] = new PIXI.Sprite(charset[this.level_data[i]]);
-      if (xpos >= SCREEN_WIDTH) {
-        xpos = 0;
-        ypos += 8;
-      }
-      level_sprites[i].position.x = xpos;
-      level_sprites[i].position.y = ypos;
-      this.screen.addChild(level_sprites[i]);
-      xpos += 8;
-      results.push(i++);
-    }
-    return results;
+    return this.create_level_data(this.level_data, charset);
   };
 
   Display.prototype.show_msg = function(msg_number, charset) {
-    var i, level_sprites, results, xpos, ypos;
     if (charset == null) {
       charset = charset_hint;
     }
     this.renderer.backgroundColor = COLOR_RED;
     this.screen.mask = this.maskFull;
-    level_sprites = [];
-    xpos = 0;
-    ypos = 0;
     this.level_data = all_msg.screen_data[msg_number];
     this.clear();
     this.screen.addChild(this.bg_black);
+    return this.create_level_data(this.level_data, charset);
+  };
+
+  Display.prototype.show_other = function(msg_number, charset) {
+    if (charset == null) {
+      charset = charset_other;
+    }
+    this.renderer.backgroundColor = COLOR_YELLOW;
+    this.screen.mask = this.maskFull;
+    this.level_data = all_other.screen_data[msg_number];
+    this.clear();
+    this.screen.addChild(this.bg_yellow);
+    return this.create_level_data(this.level_data, charset);
+  };
+
+  Display.prototype.create_level_data = function(level_data, charset) {
+    var i, level_sprites, results, xpos, ypos;
+    this.level_data = level_data;
+    level_sprites = [];
+    xpos = 0;
+    ypos = 0;
     i = 0;
     results = [];
     while (i < this.level_data.length) {
