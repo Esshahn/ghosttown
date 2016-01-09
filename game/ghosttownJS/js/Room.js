@@ -72,7 +72,7 @@ Room = (function() {
             return _this.die('laser', 24);
           }
         };
-      })(this)), 1482);
+      })(this)), 482);
     }
     if (this.room_number === 15) {
       if (indexOf.call(player.inventory, "bulb holder") < 0 || indexOf.call(player.inventory, "light bulb") < 0 || indexOf.call(player.inventory, "socket") < 0) {

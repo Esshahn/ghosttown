@@ -15,10 +15,21 @@ init = ->
 
 init_game = ->
 
-  document.addEventListener('keydown', event_keydown, false)
-  # implement better keydown tracking
-  # http://stackoverflow.com/questions/3691461/remove-key-press-delay-in-javascript
-  
+  # Arrow key movement
+  KeyboardController {
+    37: ->
+      player.set_position(37)
+      return
+    38: ->
+      player.set_position(38)
+      return
+    39: ->
+      player.set_position(39)
+      return
+    40: ->
+      player.set_position(40)
+      return
+  }, 60
 
   # load in the charmap
   chars_game_tx      = new (PIXI.Texture.fromImage)('img/chars.png')

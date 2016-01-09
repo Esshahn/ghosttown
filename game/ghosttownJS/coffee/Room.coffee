@@ -85,7 +85,7 @@ class Room
           clearInterval @animation_interval
           @die('laser',24)
 
-      ), 1482)
+      ), 482)
       # TODO: when the player movement script is improved
       # the interval of the laser has to be set to 482
       # which is the original speed
@@ -444,7 +444,7 @@ class Room
         @msg(14)
       
 #-------------------------------------------------------------------
-#   ROOM 11 
+#   ROOM 11 - LASER FENCE
 #-------------------------------------------------------------------
 
     if @room_number is 11

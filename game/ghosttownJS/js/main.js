@@ -16,7 +16,20 @@ init = function() {
 
 init_game = function() {
   var chars_commodore_tx, chars_game_tx, chars_hint_tx, chars_other_tx;
-  document.addEventListener('keydown', event_keydown, false);
+  KeyboardController({
+    37: function() {
+      player.set_position(37);
+    },
+    38: function() {
+      player.set_position(38);
+    },
+    39: function() {
+      player.set_position(39);
+    },
+    40: function() {
+      player.set_position(40);
+    }
+  }, 60);
   chars_game_tx = new PIXI.Texture.fromImage('img/chars.png');
   this.charset_game = new Generate_charset(chars_game_tx, 8, 8, 16, 16);
   chars_commodore_tx = new PIXI.Texture.fromImage('img/chars-commodore.png');

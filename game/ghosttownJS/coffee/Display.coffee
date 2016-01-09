@@ -17,7 +17,7 @@ class Display
     codefCRTemulator.setup(@renderer.view,"game")
 
     # set this to on or off for the crt emulation
-    @crt_emulation = on
+    @crt_emulation = off
 
     if @crt_emulation is on 
       codefCRTemulator.set.scanlines true
