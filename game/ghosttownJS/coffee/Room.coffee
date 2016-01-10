@@ -44,7 +44,7 @@ class Room
 
     # INIT FOR ROOMS
     # Some rooms need to be reset when entering (nails room, laser room)
-    if @room_number in [11,14,15]
+    if @room_number in [10,11,14,15,16]
       @reset(@room_number)
 
 
@@ -55,7 +55,70 @@ class Room
     player.position = @room_info.playerpos2 if player_entry_pos == "back"
     @update(player.position)
 
+    #
+    # INIT FOR ROOM 10 - BORIS THE SPIDER
+    # 
+    
+    if @room_number is 10
+      @trigger = 0
+      @animation_interval = setInterval((=>
+
+        @trigger++
+        
+        if @trigger < 6
+          # spider should go down
+          @replace_y = @trigger - 0
+
+          # is the spider (left bottom or right bottom) hitting anything else than "df" (nothing)?
+          if @screen_data[15+40*(@replace_y+2)] isnt "df" or
+          @screen_data[17+40*(@replace_y+2)] isnt "df"
+            clearInterval @animation_interval
+            @die('boris the spider',26)
+            return
+
+        else
+          # spider should go up
+          @replace_y = 12 - @trigger
+
+          # is the spider (left top or right top) hitting anything else than "df" (nothing)?
+          if @screen_data[15+40*(@replace_y)] isnt "df" and
+          @screen_data[15+40*(@replace_y)] isnt "e4" or
+          @screen_data[17+40*(@replace_y)] isnt "df" and
+          @screen_data[17+40*(@replace_y)] isnt "e6"
+            clearInterval @animation_interval
+            @die('boris the spider',26)
+            return
+
+        if @trigger < 7
+          # the spider is going down?
+          # then add the spider net on top
+          @replace(15+40*(@replace_y+0),"df")
+          @replace(16+40*(@replace_y+0),"ea")
+          @replace(17+40*(@replace_y+0),"df")  
+       
+        @replace(15+40*(@replace_y+1),"e4")
+        @replace(16+40*(@replace_y+1),"e5")
+        @replace(17+40*(@replace_y+1),"e6")
+        @replace(15+40*(@replace_y+2),"e7")
+        @replace(16+40*(@replace_y+2),"e8")
+        @replace(17+40*(@replace_y+2),"e9")
+       
+        if @trigger > 6
+          # the spider is going up?
+          # then clear the spider image at the bottom
+          @replace(15+40*(@replace_y+3),"df")
+          @replace(16+40*(@replace_y+3),"df")
+          @replace(17+40*(@replace_y+3),"df")
+         
+        # is the spider animated completely? then restart 
+        if @trigger is 11 then @trigger = 1
+        
+      ), 120)
+
+    #
     # INIT FOR ROOM 11 - LASER FENCE
+    # 
+    
     if @room_number is 11
       @trigger = -1
       @animation_interval = setInterval((=>
@@ -86,17 +149,86 @@ class Room
           @die('laser',24)
 
       ), 482)
-      # TODO: when the player movement script is improved
-      # the interval of the laser has to be set to 482
-      # which is the original speed
-    
+
+    #
     # INIT FOR ROOM 15 - TRAPS
+    # 
+  
     if @room_number is 15
       if "bulb holder" not in player.inventory or
       "light bulb" not in player.inventory or
       "socket" not in player.inventory
         # make all traps invisible
         @replace("d7","ff") for [0...24]
+
+    #
+    # INIT FOR ROOM 16 - THE MONSTER
+    # 
+    
+    if @room_number is 16
+      @trigger = 0
+      @animation_interval = setInterval((=>
+        
+        if @trigger < 8
+          # monster should go right
+          @replace_x = @trigger 
+        else
+          # monster should go left
+          @replace_x = 14 - @trigger
+
+        # clear left side of monster
+        @replace(484+@replace_x+40*0,"df")
+        @replace(484+@replace_x+40*1,"df")
+        @replace(484+@replace_x+40*2,"df")
+
+        # monster
+        @replace(485+@replace_x+40*0,"eb")
+        @replace(485+1+@replace_x+40*0,"ec")
+        @replace(485+2+@replace_x+40*0,"ed")
+
+        @replace(485+@replace_x+40*1,"ee")
+        @replace(485+1+@replace_x+40*1,"ef")
+        @replace(485+2+@replace_x+40*1,"f0")
+
+        @replace(485+@replace_x+40*2,"f1")
+        @replace(485+1+@replace_x+40*2,"f2")
+        @replace(485+2+@replace_x+40*2,"f3")
+
+        # clear right side of monster
+        if @screen_data[488+@replace_x] is "ed"
+          @replace(488+@replace_x+40*0,"df")
+          @replace(488+@replace_x+40*1,"df")
+          @replace(488+@replace_x+40*2,"df")
+
+        @trigger++ 
+
+        # is the monster animated completely? then restart 
+        if @trigger is 14 then @trigger = 0
+
+        # collision check
+        # first check for the right side of the monster
+        # and compare with the left side of the player
+        
+        if @screen_data[488+@replace_x] is "93" or
+        @screen_data[488+@replace_x] is "96" or
+        @screen_data[488+@replace_x] is "99" or
+        @screen_data[488+@replace_x+40*2] is "93" or
+        @screen_data[488+@replace_x+40*2] is "96" or
+        @screen_data[488+@replace_x+40*2] is "99" or
+        
+        # now for the left side of the monster
+        # and compare with the right side of the player 
+        
+        @screen_data[485+@replace_x] is "95" or
+        @screen_data[485+@replace_x] is "99" or
+        @screen_data[485+@replace_x] is "9b" or
+        @screen_data[485+@replace_x+40*2] is "95" or
+        @screen_data[485+@replace_x+40*2] is "98" or
+        @screen_data[485+@replace_x+40*2] is "9b"
+          clearInterval @animation_interval
+          @die("monster",25)
+        
+      ), 60)
 
 #-------------------------------------------------------------------
 
@@ -431,6 +563,19 @@ class Room
 
     if @room_number is 10
 
+      # BORIS THE SPIDER
+      # The script for the spider is an interval script
+      # defined in the "set" method above
+      if "e4" in new_position or
+      "e5" in new_position or
+      "e6" in new_position or
+      "e7" in new_position or
+      "e8" in new_position or
+      "e9" in new_position or
+      "ea" in new_position
+        clearInterval @animation_interval
+        @die('boris the spider',26)
+
       # QUESTION MARK
       if "1e" in new_position or 
       "1f" in new_position or 
@@ -591,7 +736,19 @@ class Room
     if @room_number is 16
 
       # MONSTER
-      # msg(25)
+      # The script for the monster is an interval script
+      # defined in the "set" method above
+      if "eb" in new_position or
+      "ec" in new_position or
+      "ed" in new_position or
+      "ee" in new_position or
+      "ef" in new_position or
+      "f0" in new_position or
+      "f1" in new_position or
+      "f2" in new_position or
+      "f3" in new_position 
+        clearInterval @animation_interval
+        @die('monster',25)
 
       # QUESTION MARK
       if "1e" in new_position or 

@@ -3,7 +3,7 @@
 /*
 
   Ghost Town JS - a JavaScript remake of the Commodore C16, C116, Plus/4 game
-  Original version written by Udo Gertz, copyright Kingsoft 1985
+  Original version created by Udo Gertz, copyright Kingsoft 1985
   Remake written by Ingo Hinterding 2015,2016
  */
 var init, init_game;

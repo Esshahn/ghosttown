@@ -18,7 +18,7 @@ BinaryImport = (function() {
       this.file_path = 'data/lvl/lvl-';
     }
     if (this.binary_type === "msg") {
-      this.amount_of_files_to_load = 25;
+      this.amount_of_files_to_load = 30;
       this.file_path = 'data/msg/msg-';
     }
     if (this.binary_type === "other") {
