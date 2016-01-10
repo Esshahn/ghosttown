@@ -42,6 +42,7 @@ class Room
     # stops all intervals when entering a room
     clearInterval @animation_interval
 
+
     # INIT FOR ROOMS
     # Some rooms need to be reset when entering (nails room, laser room)
     if @room_number in [10,11,14,15,16]
@@ -62,58 +63,58 @@ class Room
     if @room_number is 10
       @trigger = 0
       @animation_interval = setInterval((=>
+        if @playround_data.pauseInterval isnt true
+          @trigger++
+          
+          if @trigger < 6
+            # spider should go down
+            @replace_y = @trigger - 0
 
-        @trigger++
-        
-        if @trigger < 6
-          # spider should go down
-          @replace_y = @trigger - 0
+            # is the spider (left bottom or right bottom) hitting anything else than "df" (nothing)?
+            if @screen_data[15+40*(@replace_y+2)] isnt "df" or
+            @screen_data[17+40*(@replace_y+2)] isnt "df"
+              clearInterval @animation_interval
+              @die('boris the spider',26)
+              return
 
-          # is the spider (left bottom or right bottom) hitting anything else than "df" (nothing)?
-          if @screen_data[15+40*(@replace_y+2)] isnt "df" or
-          @screen_data[17+40*(@replace_y+2)] isnt "df"
-            clearInterval @animation_interval
-            @die('boris the spider',26)
-            return
+          else
+            # spider should go up
+            @replace_y = 12 - @trigger
 
-        else
-          # spider should go up
-          @replace_y = 12 - @trigger
+            # is the spider (left top or right top) hitting anything else than "df" (nothing)?
+            if @screen_data[15+40*(@replace_y)] isnt "df" and
+            @screen_data[15+40*(@replace_y)] isnt "e4" or
+            @screen_data[17+40*(@replace_y)] isnt "df" and
+            @screen_data[17+40*(@replace_y)] isnt "e6"
+              clearInterval @animation_interval
+              @die('boris the spider',26)
+              return
 
-          # is the spider (left top or right top) hitting anything else than "df" (nothing)?
-          if @screen_data[15+40*(@replace_y)] isnt "df" and
-          @screen_data[15+40*(@replace_y)] isnt "e4" or
-          @screen_data[17+40*(@replace_y)] isnt "df" and
-          @screen_data[17+40*(@replace_y)] isnt "e6"
-            clearInterval @animation_interval
-            @die('boris the spider',26)
-            return
-
-        if @trigger < 7
-          # the spider is going down?
-          # then add the spider net on top
-          @replace(15+40*(@replace_y+0),"df")
-          @replace(16+40*(@replace_y+0),"ea")
-          @replace(17+40*(@replace_y+0),"df")  
-       
-        @replace(15+40*(@replace_y+1),"e4")
-        @replace(16+40*(@replace_y+1),"e5")
-        @replace(17+40*(@replace_y+1),"e6")
-        @replace(15+40*(@replace_y+2),"e7")
-        @replace(16+40*(@replace_y+2),"e8")
-        @replace(17+40*(@replace_y+2),"e9")
-       
-        if @trigger > 6
-          # the spider is going up?
-          # then clear the spider image at the bottom
-          @replace(15+40*(@replace_y+3),"df")
-          @replace(16+40*(@replace_y+3),"df")
-          @replace(17+40*(@replace_y+3),"df")
+          if @trigger < 7
+            # the spider is going down?
+            # then add the spider net on top
+            @replace(15+40*(@replace_y+0),"df")
+            @replace(16+40*(@replace_y+0),"ea")
+            @replace(17+40*(@replace_y+0),"df")  
          
-        # is the spider animated completely? then restart 
-        if @trigger is 11 then @trigger = 1
-        
-      ), 120)
+          @replace(15+40*(@replace_y+1),"e4")
+          @replace(16+40*(@replace_y+1),"e5")
+          @replace(17+40*(@replace_y+1),"e6")
+          @replace(15+40*(@replace_y+2),"e7")
+          @replace(16+40*(@replace_y+2),"e8")
+          @replace(17+40*(@replace_y+2),"e9")
+         
+          if @trigger > 6
+            # the spider is going up?
+            # then clear the spider image at the bottom
+            @replace(15+40*(@replace_y+3),"df")
+            @replace(16+40*(@replace_y+3),"df")
+            @replace(17+40*(@replace_y+3),"df")
+           
+          # is the spider animated completely? then restart 
+          if @trigger is 11 then @trigger = 1
+          
+        ), 120)
 
     #
     # INIT FOR ROOM 11 - LASER FENCE
@@ -122,33 +123,34 @@ class Room
     if @room_number is 11
       @trigger = -1
       @animation_interval = setInterval((=>
-        @trigger = @trigger * -1
-        
-        if @trigger is 1
-          # Shut the laser fence down
-          @replace(379+0*40,"df") 
-          @replace(379+1*40,"df")
-          @replace(379+2*40,"df")
-          @replace(379+3*40,"df")
-          @replace(379+4*40,"df")
-          @replace(379+5*40,"df")
-          @playround_data.laser = off
-        else
-          # Activate the laser fence
-          @replace(379+0*40,"d8")
-          @replace(379+1*40,"d8")
-          @replace(379+2*40,"d8")
-          @replace(379+3*40,"d8")
-          @replace(379+4*40,"d8")
-          @replace(379+5*40,"d8")
-          @playround_data.laser = on
-        
-        # checks if the laser is "on" and if the player is standing in the danger zone
-        if @playround_data.laser is on and player.position in [377,378,379,417,418,419,457,458,459,497,498,499]
-          clearInterval @animation_interval
-          @die('laser',24)
+        if @playround_data.pauseInterval isnt true
+          @trigger = @trigger * -1
+          
+          if @trigger is 1
+            # Shut the laser fence down
+            @replace(379+0*40,"df") 
+            @replace(379+1*40,"df")
+            @replace(379+2*40,"df")
+            @replace(379+3*40,"df")
+            @replace(379+4*40,"df")
+            @replace(379+5*40,"df")
+            @playround_data.laser = off
+          else
+            # Activate the laser fence
+            @replace(379+0*40,"d8")
+            @replace(379+1*40,"d8")
+            @replace(379+2*40,"d8")
+            @replace(379+3*40,"d8")
+            @replace(379+4*40,"d8")
+            @replace(379+5*40,"d8")
+            @playround_data.laser = on
+          
+          # checks if the laser is "on" and if the player is standing in the danger zone
+          if @playround_data.laser is on and player.position in [377,378,379,417,418,419,457,458,459,497,498,499]
+            clearInterval @animation_interval
+            @die('laser',24)
 
-      ), 482)
+        ), 482)
 
     #
     # INIT FOR ROOM 15 - TRAPS
@@ -166,69 +168,70 @@ class Room
     # 
     
     if @room_number is 16
+      console.log @playround_data.pauseInterval
       @trigger = 0
       @animation_interval = setInterval((=>
-        
-        if @trigger < 8
-          # monster should go right
-          @replace_x = @trigger 
-        else
-          # monster should go left
-          @replace_x = 14 - @trigger
+        if @playround_data.pauseInterval isnt true
+          if @trigger < 8
+            # monster should go right
+            @replace_x = @trigger 
+          else
+            # monster should go left
+            @replace_x = 14 - @trigger
 
-        # clear left side of monster
-        @replace(484+@replace_x+40*0,"df")
-        @replace(484+@replace_x+40*1,"df")
-        @replace(484+@replace_x+40*2,"df")
+          # clear left side of monster
+          @replace(484+@replace_x+40*0,"df")
+          @replace(484+@replace_x+40*1,"df")
+          @replace(484+@replace_x+40*2,"df")
 
-        # monster
-        @replace(485+@replace_x+40*0,"eb")
-        @replace(485+1+@replace_x+40*0,"ec")
-        @replace(485+2+@replace_x+40*0,"ed")
+          # monster
+          @replace(485+@replace_x+40*0,"eb")
+          @replace(485+1+@replace_x+40*0,"ec")
+          @replace(485+2+@replace_x+40*0,"ed")
 
-        @replace(485+@replace_x+40*1,"ee")
-        @replace(485+1+@replace_x+40*1,"ef")
-        @replace(485+2+@replace_x+40*1,"f0")
+          @replace(485+@replace_x+40*1,"ee")
+          @replace(485+1+@replace_x+40*1,"ef")
+          @replace(485+2+@replace_x+40*1,"f0")
 
-        @replace(485+@replace_x+40*2,"f1")
-        @replace(485+1+@replace_x+40*2,"f2")
-        @replace(485+2+@replace_x+40*2,"f3")
+          @replace(485+@replace_x+40*2,"f1")
+          @replace(485+1+@replace_x+40*2,"f2")
+          @replace(485+2+@replace_x+40*2,"f3")
 
-        # clear right side of monster
-        if @screen_data[488+@replace_x] is "ed"
-          @replace(488+@replace_x+40*0,"df")
-          @replace(488+@replace_x+40*1,"df")
-          @replace(488+@replace_x+40*2,"df")
+          # clear right side of monster
+          if @screen_data[488+@replace_x] is "ed"
+            @replace(488+@replace_x+40*0,"df")
+            @replace(488+@replace_x+40*1,"df")
+            @replace(488+@replace_x+40*2,"df")
 
-        @trigger++ 
+          @trigger++ 
 
-        # is the monster animated completely? then restart 
-        if @trigger is 14 then @trigger = 0
+          # is the monster animated completely? then restart 
+          if @trigger is 14 then @trigger = 0
 
-        # collision check
-        # first check for the right side of the monster
-        # and compare with the left side of the player
-        
-        if @screen_data[488+@replace_x] is "93" or
-        @screen_data[488+@replace_x] is "96" or
-        @screen_data[488+@replace_x] is "99" or
-        @screen_data[488+@replace_x+40*2] is "93" or
-        @screen_data[488+@replace_x+40*2] is "96" or
-        @screen_data[488+@replace_x+40*2] is "99" or
-        
-        # now for the left side of the monster
-        # and compare with the right side of the player 
-        
-        @screen_data[485+@replace_x] is "95" or
-        @screen_data[485+@replace_x] is "99" or
-        @screen_data[485+@replace_x] is "9b" or
-        @screen_data[485+@replace_x+40*2] is "95" or
-        @screen_data[485+@replace_x+40*2] is "98" or
-        @screen_data[485+@replace_x+40*2] is "9b"
-          clearInterval @animation_interval
-          @die("monster",25)
-        
-      ), 60)
+          # collision check
+          # first check for the right side of the monster
+          # and compare with the left side of the player
+          
+          if @screen_data[488+@replace_x] is "93" or
+          @screen_data[488+@replace_x] is "96" or
+          @screen_data[488+@replace_x] is "99" or
+          @screen_data[488+@replace_x+40*2] is "93" or
+          @screen_data[488+@replace_x+40*2] is "96" or
+          @screen_data[488+@replace_x+40*2] is "99" or
+          
+          # now for the left side of the monster
+          # and compare with the right side of the player 
+          
+          @screen_data[485+@replace_x] is "95" or
+          @screen_data[485+@replace_x] is "98" or
+          @screen_data[485+@replace_x] is "9b" or
+          @screen_data[485+@replace_x+40*2] is "95" or
+          @screen_data[485+@replace_x+40*2] is "98" or
+          @screen_data[485+@replace_x+40*2] is "9b"
+            clearInterval @animation_interval
+            @die("monster",25)
+          
+        ), 60)
 
 #-------------------------------------------------------------------
 
@@ -238,6 +241,11 @@ class Room
 
     @insert_player(position)
     display.show_data()
+
+    # this makes sure animations are played
+    # again when a message was shown before 
+    # and animations stopped
+    @playround_data.pauseInterval = false
 
     msg = 'Room ' + @room_number + ' "' + @room_info.name + '"'
     ui_room msg
@@ -265,11 +273,14 @@ class Room
 
   die : (deathID,msgID = 1) ->
     ui_log("You would have died by the <b>"+deathID+"</b>", "red")
+    clearInterval @animation_interval
     display.show_death(msgID)
 
 #-------------------------------------------------------------------
 
   msg : (msgID = 1) ->
+    @playround_data.pauseInterval = true
+    console.log "setting: " + @playround_data.pauseInterval
     display.show_msg(msgID)
 
 #-------------------------------------------------------------------
@@ -298,7 +309,7 @@ class Room
 #-------------------------------------------------------------------
 
   check_room : (direction) ->
-    # we take a look at the position hte player wants to go to and return true or the tile code
+    # we take a look at the position the player wants to go to and return true or the tile code
 
     new_position = []
 
@@ -780,6 +791,49 @@ class Room
 #-------------------------------------------------------------------
 
     if @room_number is 18
+
+      # BOULDER
+      # has the player reached the criticial position 
+      # when the boulder should start moving?
+      if player.position is 264
+        # and the boulder hasn't been moving before?
+        if @screen_data[270] is "78"
+          # and is Belegro already dead (he needs to)?
+          #if @playround_data.belegro is "dead"
+          @trigger = 0
+          @animation_interval = setInterval((=>
+            
+            if @playround_data.pauseInterval isnt true
+              
+              @trigger++
+              
+              # move the bolder
+              # top row
+              @replace(270+0*40-@trigger,"78") 
+              @replace(271+0*40-@trigger,"79")
+              @replace(272+0*40-@trigger,"7a")
+              @replace(273+0*40-@trigger,"df")
+
+              # middle row
+              @replace(270+1*40-@trigger,"7b") 
+              @replace(271+1*40-@trigger,"7c")
+              @replace(272+1*40-@trigger,"7d")
+              @replace(273+1*40-@trigger,"df")
+
+              # bottom row
+              @replace(270+2*40-@trigger,"7e") 
+              @replace(271+2*40-@trigger,"7f")
+              @replace(272+2*40-@trigger,"80")
+              @replace(273+2*40-@trigger,"df")
+
+              if @trigger > 26
+                clearInterval @animation_interval                            
+          ), 60)
+
+
+      # BELEGRO
+      
+
 
       # SWORD
       if "dd" in new_position or "de" in new_position

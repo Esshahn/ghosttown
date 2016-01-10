@@ -48,40 +48,42 @@ Room = (function() {
       this.trigger = 0;
       this.animation_interval = setInterval(((function(_this) {
         return function() {
-          _this.trigger++;
-          if (_this.trigger < 6) {
-            _this.replace_y = _this.trigger - 0;
-            if (_this.screen_data[15 + 40 * (_this.replace_y + 2)] !== "df" || _this.screen_data[17 + 40 * (_this.replace_y + 2)] !== "df") {
-              clearInterval(_this.animation_interval);
-              _this.die('boris the spider', 26);
-              return;
+          if (_this.playround_data.pauseInterval !== true) {
+            _this.trigger++;
+            if (_this.trigger < 6) {
+              _this.replace_y = _this.trigger - 0;
+              if (_this.screen_data[15 + 40 * (_this.replace_y + 2)] !== "df" || _this.screen_data[17 + 40 * (_this.replace_y + 2)] !== "df") {
+                clearInterval(_this.animation_interval);
+                _this.die('boris the spider', 26);
+                return;
+              }
+            } else {
+              _this.replace_y = 12 - _this.trigger;
+              if (_this.screen_data[15 + 40 * _this.replace_y] !== "df" && _this.screen_data[15 + 40 * _this.replace_y] !== "e4" || _this.screen_data[17 + 40 * _this.replace_y] !== "df" && _this.screen_data[17 + 40 * _this.replace_y] !== "e6") {
+                clearInterval(_this.animation_interval);
+                _this.die('boris the spider', 26);
+                return;
+              }
             }
-          } else {
-            _this.replace_y = 12 - _this.trigger;
-            if (_this.screen_data[15 + 40 * _this.replace_y] !== "df" && _this.screen_data[15 + 40 * _this.replace_y] !== "e4" || _this.screen_data[17 + 40 * _this.replace_y] !== "df" && _this.screen_data[17 + 40 * _this.replace_y] !== "e6") {
-              clearInterval(_this.animation_interval);
-              _this.die('boris the spider', 26);
-              return;
+            if (_this.trigger < 7) {
+              _this.replace(15 + 40 * (_this.replace_y + 0), "df");
+              _this.replace(16 + 40 * (_this.replace_y + 0), "ea");
+              _this.replace(17 + 40 * (_this.replace_y + 0), "df");
             }
-          }
-          if (_this.trigger < 7) {
-            _this.replace(15 + 40 * (_this.replace_y + 0), "df");
-            _this.replace(16 + 40 * (_this.replace_y + 0), "ea");
-            _this.replace(17 + 40 * (_this.replace_y + 0), "df");
-          }
-          _this.replace(15 + 40 * (_this.replace_y + 1), "e4");
-          _this.replace(16 + 40 * (_this.replace_y + 1), "e5");
-          _this.replace(17 + 40 * (_this.replace_y + 1), "e6");
-          _this.replace(15 + 40 * (_this.replace_y + 2), "e7");
-          _this.replace(16 + 40 * (_this.replace_y + 2), "e8");
-          _this.replace(17 + 40 * (_this.replace_y + 2), "e9");
-          if (_this.trigger > 6) {
-            _this.replace(15 + 40 * (_this.replace_y + 3), "df");
-            _this.replace(16 + 40 * (_this.replace_y + 3), "df");
-            _this.replace(17 + 40 * (_this.replace_y + 3), "df");
-          }
-          if (_this.trigger === 11) {
-            return _this.trigger = 1;
+            _this.replace(15 + 40 * (_this.replace_y + 1), "e4");
+            _this.replace(16 + 40 * (_this.replace_y + 1), "e5");
+            _this.replace(17 + 40 * (_this.replace_y + 1), "e6");
+            _this.replace(15 + 40 * (_this.replace_y + 2), "e7");
+            _this.replace(16 + 40 * (_this.replace_y + 2), "e8");
+            _this.replace(17 + 40 * (_this.replace_y + 2), "e9");
+            if (_this.trigger > 6) {
+              _this.replace(15 + 40 * (_this.replace_y + 3), "df");
+              _this.replace(16 + 40 * (_this.replace_y + 3), "df");
+              _this.replace(17 + 40 * (_this.replace_y + 3), "df");
+            }
+            if (_this.trigger === 11) {
+              return _this.trigger = 1;
+            }
           }
         };
       })(this)), 120);
@@ -91,27 +93,29 @@ Room = (function() {
       this.animation_interval = setInterval(((function(_this) {
         return function() {
           var ref1;
-          _this.trigger = _this.trigger * -1;
-          if (_this.trigger === 1) {
-            _this.replace(379 + 0 * 40, "df");
-            _this.replace(379 + 1 * 40, "df");
-            _this.replace(379 + 2 * 40, "df");
-            _this.replace(379 + 3 * 40, "df");
-            _this.replace(379 + 4 * 40, "df");
-            _this.replace(379 + 5 * 40, "df");
-            _this.playround_data.laser = false;
-          } else {
-            _this.replace(379 + 0 * 40, "d8");
-            _this.replace(379 + 1 * 40, "d8");
-            _this.replace(379 + 2 * 40, "d8");
-            _this.replace(379 + 3 * 40, "d8");
-            _this.replace(379 + 4 * 40, "d8");
-            _this.replace(379 + 5 * 40, "d8");
-            _this.playround_data.laser = true;
-          }
-          if (_this.playround_data.laser === true && ((ref1 = player.position) === 377 || ref1 === 378 || ref1 === 379 || ref1 === 417 || ref1 === 418 || ref1 === 419 || ref1 === 457 || ref1 === 458 || ref1 === 459 || ref1 === 497 || ref1 === 498 || ref1 === 499)) {
-            clearInterval(_this.animation_interval);
-            return _this.die('laser', 24);
+          if (_this.playround_data.pauseInterval !== true) {
+            _this.trigger = _this.trigger * -1;
+            if (_this.trigger === 1) {
+              _this.replace(379 + 0 * 40, "df");
+              _this.replace(379 + 1 * 40, "df");
+              _this.replace(379 + 2 * 40, "df");
+              _this.replace(379 + 3 * 40, "df");
+              _this.replace(379 + 4 * 40, "df");
+              _this.replace(379 + 5 * 40, "df");
+              _this.playround_data.laser = false;
+            } else {
+              _this.replace(379 + 0 * 40, "d8");
+              _this.replace(379 + 1 * 40, "d8");
+              _this.replace(379 + 2 * 40, "d8");
+              _this.replace(379 + 3 * 40, "d8");
+              _this.replace(379 + 4 * 40, "d8");
+              _this.replace(379 + 5 * 40, "d8");
+              _this.playround_data.laser = true;
+            }
+            if (_this.playround_data.laser === true && ((ref1 = player.position) === 377 || ref1 === 378 || ref1 === 379 || ref1 === 417 || ref1 === 418 || ref1 === 419 || ref1 === 457 || ref1 === 458 || ref1 === 459 || ref1 === 497 || ref1 === 498 || ref1 === 499)) {
+              clearInterval(_this.animation_interval);
+              return _this.die('laser', 24);
+            }
           }
         };
       })(this)), 482);
@@ -124,38 +128,41 @@ Room = (function() {
       }
     }
     if (this.room_number === 16) {
+      console.log(this.playround_data.pauseInterval);
       this.trigger = 0;
       return this.animation_interval = setInterval(((function(_this) {
         return function() {
-          if (_this.trigger < 8) {
-            _this.replace_x = _this.trigger;
-          } else {
-            _this.replace_x = 14 - _this.trigger;
-          }
-          _this.replace(484 + _this.replace_x + 40 * 0, "df");
-          _this.replace(484 + _this.replace_x + 40 * 1, "df");
-          _this.replace(484 + _this.replace_x + 40 * 2, "df");
-          _this.replace(485 + _this.replace_x + 40 * 0, "eb");
-          _this.replace(485 + 1 + _this.replace_x + 40 * 0, "ec");
-          _this.replace(485 + 2 + _this.replace_x + 40 * 0, "ed");
-          _this.replace(485 + _this.replace_x + 40 * 1, "ee");
-          _this.replace(485 + 1 + _this.replace_x + 40 * 1, "ef");
-          _this.replace(485 + 2 + _this.replace_x + 40 * 1, "f0");
-          _this.replace(485 + _this.replace_x + 40 * 2, "f1");
-          _this.replace(485 + 1 + _this.replace_x + 40 * 2, "f2");
-          _this.replace(485 + 2 + _this.replace_x + 40 * 2, "f3");
-          if (_this.screen_data[488 + _this.replace_x] === "ed") {
-            _this.replace(488 + _this.replace_x + 40 * 0, "df");
-            _this.replace(488 + _this.replace_x + 40 * 1, "df");
-            _this.replace(488 + _this.replace_x + 40 * 2, "df");
-          }
-          _this.trigger++;
-          if (_this.trigger === 14) {
-            _this.trigger = 0;
-          }
-          if (_this.screen_data[488 + _this.replace_x] === "93" || _this.screen_data[488 + _this.replace_x] === "96" || _this.screen_data[488 + _this.replace_x] === "99" || _this.screen_data[488 + _this.replace_x + 40 * 2] === "93" || _this.screen_data[488 + _this.replace_x + 40 * 2] === "96" || _this.screen_data[488 + _this.replace_x + 40 * 2] === "99" || _this.screen_data[485 + _this.replace_x] === "95" || _this.screen_data[485 + _this.replace_x] === "99" || _this.screen_data[485 + _this.replace_x] === "9b" || _this.screen_data[485 + _this.replace_x + 40 * 2] === "95" || _this.screen_data[485 + _this.replace_x + 40 * 2] === "98" || _this.screen_data[485 + _this.replace_x + 40 * 2] === "9b") {
-            clearInterval(_this.animation_interval);
-            return _this.die("monster", 25);
+          if (_this.playround_data.pauseInterval !== true) {
+            if (_this.trigger < 8) {
+              _this.replace_x = _this.trigger;
+            } else {
+              _this.replace_x = 14 - _this.trigger;
+            }
+            _this.replace(484 + _this.replace_x + 40 * 0, "df");
+            _this.replace(484 + _this.replace_x + 40 * 1, "df");
+            _this.replace(484 + _this.replace_x + 40 * 2, "df");
+            _this.replace(485 + _this.replace_x + 40 * 0, "eb");
+            _this.replace(485 + 1 + _this.replace_x + 40 * 0, "ec");
+            _this.replace(485 + 2 + _this.replace_x + 40 * 0, "ed");
+            _this.replace(485 + _this.replace_x + 40 * 1, "ee");
+            _this.replace(485 + 1 + _this.replace_x + 40 * 1, "ef");
+            _this.replace(485 + 2 + _this.replace_x + 40 * 1, "f0");
+            _this.replace(485 + _this.replace_x + 40 * 2, "f1");
+            _this.replace(485 + 1 + _this.replace_x + 40 * 2, "f2");
+            _this.replace(485 + 2 + _this.replace_x + 40 * 2, "f3");
+            if (_this.screen_data[488 + _this.replace_x] === "ed") {
+              _this.replace(488 + _this.replace_x + 40 * 0, "df");
+              _this.replace(488 + _this.replace_x + 40 * 1, "df");
+              _this.replace(488 + _this.replace_x + 40 * 2, "df");
+            }
+            _this.trigger++;
+            if (_this.trigger === 14) {
+              _this.trigger = 0;
+            }
+            if (_this.screen_data[488 + _this.replace_x] === "93" || _this.screen_data[488 + _this.replace_x] === "96" || _this.screen_data[488 + _this.replace_x] === "99" || _this.screen_data[488 + _this.replace_x + 40 * 2] === "93" || _this.screen_data[488 + _this.replace_x + 40 * 2] === "96" || _this.screen_data[488 + _this.replace_x + 40 * 2] === "99" || _this.screen_data[485 + _this.replace_x] === "95" || _this.screen_data[485 + _this.replace_x] === "98" || _this.screen_data[485 + _this.replace_x] === "9b" || _this.screen_data[485 + _this.replace_x + 40 * 2] === "95" || _this.screen_data[485 + _this.replace_x + 40 * 2] === "98" || _this.screen_data[485 + _this.replace_x + 40 * 2] === "9b") {
+              clearInterval(_this.animation_interval);
+              return _this.die("monster", 25);
+            }
           }
         };
       })(this)), 60);
@@ -170,6 +177,7 @@ Room = (function() {
     this.screen_data = clone(all_lvl.screen_data[this.room_number]);
     this.insert_player(position);
     display.show_data();
+    this.playround_data.pauseInterval = false;
     msg = 'Room ' + this.room_number + ' "' + this.room_info.name + '"';
     return ui_room(msg);
   };
@@ -198,6 +206,7 @@ Room = (function() {
       msgID = 1;
     }
     ui_log("You would have died by the <b>" + deathID + "</b>", "red");
+    clearInterval(this.animation_interval);
     return display.show_death(msgID);
   };
 
@@ -205,6 +214,8 @@ Room = (function() {
     if (msgID == null) {
       msgID = 1;
     }
+    this.playround_data.pauseInterval = true;
+    console.log("setting: " + this.playround_data.pauseInterval);
     return display.show_msg(msgID);
   };
 
@@ -529,6 +540,33 @@ Room = (function() {
       }
     }
     if (this.room_number === 18) {
+      if (player.position === 264) {
+        if (this.screen_data[270] === "78") {
+          this.trigger = 0;
+          this.animation_interval = setInterval(((function(_this) {
+            return function() {
+              if (_this.playround_data.pauseInterval !== true) {
+                _this.trigger++;
+                _this.replace(270 + 0 * 40 - _this.trigger, "78");
+                _this.replace(271 + 0 * 40 - _this.trigger, "79");
+                _this.replace(272 + 0 * 40 - _this.trigger, "7a");
+                _this.replace(273 + 0 * 40 - _this.trigger, "df");
+                _this.replace(270 + 1 * 40 - _this.trigger, "7b");
+                _this.replace(271 + 1 * 40 - _this.trigger, "7c");
+                _this.replace(272 + 1 * 40 - _this.trigger, "7d");
+                _this.replace(273 + 1 * 40 - _this.trigger, "df");
+                _this.replace(270 + 2 * 40 - _this.trigger, "7e");
+                _this.replace(271 + 2 * 40 - _this.trigger, "7f");
+                _this.replace(272 + 2 * 40 - _this.trigger, "80");
+                _this.replace(273 + 2 * 40 - _this.trigger, "df");
+                if (_this.trigger > 26) {
+                  return clearInterval(_this.animation_interval);
+                }
+              }
+            };
+          })(this)), 60);
+        }
+      }
       if (indexOf.call(new_position, "dd") >= 0 || indexOf.call(new_position, "de") >= 0) {
         this.replace("dd", "df");
         this.replace("de", "df");
