@@ -121,6 +121,16 @@ class Room
     # 
     
     if @room_number is 11
+
+      # this room gets reset due to the fence animation
+      # therefore we need to take track if the socket
+      # has been picket up already and delete it
+      if "socket" in player.inventory 
+        @replace("cc","df")
+        @replace("cd","df")
+        @replace("ce","df")
+        @replace("cf","df")
+
       @trigger = -1
       @animation_interval = setInterval((=>
         if @playround_data.pauseInterval isnt true
@@ -280,7 +290,6 @@ class Room
 
   msg : (msgID = 1) ->
     @playround_data.pauseInterval = true
-    console.log "setting: " + @playround_data.pauseInterval
     display.show_msg(msgID)
 
 #-------------------------------------------------------------------
@@ -447,7 +456,6 @@ class Room
 
       # COFFINS
       if "3b" in new_position or "42" in new_position
-
         # check if the player stands in front of the right coffin
         if (player.position is 123 and @playround_data.coffin is "A") or
         (player.position is 363 and @playround_data.coffin is "B") or
@@ -551,7 +559,7 @@ class Room
 
       # WATER RIGHT
       if "59" in new_position
-        if "breathing pipe" in player.inventory
+        if "breathing tube" in player.inventory
           player.position = 492
           @update(player.get_position())
         else

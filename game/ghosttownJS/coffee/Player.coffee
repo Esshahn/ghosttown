@@ -44,16 +44,18 @@ class Player
 #-------------------------------------------------------------------
 
   add : (item) ->
-    @inventory.push(item)
-    ui_inventory(@inventory)
-    ui_log("You picked up a <b>"+item+"</b>","green")
+    if item not in @inventory
+      @inventory.push(item)
+      ui_inventory(@inventory)
+      ui_log("You picked up a <b>"+item+"</b>","green")
 
 #-------------------------------------------------------------------
   
   remove : (item) ->
-    @inventory.splice(@inventory.indexOf(item),1)
-    ui_inventory(@inventory)
-    ui_log("You dropped the <b>"+item+"</b>","green")
+    if item in @inventory
+      @inventory.splice(@inventory.indexOf(item),1)
+      ui_inventory(@inventory)
+      ui_log("You dropped the <b>"+item+"</b>","green")
 
 #-------------------------------------------------------------------
 
