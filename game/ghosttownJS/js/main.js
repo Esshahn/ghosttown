@@ -50,7 +50,7 @@ init_game = function() {
   return setTimeout((function(_this) {
     return function() {
       _this.all_lvl.screen_data_copy = clone(_this.all_lvl.screen_data);
-      return _this.room.set(1);
+      return _this.room.set(18);
     };
   })(this), 300);
 };

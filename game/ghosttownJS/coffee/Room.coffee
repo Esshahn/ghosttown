@@ -34,6 +34,94 @@ class Room
 
 #-------------------------------------------------------------------
 
+  update : (position = player.get_position()) ->
+
+    @screen_data = clone(all_lvl.screen_data[@room_number])
+
+    @insert_player(position)
+    display.show_data()
+
+    # this makes sure animations are played
+    # again when a message was shown before 
+    # and animations stopped
+    @playround_data.pauseInterval = false
+
+    msg = 'Room ' + @room_number + ' "' + @room_info.name + '"'
+    ui_room msg
+
+#-------------------------------------------------------------------
+
+  get : (room_number) ->
+    # returns the current room data after it is processed
+    @screen_data
+
+#-------------------------------------------------------------------
+
+  insert_player : (position = @room_info.playerpos1) ->
+    @screen_data[position + 0*40 + 0] = "93"
+    @screen_data[position + 0*40 + 1] = "94"
+    @screen_data[position + 0*40 + 2] = "95"
+    @screen_data[position + 1*40 + 0] = "96"
+    @screen_data[position + 1*40 + 1] = "97"
+    @screen_data[position + 1*40 + 2] = "98"
+    @screen_data[position + 2*40 + 0] = "99"
+    @screen_data[position + 2*40 + 1] = "9a"
+    @screen_data[position + 2*40 + 2] = "9b"
+
+#-------------------------------------------------------------------
+
+  die : (deathID,msgID = 1) ->
+    ui_log("You would have died by the <b>"+deathID+"</b>", "red")
+    clearInterval @animation_interval
+    display.show_death(msgID)
+
+#-------------------------------------------------------------------
+
+  msg : (msgID = 1) ->
+    @playround_data.pauseInterval = true
+    display.show_msg(msgID)
+
+#-------------------------------------------------------------------
+
+  other : (msgID = 1) ->
+    display.show_other(msgID)
+
+#-------------------------------------------------------------------
+
+  replace : (tile,tile_code) ->
+    # replaces a tile by another
+    # tile can be a position on screen (number, e.g. 297) or a tile code (string, e.g. "a9")
+    # tile_code is the tile code that replaces the original tile
+
+    tile = @find tile if typeof tile is "string"
+    all_lvl.screen_data[@room_number][tile] = tile_code
+    @update(player.get_position())
+
+#-------------------------------------------------------------------
+
+  find : (tile) ->
+    # returns the first position (e.g. 294) of a give tile_code (e.g. "a9" on the screen)
+    if tile in @screen_data
+      @screen_data.indexOf(tile)
+
+#-------------------------------------------------------------------
+
+  get_tile_at : (tile) ->
+    # returns the tile code at a given index position in the array
+    @screen_data[tile]
+
+#-------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
   set : (@room_number,player_entry_pos = "forward") ->
   	# changes the room
   	# read in the given level from the all levels data
@@ -56,9 +144,9 @@ class Room
     player.position = @room_info.playerpos2 if player_entry_pos == "back"
     @update(player.position)
 
-    #
-    # INIT FOR ROOM 10 - BORIS THE SPIDER
-    # 
+#-------------------------------------------------------------------
+#   INIT ROOM 10 - BORIS THE SPIDER
+#-------------------------------------------------------------------
     
     if @room_number is 10
       @trigger = 0
@@ -116,9 +204,9 @@ class Room
           
         ), 120)
 
-    #
-    # INIT FOR ROOM 11 - LASER FENCE
-    # 
+#-------------------------------------------------------------------
+#   INIT ROOM 11 - LASER FENCE
+#-------------------------------------------------------------------
     
     if @room_number is 11
 
@@ -162,9 +250,9 @@ class Room
 
         ), 482)
 
-    #
-    # INIT FOR ROOM 15 - TRAPS
-    # 
+#-------------------------------------------------------------------
+#   INIT ROOM 15 - TARPS
+#-------------------------------------------------------------------
   
     if @room_number is 15
       if "bulb holder" not in player.inventory or
@@ -173,12 +261,11 @@ class Room
         # make all traps invisible
         @replace("d7","ff") for [0...24]
 
-    #
-    # INIT FOR ROOM 16 - THE MONSTER
-    # 
+#-------------------------------------------------------------------
+#   INIT ROOM 16 - THE MONSTER
+#-------------------------------------------------------------------
     
     if @room_number is 16
-      console.log @playround_data.pauseInterval
       @trigger = 0
       @animation_interval = setInterval((=>
         if @playround_data.pauseInterval isnt true
@@ -244,76 +331,106 @@ class Room
         ), 60)
 
 #-------------------------------------------------------------------
-
-  update : (position = player.get_position()) ->
-
-    @screen_data = clone(all_lvl.screen_data[@room_number])
-
-    @insert_player(position)
-    display.show_data()
-
-    # this makes sure animations are played
-    # again when a message was shown before 
-    # and animations stopped
-    @playround_data.pauseInterval = false
-
-    msg = 'Room ' + @room_number + ' "' + @room_info.name + '"'
-    ui_room msg
-
+#   INIT ROOM 18 - BELEGRO
 #-------------------------------------------------------------------
 
-  get : (room_number) ->
-  	# returns the current room data after it is processed
-  	@screen_data
+    if @room_number is 18
+      @playround_data.belegro = "alive"
+      @playround_data.belegro_position = 495
 
-#-------------------------------------------------------------------
+      @animation_interval = setInterval((=>
+        if @playround_data.pauseInterval isnt true
 
-  insert_player : (position = @room_info.playerpos1) ->
-  	@screen_data[position + 0*40 + 0] = "93"
-  	@screen_data[position + 0*40 + 1] = "94"
-  	@screen_data[position + 0*40 + 2] = "95"
-  	@screen_data[position + 1*40 + 0] = "96"
-  	@screen_data[position + 1*40 + 1] = "97"
-  	@screen_data[position + 1*40 + 2] = "98"
-  	@screen_data[position + 2*40 + 0] = "99"
-  	@screen_data[position + 2*40 + 1] = "9a"
-  	@screen_data[position + 2*40 + 2] = "9b"
+          # movement logic
+          
+          # get the x and y position of the player in the matrix
+          @playround_data.player_x = player.get_position() % 40
+          @playround_data.player_y = Math.round(player.get_position() / 40)
+          
+          # get the x and y position of belegro in the matrix
+          @playround_data.belegro_x = @playround_data.belegro_position % 40
+          @playround_data.belegro_y = Math.round(@playround_data.belegro_position / 40)
 
-#-------------------------------------------------------------------
+          @playround_data.belegro_temp_position = 0
 
-  die : (deathID,msgID = 1) ->
-    ui_log("You would have died by the <b>"+deathID+"</b>", "red")
-    clearInterval @animation_interval
-    display.show_death(msgID)
+          # compare positions of player and belegro and make belegro move
+          if @playround_data.belegro_x > @playround_data.player_x
+            if @get_tile_at(@playround_data.belegro_position - 1) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1 + 1*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1 + 2*40) is "df" 
+              @playround_data.belegro_temp_position--
 
-#-------------------------------------------------------------------
+          if @playround_data.belegro_x < @playround_data.player_x
+            if @get_tile_at(@playround_data.belegro_position + 3) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3 + 1*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3 + 2*40) is "df"  
+              @playround_data.belegro_temp_position++
 
-  msg : (msgID = 1) ->
-    @playround_data.pauseInterval = true
-    display.show_msg(msgID)
+          if @playround_data.belegro_y > @playround_data.player_y
+            if @get_tile_at(@playround_data.belegro_position - 40) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 1 - 40) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 2 - 40) is "df"
+              @playround_data.belegro_temp_position-= 40
 
-#-------------------------------------------------------------------
+          if @playround_data.belegro_y < @playround_data.player_y
+            if @get_tile_at(@playround_data.belegro_position + 120) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 1 + 120) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 2 + 120) is "df"  
+              @playround_data.belegro_temp_position+= 40
 
-  other : (msgID = 1) ->
-    display.show_other(msgID)
+          @playround_data.belegro_new_position = @playround_data.belegro_position + @playround_data.belegro_temp_position
+          
+          console.log @get_tile_at(@playround_data.belegro_new_position + 0 + 0*40)
+          console.log @get_tile_at(@playround_data.belegro_new_position + 1 + 0*40)
+          console.log @get_tile_at(@playround_data.belegro_new_position + 2 + 0*40)
 
-#-------------------------------------------------------------------
+          console.log @get_tile_at(@playround_data.belegro_new_position + 0 + 2*40)
+          console.log @get_tile_at(@playround_data.belegro_new_position + 1 + 2*40)
+          console.log @get_tile_at(@playround_data.belegro_new_position + 2 + 2*40)
 
-  replace : (tile,tile_code) ->
-    # replaces a tile by another
-    # tile can be a position on screen (number, e.g. 297) or a tile code (string, e.g. "a9")
-    # tile_code is the tile code that replaces the original tile
+          console.log "------------"
 
-    tile = @find tile if typeof tile is "string"
-    all_lvl.screen_data[@room_number][tile] = tile_code
-    @update(player.get_position())
+          # has belegro moved? then first clear his old position
+    
+          @replace(@playround_data.belegro_position + 0 + 0*40,"df")
+          @replace(@playround_data.belegro_position + 1 + 0*40,"df")
+          @replace(@playround_data.belegro_position + 2 + 0*40,"df")
+          @replace(@playround_data.belegro_position + 0 + 1*40,"df")
+          @replace(@playround_data.belegro_position + 1 + 1*40,"df")
+          @replace(@playround_data.belegro_position + 2 + 1*40,"df")
+          @replace(@playround_data.belegro_position + 0 + 2*40,"df")
+          @replace(@playround_data.belegro_position + 1 + 2*40,"df")
+          @replace(@playround_data.belegro_position + 2 + 2*40,"df")
+            
+          # place Belegro
+          # 9c 9d 9e
+          # 9f a0 a1
+          # a2 a3 a4
+          @replace(@playround_data.belegro_new_position + 0 + 0*40,"9c")
+          @replace(@playround_data.belegro_new_position + 1 + 0*40,"9d")
+          @replace(@playround_data.belegro_new_position + 2 + 0*40,"9e")
+          @replace(@playround_data.belegro_new_position + 0 + 1*40,"9f")
+          @replace(@playround_data.belegro_new_position + 1 + 1*40,"a0")
+          @replace(@playround_data.belegro_new_position + 2 + 1*40,"a1")
+          @replace(@playround_data.belegro_new_position + 0 + 2*40,"a2")
+          @replace(@playround_data.belegro_new_position + 1 + 2*40,"a3")
+          @replace(@playround_data.belegro_new_position + 2 + 2*40,"a4")
+    
+          @playround_data.belegro_position = @playround_data.belegro_new_position
 
-#-------------------------------------------------------------------
 
-  find : (tile) ->
-    # returns the first position (e.g. 294) of a give tile_code (e.g. "a9" on the screen)
-    if tile in @screen_data
-      return @screen_data.indexOf(tile)
+          # collision check
+          # first check for the right side of the monster
+          # and compare with the left side of the player
+          
+          if @screen_data[488+@replace_x] is "93" or
+          @screen_data[485+@replace_x+40*2] is "9b"
+            clearInterval @animation_interval
+            @die("Belegro",27)
+          
+        ), 120)
+
+
 
 #-------------------------------------------------------------------
 
@@ -840,7 +957,8 @@ class Room
 
 
       # BELEGRO
-      
+      # The script for belegro is an interval script
+      # defined in the "set" method above
 
 
       # SWORD

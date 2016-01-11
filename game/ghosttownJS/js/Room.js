@@ -25,6 +25,80 @@ Room = (function() {
     return all_lvl.screen_data[this.room_number] = clone(all_lvl.screen_data_copy[this.room_number]);
   };
 
+  Room.prototype.update = function(position) {
+    var msg;
+    if (position == null) {
+      position = player.get_position();
+    }
+    this.screen_data = clone(all_lvl.screen_data[this.room_number]);
+    this.insert_player(position);
+    display.show_data();
+    this.playround_data.pauseInterval = false;
+    msg = 'Room ' + this.room_number + ' "' + this.room_info.name + '"';
+    return ui_room(msg);
+  };
+
+  Room.prototype.get = function(room_number) {
+    return this.screen_data;
+  };
+
+  Room.prototype.insert_player = function(position) {
+    if (position == null) {
+      position = this.room_info.playerpos1;
+    }
+    this.screen_data[position + 0 * 40 + 0] = "93";
+    this.screen_data[position + 0 * 40 + 1] = "94";
+    this.screen_data[position + 0 * 40 + 2] = "95";
+    this.screen_data[position + 1 * 40 + 0] = "96";
+    this.screen_data[position + 1 * 40 + 1] = "97";
+    this.screen_data[position + 1 * 40 + 2] = "98";
+    this.screen_data[position + 2 * 40 + 0] = "99";
+    this.screen_data[position + 2 * 40 + 1] = "9a";
+    return this.screen_data[position + 2 * 40 + 2] = "9b";
+  };
+
+  Room.prototype.die = function(deathID, msgID) {
+    if (msgID == null) {
+      msgID = 1;
+    }
+    ui_log("You would have died by the <b>" + deathID + "</b>", "red");
+    clearInterval(this.animation_interval);
+    return display.show_death(msgID);
+  };
+
+  Room.prototype.msg = function(msgID) {
+    if (msgID == null) {
+      msgID = 1;
+    }
+    this.playround_data.pauseInterval = true;
+    return display.show_msg(msgID);
+  };
+
+  Room.prototype.other = function(msgID) {
+    if (msgID == null) {
+      msgID = 1;
+    }
+    return display.show_other(msgID);
+  };
+
+  Room.prototype.replace = function(tile, tile_code) {
+    if (typeof tile === "string") {
+      tile = this.find(tile);
+    }
+    all_lvl.screen_data[this.room_number][tile] = tile_code;
+    return this.update(player.get_position());
+  };
+
+  Room.prototype.find = function(tile) {
+    if (__indexOf.call(this.screen_data, tile) >= 0) {
+      return this.screen_data.indexOf(tile);
+    }
+  };
+
+  Room.prototype.get_tile_at = function(tile) {
+    return this.screen_data[tile];
+  };
+
   Room.prototype.set = function(_at_room_number, player_entry_pos) {
     var _i, _ref;
     this.room_number = _at_room_number;
@@ -134,9 +208,8 @@ Room = (function() {
       }
     }
     if (this.room_number === 16) {
-      console.log(this.playround_data.pauseInterval);
       this.trigger = 0;
-      return this.animation_interval = setInterval(((function(_this) {
+      this.animation_interval = setInterval(((function(_this) {
         return function() {
           if (_this.playround_data.pauseInterval !== true) {
             if (_this.trigger < 8) {
@@ -173,75 +246,71 @@ Room = (function() {
         };
       })(this)), 60);
     }
-  };
-
-  Room.prototype.update = function(position) {
-    var msg;
-    if (position == null) {
-      position = player.get_position();
-    }
-    this.screen_data = clone(all_lvl.screen_data[this.room_number]);
-    this.insert_player(position);
-    display.show_data();
-    this.playround_data.pauseInterval = false;
-    msg = 'Room ' + this.room_number + ' "' + this.room_info.name + '"';
-    return ui_room(msg);
-  };
-
-  Room.prototype.get = function(room_number) {
-    return this.screen_data;
-  };
-
-  Room.prototype.insert_player = function(position) {
-    if (position == null) {
-      position = this.room_info.playerpos1;
-    }
-    this.screen_data[position + 0 * 40 + 0] = "93";
-    this.screen_data[position + 0 * 40 + 1] = "94";
-    this.screen_data[position + 0 * 40 + 2] = "95";
-    this.screen_data[position + 1 * 40 + 0] = "96";
-    this.screen_data[position + 1 * 40 + 1] = "97";
-    this.screen_data[position + 1 * 40 + 2] = "98";
-    this.screen_data[position + 2 * 40 + 0] = "99";
-    this.screen_data[position + 2 * 40 + 1] = "9a";
-    return this.screen_data[position + 2 * 40 + 2] = "9b";
-  };
-
-  Room.prototype.die = function(deathID, msgID) {
-    if (msgID == null) {
-      msgID = 1;
-    }
-    ui_log("You would have died by the <b>" + deathID + "</b>", "red");
-    clearInterval(this.animation_interval);
-    return display.show_death(msgID);
-  };
-
-  Room.prototype.msg = function(msgID) {
-    if (msgID == null) {
-      msgID = 1;
-    }
-    this.playround_data.pauseInterval = true;
-    return display.show_msg(msgID);
-  };
-
-  Room.prototype.other = function(msgID) {
-    if (msgID == null) {
-      msgID = 1;
-    }
-    return display.show_other(msgID);
-  };
-
-  Room.prototype.replace = function(tile, tile_code) {
-    if (typeof tile === "string") {
-      tile = this.find(tile);
-    }
-    all_lvl.screen_data[this.room_number][tile] = tile_code;
-    return this.update(player.get_position());
-  };
-
-  Room.prototype.find = function(tile) {
-    if (__indexOf.call(this.screen_data, tile) >= 0) {
-      return this.screen_data.indexOf(tile);
+    if (this.room_number === 18) {
+      this.playround_data.belegro = "alive";
+      this.playround_data.belegro_position = 495;
+      return this.animation_interval = setInterval(((function(_this) {
+        return function() {
+          if (_this.playround_data.pauseInterval !== true) {
+            _this.playround_data.player_x = player.get_position() % 40;
+            _this.playround_data.player_y = Math.round(player.get_position() / 40);
+            _this.playround_data.belegro_x = _this.playround_data.belegro_position % 40;
+            _this.playround_data.belegro_y = Math.round(_this.playround_data.belegro_position / 40);
+            _this.playround_data.belegro_temp_position = 0;
+            if (_this.playround_data.belegro_x > _this.playround_data.player_x) {
+              if (_this.get_tile_at(_this.playround_data.belegro_position - 1) === "df" && _this.get_tile_at(_this.playround_data.belegro_position - 1 + 1 * 40) === "df" && _this.get_tile_at(_this.playround_data.belegro_position - 1 + 2 * 40) === "df") {
+                _this.playround_data.belegro_temp_position--;
+              }
+            }
+            if (_this.playround_data.belegro_x < _this.playround_data.player_x) {
+              if (_this.get_tile_at(_this.playround_data.belegro_position + 3) === "df" && _this.get_tile_at(_this.playround_data.belegro_position + 3 + 1 * 40) === "df" && _this.get_tile_at(_this.playround_data.belegro_position + 3 + 2 * 40) === "df") {
+                _this.playround_data.belegro_temp_position++;
+              }
+            }
+            if (_this.playround_data.belegro_y > _this.playround_data.player_y) {
+              if (_this.get_tile_at(_this.playround_data.belegro_position - 40) === "df" && _this.get_tile_at(_this.playround_data.belegro_position + 1 - 40) === "df" && _this.get_tile_at(_this.playround_data.belegro_position + 2 - 40) === "df") {
+                _this.playround_data.belegro_temp_position -= 40;
+              }
+            }
+            if (_this.playround_data.belegro_y < _this.playround_data.player_y) {
+              if (_this.get_tile_at(_this.playround_data.belegro_position + 120) === "df" && _this.get_tile_at(_this.playround_data.belegro_position + 1 + 120) === "df" && _this.get_tile_at(_this.playround_data.belegro_position + 2 + 120) === "df") {
+                _this.playround_data.belegro_temp_position += 40;
+              }
+            }
+            _this.playround_data.belegro_new_position = _this.playround_data.belegro_position + _this.playround_data.belegro_temp_position;
+            console.log(_this.get_tile_at(_this.playround_data.belegro_new_position + 0 + 0 * 40));
+            console.log(_this.get_tile_at(_this.playround_data.belegro_new_position + 1 + 0 * 40));
+            console.log(_this.get_tile_at(_this.playround_data.belegro_new_position + 2 + 0 * 40));
+            console.log(_this.get_tile_at(_this.playround_data.belegro_new_position + 0 + 2 * 40));
+            console.log(_this.get_tile_at(_this.playround_data.belegro_new_position + 1 + 2 * 40));
+            console.log(_this.get_tile_at(_this.playround_data.belegro_new_position + 2 + 2 * 40));
+            console.log("------------");
+            _this.replace(_this.playround_data.belegro_position + 0 + 0 * 40, "df");
+            _this.replace(_this.playround_data.belegro_position + 1 + 0 * 40, "df");
+            _this.replace(_this.playround_data.belegro_position + 2 + 0 * 40, "df");
+            _this.replace(_this.playround_data.belegro_position + 0 + 1 * 40, "df");
+            _this.replace(_this.playround_data.belegro_position + 1 + 1 * 40, "df");
+            _this.replace(_this.playround_data.belegro_position + 2 + 1 * 40, "df");
+            _this.replace(_this.playround_data.belegro_position + 0 + 2 * 40, "df");
+            _this.replace(_this.playround_data.belegro_position + 1 + 2 * 40, "df");
+            _this.replace(_this.playround_data.belegro_position + 2 + 2 * 40, "df");
+            _this.replace(_this.playround_data.belegro_new_position + 0 + 0 * 40, "9c");
+            _this.replace(_this.playround_data.belegro_new_position + 1 + 0 * 40, "9d");
+            _this.replace(_this.playround_data.belegro_new_position + 2 + 0 * 40, "9e");
+            _this.replace(_this.playround_data.belegro_new_position + 0 + 1 * 40, "9f");
+            _this.replace(_this.playround_data.belegro_new_position + 1 + 1 * 40, "a0");
+            _this.replace(_this.playround_data.belegro_new_position + 2 + 1 * 40, "a1");
+            _this.replace(_this.playround_data.belegro_new_position + 0 + 2 * 40, "a2");
+            _this.replace(_this.playround_data.belegro_new_position + 1 + 2 * 40, "a3");
+            _this.replace(_this.playround_data.belegro_new_position + 2 + 2 * 40, "a4");
+            _this.playround_data.belegro_position = _this.playround_data.belegro_new_position;
+            if (_this.screen_data[488 + _this.replace_x] === "93" || _this.screen_data[485 + _this.replace_x + 40 * 2] === "9b") {
+              clearInterval(_this.animation_interval);
+              return _this.die("Belegro", 27);
+            }
+          }
+        };
+      })(this)), 120);
     }
   };
 

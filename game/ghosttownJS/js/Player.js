@@ -32,11 +32,8 @@ Player = (function() {
     }
     if (direction === KEY.DOWN && room.check_room(KEY.DOWN)) {
       this.position += 40;
-      room.update(this.position);
+      return room.update(this.position);
     }
-    console.log("---------");
-    console.log(this.position + " : " + (this.position + 3));
-    return console.log((this.position + (3 * 40)) + " : " + (this.position + (3 * 40) + 3));
   };
 
   Player.prototype.add = function(item) {

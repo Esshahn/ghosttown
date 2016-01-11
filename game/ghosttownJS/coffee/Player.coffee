@@ -37,9 +37,9 @@ class Player
       room.update(@position)
 
     # display the top left, top right, bottom left, bottom right position of the player
-    console.log("---------")
-    console.log(@position + " : " + (@position+3))
-    console.log((@position+(3*40)) + " : " + (@position+(3*40)+3))
+    #console.log("---------")
+    #console.log(@position + " : " + (@position+3))
+    #console.log((@position+(3*40)) + " : " + (@position+(3*40)+3))
 
 #-------------------------------------------------------------------
 
