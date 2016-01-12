@@ -25,6 +25,9 @@ class Room
     @playround_data.coffin = @playround_data.coffin_all[ Math.floor( Math.random() * @playround_data.coffin_all.length )]
     @playround_data.coffin_hex = @playround_data.coffin.charCodeAt(0)-24 # turns ascii code into petscii code
 
+    # belegro should be alive
+    @playround_data.belegro_is_alive = true
+
 #-------------------------------------------------------------------
 
   reset : (@room_number) ->
@@ -334,9 +337,22 @@ class Room
 #   INIT ROOM 18 - BELEGRO
 #-------------------------------------------------------------------
 
-    if @room_number is 18
-      @playround_data.belegro = "alive"
-      @playround_data.belegro_position = 495
+    if @room_number is 18 and @playround_data.belegro_is_alive
+
+      @playround_data.belegro_position = 615
+
+      # clear belegro data if there is any
+      # after reentering the room and belegro
+      # wasnt killed
+      @replace("9c","df")
+      @replace("9d","df")
+      @replace("9e","df")
+      @replace("9f","df")
+      @replace("a0","df")
+      @replace("a1","df")
+      @replace("a2","df")
+      @replace("a3","df")
+      @replace("a4","df")
 
       @animation_interval = setInterval((=>
         if @playround_data.pauseInterval isnt true
@@ -352,83 +368,123 @@ class Room
           @playround_data.belegro_y = Math.round(@playround_data.belegro_position / 40)
 
           @playround_data.belegro_temp_position = 0
+          @playround_data.belegro_can_move = false
 
           # compare positions of player and belegro and make belegro move
           if @playround_data.belegro_x > @playround_data.player_x
-            if @get_tile_at(@playround_data.belegro_position - 1) is "df" and
-            @get_tile_at(@playround_data.belegro_position - 1 + 1*40) is "df" and
-            @get_tile_at(@playround_data.belegro_position - 1 + 2*40) is "df" 
               @playround_data.belegro_temp_position--
 
-          if @playround_data.belegro_x < @playround_data.player_x
-            if @get_tile_at(@playround_data.belegro_position + 3) is "df" and
-            @get_tile_at(@playround_data.belegro_position + 3 + 1*40) is "df" and
-            @get_tile_at(@playround_data.belegro_position + 3 + 2*40) is "df"  
+          if @playround_data.belegro_x < @playround_data.player_x 
               @playround_data.belegro_temp_position++
 
           if @playround_data.belegro_y > @playround_data.player_y
-            if @get_tile_at(@playround_data.belegro_position - 40) is "df" and
-            @get_tile_at(@playround_data.belegro_position + 1 - 40) is "df" and
-            @get_tile_at(@playround_data.belegro_position + 2 - 40) is "df"
               @playround_data.belegro_temp_position-= 40
 
-          if @playround_data.belegro_y < @playround_data.player_y
-            if @get_tile_at(@playround_data.belegro_position + 120) is "df" and
-            @get_tile_at(@playround_data.belegro_position + 1 + 120) is "df" and
-            @get_tile_at(@playround_data.belegro_position + 2 + 120) is "df"  
+          if @playround_data.belegro_y < @playround_data.player_y 
               @playround_data.belegro_temp_position+= 40
 
-          @playround_data.belegro_new_position = @playround_data.belegro_position + @playround_data.belegro_temp_position
+          # belegro position up
+          if @playround_data.belegro_temp_position is -40
+            if @get_tile_at(@playround_data.belegro_position - 1*40 + 0) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1*40 + 1) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1*40 + 2) is "df" 
+              @playround_data.belegro_can_move = true
+
+          # belegro postion up right
+          if @playround_data.belegro_temp_position is -39
+            if @get_tile_at(@playround_data.belegro_position - 1*40 + 1) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1*40 + 2) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1*40 + 3) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 0*40 + 3) is "df" and 
+            @get_tile_at(@playround_data.belegro_position + 1*40 + 3) is "df" 
+              @playround_data.belegro_can_move = true
+
+          # belegro position right
+          if @playround_data.belegro_temp_position is 1
+            if @get_tile_at(@playround_data.belegro_position + 3) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3 + 1*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3 + 2*40) is "df"
+              @playround_data.belegro_can_move = true
+
+          # belegro position right down todo
+          if @playround_data.belegro_temp_position is 41
+            if @get_tile_at(@playround_data.belegro_position + 3 + 1*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3 + 2*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3*40 + 1) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3*40 + 2) is "df" 
+              @playround_data.belegro_can_move = true
+
+          # belegro position down
+          if @playround_data.belegro_temp_position is 40
+            if @get_tile_at(@playround_data.belegro_position + 3*40 + 0) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3*40 + 1) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3*40 + 2) is "df" 
+              @playround_data.belegro_can_move = true
+
+          # belegro postion down left
+          if @playround_data.belegro_temp_position is 39
+            if @get_tile_at(@playround_data.belegro_position + 3*40 + 0) is "df" and
+            @get_tile_at(@playround_data.belegro_position + 3*40 + 1) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1 + 1*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1 + 2*40) is "df"
+              @playround_data.belegro_can_move = true
+
+          # belegro position left
+          if @playround_data.belegro_temp_position is -1
+            if @get_tile_at(@playround_data.belegro_position - 1 + 0*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1 + 1*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1 + 2*40) is "df"
+              @playround_data.belegro_can_move = true
+
+          # belegro position left up
+          if @playround_data.belegro_temp_position is -41
+            if @get_tile_at(@playround_data.belegro_position - 1 + 0*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1 + 1*40) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1*40 + 0) is "df" and
+            @get_tile_at(@playround_data.belegro_position - 1*40 + 1) is "df"
+              @playround_data.belegro_can_move = true
+
+          if @playround_data.belegro_can_move
+            @playround_data.belegro_new_position = @playround_data.belegro_position + @playround_data.belegro_temp_position
           
-          console.log @get_tile_at(@playround_data.belegro_new_position + 0 + 0*40)
-          console.log @get_tile_at(@playround_data.belegro_new_position + 1 + 0*40)
-          console.log @get_tile_at(@playround_data.belegro_new_position + 2 + 0*40)
-
-          console.log @get_tile_at(@playround_data.belegro_new_position + 0 + 2*40)
-          console.log @get_tile_at(@playround_data.belegro_new_position + 1 + 2*40)
-          console.log @get_tile_at(@playround_data.belegro_new_position + 2 + 2*40)
-
-          console.log "------------"
-
-          # has belegro moved? then first clear his old position
-    
-          @replace(@playround_data.belegro_position + 0 + 0*40,"df")
-          @replace(@playround_data.belegro_position + 1 + 0*40,"df")
-          @replace(@playround_data.belegro_position + 2 + 0*40,"df")
-          @replace(@playround_data.belegro_position + 0 + 1*40,"df")
-          @replace(@playround_data.belegro_position + 1 + 1*40,"df")
-          @replace(@playround_data.belegro_position + 2 + 1*40,"df")
-          @replace(@playround_data.belegro_position + 0 + 2*40,"df")
-          @replace(@playround_data.belegro_position + 1 + 2*40,"df")
-          @replace(@playround_data.belegro_position + 2 + 2*40,"df")
+            # has belegro moved? then first clear his old position
+            @replace(@playround_data.belegro_position + 0 + 0*40,"df")
+            @replace(@playround_data.belegro_position + 1 + 0*40,"df")
+            @replace(@playround_data.belegro_position + 2 + 0*40,"df")
+            @replace(@playround_data.belegro_position + 0 + 1*40,"df")
+            @replace(@playround_data.belegro_position + 1 + 1*40,"df")
+            @replace(@playround_data.belegro_position + 2 + 1*40,"df")
+            @replace(@playround_data.belegro_position + 0 + 2*40,"df")
+            @replace(@playround_data.belegro_position + 1 + 2*40,"df")
+            @replace(@playround_data.belegro_position + 2 + 2*40,"df")
             
-          # place Belegro
-          # 9c 9d 9e
-          # 9f a0 a1
-          # a2 a3 a4
-          @replace(@playround_data.belegro_new_position + 0 + 0*40,"9c")
-          @replace(@playround_data.belegro_new_position + 1 + 0*40,"9d")
-          @replace(@playround_data.belegro_new_position + 2 + 0*40,"9e")
-          @replace(@playround_data.belegro_new_position + 0 + 1*40,"9f")
-          @replace(@playround_data.belegro_new_position + 1 + 1*40,"a0")
-          @replace(@playround_data.belegro_new_position + 2 + 1*40,"a1")
-          @replace(@playround_data.belegro_new_position + 0 + 2*40,"a2")
-          @replace(@playround_data.belegro_new_position + 1 + 2*40,"a3")
-          @replace(@playround_data.belegro_new_position + 2 + 2*40,"a4")
+            # place Belegro
+            # 9c 9d 9e
+            # 9f a0 a1
+            # a2 a3 a4
+            @replace(@playround_data.belegro_new_position + 0 + 0*40,"9c")
+            @replace(@playround_data.belegro_new_position + 1 + 0*40,"9d")
+            @replace(@playround_data.belegro_new_position + 2 + 0*40,"9e")
+            @replace(@playround_data.belegro_new_position + 0 + 1*40,"9f")
+            @replace(@playround_data.belegro_new_position + 1 + 1*40,"a0")
+            @replace(@playround_data.belegro_new_position + 2 + 1*40,"a1")
+            @replace(@playround_data.belegro_new_position + 0 + 2*40,"a2")
+            @replace(@playround_data.belegro_new_position + 1 + 2*40,"a3")
+            @replace(@playround_data.belegro_new_position + 2 + 2*40,"a4")
     
-          @playround_data.belegro_position = @playround_data.belegro_new_position
-
+            @playround_data.belegro_position = @playround_data.belegro_new_position
 
           # collision check
-          # first check for the right side of the monster
-          # and compare with the left side of the player
+          if Math.abs(@playround_data.belegro_x - @playround_data.player_x) in [0,1,2,3] and
+          Math.abs(@playround_data.belegro_y - @playround_data.player_y) in [0,1,2,3]
+            if "sword" in player.inventory
+              clearInterval @animation_interval
+              @playround_data.belegro_is_alive = false
+              ui_log("You killed Belegro!","green")
+            else
+              @die("belegro",27)
           
-          if @screen_data[488+@replace_x] is "93" or
-          @screen_data[485+@replace_x+40*2] is "9b"
-            clearInterval @animation_interval
-            @die("Belegro",27)
-          
-        ), 120)
+        ), 110)
 
 
 
@@ -921,10 +977,8 @@ class Room
       # has the player reached the criticial position 
       # when the boulder should start moving?
       if player.position is 264
-        # and the boulder hasn't been moving before?
-        if @screen_data[270] is "78"
-          # and is Belegro already dead (he needs to)?
-          #if @playround_data.belegro is "dead"
+        # and the boulder hasn't been moving before and belegro is dead
+        if @screen_data[270] is "78" and not @playround_data.belegro_is_alive
           @trigger = 0
           @animation_interval = setInterval((=>
             
@@ -932,7 +986,7 @@ class Room
               
               @trigger++
               
-              # move the bolder
+              # move the boulder
               # top row
               @replace(270+0*40-@trigger,"78") 
               @replace(271+0*40-@trigger,"79")
@@ -952,7 +1006,20 @@ class Room
               @replace(273+2*40-@trigger,"df")
 
               if @trigger > 26
-                clearInterval @animation_interval                            
+                clearInterval @animation_interval  
+
+              # get the x and y position of the player in the matrix
+              @playround_data.player_x = player.get_position() % 40
+              @playround_data.player_y = Math.round(player.get_position() / 40)
+              
+              # get the x and y position of the boulder in the matrix
+              @playround_data.boulder_x = (270 - @trigger) % 40
+              @playround_data.boulder_y = Math.round((270 - @trigger) / 40)
+
+              # collision check
+              if Math.abs(@playround_data.boulder_x - @playround_data.player_x) in [0,1,2] and
+              Math.abs(@playround_data.boulder_y - @playround_data.player_y) in [0,1,2]
+                @die("boulder",28)                          
           ), 60)
 
 
