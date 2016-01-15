@@ -109,7 +109,7 @@ class Display
 #-------------------------------------------------------------------
 
   show_msg : (msg_number, charset = charset_hint) ->
-    
+
     @renderer.backgroundColor = COLOR_RED
     @screen.mask = @maskFull
 
@@ -123,7 +123,7 @@ class Display
 
 #-------------------------------------------------------------------
 
-  show_other : (msg_number, charset = charset_other) ->
+  show_other : (msg_number, charset = charset_commodore) ->
     
     @renderer.backgroundColor = COLOR_YELLOW
     @screen.mask = @maskFull

@@ -80,9 +80,9 @@ class Room
 
 #-------------------------------------------------------------------
 
-  msg : (msgID = 1) ->
+  msg : (msgID = 1, charset) ->
     @playround_data.pauseInterval = true
-    display.show_msg(msgID)
+    display.show_msg(msgID, charset)
 
 #-------------------------------------------------------------------
 
@@ -959,6 +959,10 @@ class Room
 #-------------------------------------------------------------------
 
     if @room_number is 17
+
+      # BOTTLE 
+      if "bb" in new_position or "b9" in new_position
+        @msg(30,charset_commodore_green)
  
       # LEFT PRISON CELL
       if "f4" in new_position

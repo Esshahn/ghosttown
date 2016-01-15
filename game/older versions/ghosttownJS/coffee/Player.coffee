@@ -37,23 +37,25 @@ class Player
       room.update(@position)
 
     # display the top left, top right, bottom left, bottom right position of the player
-    console.log("---------")
-    console.log(@position + " : " + (@position+3))
-    console.log((@position+(3*40)) + " : " + (@position+(3*40)+3))
+    #console.log("---------")
+    #console.log(@position + " : " + (@position+3))
+    #console.log((@position+(3*40)) + " : " + (@position+(3*40)+3))
 
 #-------------------------------------------------------------------
 
   add : (item) ->
-    @inventory.push(item)
-    ui_inventory(@inventory)
-    ui_log("You picked up a <b>"+item+"</b>","green")
+    if item not in @inventory
+      @inventory.push(item)
+      ui_inventory(@inventory)
+      ui_log("You picked up a <b>"+item+"</b>","green")
 
 #-------------------------------------------------------------------
   
   remove : (item) ->
-    @inventory.splice(@inventory.indexOf(item),1)
-    ui_inventory(@inventory)
-    ui_log("You dropped the <b>"+item+"</b>","green")
+    if item in @inventory
+      @inventory.splice(@inventory.indexOf(item),1)
+      ui_inventory(@inventory)
+      ui_log("You dropped the <b>"+item+"</b>","green")
 
 #-------------------------------------------------------------------
 

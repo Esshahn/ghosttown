@@ -67,12 +67,12 @@ Room = (function() {
     return display.show_death(msgID);
   };
 
-  Room.prototype.msg = function(msgID) {
+  Room.prototype.msg = function(msgID, charset) {
     if (msgID == null) {
       msgID = 1;
     }
     this.playround_data.pauseInterval = true;
-    return display.show_msg(msgID);
+    return display.show_msg(msgID, charset);
   };
 
   Room.prototype.other = function(msgID) {
@@ -649,6 +649,9 @@ Room = (function() {
       }
     }
     if (this.room_number === 17) {
+      if (indexOf.call(new_position, "bb") >= 0 || indexOf.call(new_position, "b9") >= 0) {
+        this.msg(30, charset_commodore_green);
+      }
       if (indexOf.call(new_position, "f4") >= 0) {
         this.die('starving', 21);
       }

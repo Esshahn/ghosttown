@@ -12,6 +12,7 @@ class BinaryImport
   constructor: (@binary_type = "lvl") -> 
 
     @screen_data = []
+    @screen_data_copy = []
 
 #-------------------------------------------------------------------
 #   first we need to setup the different possible binary types
@@ -25,7 +26,7 @@ class BinaryImport
       @file_path = 'data/lvl/lvl-'
 
     if @binary_type is "msg"
-      @amount_of_files_to_load = 25
+      @amount_of_files_to_load = 30
       @file_path = 'data/msg/msg-'
 
     if @binary_type is "other"
@@ -39,7 +40,6 @@ class BinaryImport
       # enforce 2 digits, so 1 becomes 01, 2 becomes 02 etc
       filename = ('0' + i).slice(-2)
       @screen_data[i] = @import_screen_data(filename)
-
 
 
   import_screen_data: (filename) ->

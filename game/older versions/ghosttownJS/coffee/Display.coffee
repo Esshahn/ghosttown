@@ -71,17 +71,17 @@ class Display
     @bg_blue.drawRect 0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR , (SCREEN_HEIGHT - 8) * SCALE_FACTOR 
     @bg_blue.endFill()
 
+    @bg_yellow = new (PIXI.Graphics)
+    @bg_yellow.beginFill(COLOR_YELLOW)
+    @bg_yellow.drawRect 0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR , (SCREEN_HEIGHT - 8) * SCALE_FACTOR 
+    @bg_yellow.endFill()
 
+#-------------------------------------------------------------------
 
   show_data : (charset = charset_game) ->
 
     @renderer.backgroundColor = COLOR_RED
     @screen.mask = @maskGame
-
-    # will need to get more sophisticated, especially when parsing level data like object to show
-    level_sprites = []
-    xpos = 0
-    ypos = 0
 
     @level_data = room.get()
 
@@ -89,28 +89,14 @@ class Display
     @clear()
     # then draw the background
     @screen.addChild @bg_black
+    @create_level_data(@level_data,charset)
 
-    # and finally the level data
-    i = 0
-    while i < @level_data.length
-      level_sprites[i] = new (PIXI.Sprite)(charset[@level_data[i]])
-      if xpos >= SCREEN_WIDTH
-        xpos = 0
-        ypos += 8
-      level_sprites[i].position.x = xpos
-      level_sprites[i].position.y = ypos
-      @screen.addChild level_sprites[i]
-      xpos += 8
-      i++
-
+#-------------------------------------------------------------------
 
   show_death : (msg_number, charset = charset_commodore) ->
+    
     @renderer.backgroundColor = COLOR_BLUE
     @screen.mask = @maskFull
-
-    level_sprites = []
-    xpos = 0
-    ypos = 0
 
     @level_data = all_msg.screen_data[msg_number]
 
@@ -118,27 +104,14 @@ class Display
     @clear()
     # then draw the background
     @screen.addChild @bg_blue
+    @create_level_data(@level_data,charset)
 
-    # and finally the level data
-    i = 0
-    while i < @level_data.length
-      level_sprites[i] = new (PIXI.Sprite)(charset[@level_data[i]])
-      if xpos >= SCREEN_WIDTH
-        xpos = 0
-        ypos += 8
-      level_sprites[i].position.x = xpos
-      level_sprites[i].position.y = ypos
-      @screen.addChild level_sprites[i]
-      xpos += 8
-      i++
+#-------------------------------------------------------------------
 
   show_msg : (msg_number, charset = charset_hint) ->
+    
     @renderer.backgroundColor = COLOR_RED
     @screen.mask = @maskFull
-
-    level_sprites = []
-    xpos = 0
-    ypos = 0
 
     @level_data = all_msg.screen_data[msg_number]
 
@@ -146,6 +119,30 @@ class Display
     @clear()
     # then draw the background
     @screen.addChild @bg_black
+    @create_level_data(@level_data,charset)
+
+#-------------------------------------------------------------------
+
+  show_other : (msg_number, charset = charset_other) ->
+    
+    @renderer.backgroundColor = COLOR_YELLOW
+    @screen.mask = @maskFull
+
+    @level_data = all_other.screen_data[msg_number]
+
+    # clear the screen
+    @clear()
+    # then draw the background
+    @screen.addChild @bg_yellow
+    @create_level_data(@level_data,charset)
+
+#-------------------------------------------------------------------
+
+  create_level_data : (@level_data, charset)->
+
+    level_sprites = []
+    xpos = 0
+    ypos = 0
 
     # and finally the level data
     i = 0
@@ -160,6 +157,7 @@ class Display
       xpos += 8
       i++
 
+#-------------------------------------------------------------------
 
   clear : ->
 
@@ -172,7 +170,7 @@ class Display
       @screen.removeChild @screen.children[i]
       i--
 
-
+#-------------------------------------------------------------------
 
   renderloop : =>
 
