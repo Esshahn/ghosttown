@@ -14,7 +14,7 @@ KeyboardController = (keys, repeat) ->
   timers = {}
   # When key is pressed and we don't already think it's pressed, call the
   # key action callback and set a timer to generate another one after a delay
-  #
+  
 
   document.onkeydown = (event) ->
     key = (event or window.event).keyCode
@@ -28,7 +28,7 @@ KeyboardController = (keys, repeat) ->
     false
 
   # Cancel timeout and mark key as released on keyup
-  #
+
 
   document.onkeyup = (event) ->
     key = (event or window.event).keyCode
@@ -40,7 +40,7 @@ KeyboardController = (keys, repeat) ->
 
   # When window is unfocused we may not get key events. To prevent this
   # causing a key to 'get stuck down', cancel all held keys
-  #
+
 
   window.onblur = ->
     for key of timers
@@ -49,7 +49,7 @@ KeyboardController = (keys, repeat) ->
     timers = {}
     return
 
-  return
+
 
 
 KEY = 

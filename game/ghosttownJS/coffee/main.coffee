@@ -15,8 +15,7 @@ init = ->
 
 init_game = ->
 
-  # Arrow key movement
-  KeyboardController {
+  keymapping = 
     37: ->
       player.set_position(37)
       return
@@ -32,7 +31,10 @@ init_game = ->
     32: ->      
       room.check_spacebar_event()
       return
-  }, 60
+  
+  # Arrow key movement
+  KeyboardController keymapping, 60
+
 
   # load in the charmap
   chars_game_tx            = new (PIXI.Texture.fromImage)('img/chars.png')

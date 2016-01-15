@@ -367,7 +367,7 @@ Room = (function() {
   };
 
   Room.prototype.check_room = function(direction) {
-    var new_position, new_room;
+    var keymapping_codenumber, new_position, new_room;
     new_position = [];
     if (direction === KEY.LEFT) {
       new_position = [this.screen_data[player.position + 0 * 40 - 1], this.screen_data[player.position + 1 * 40 - 1], this.screen_data[player.position + 2 * 40 - 1]];
@@ -659,18 +659,41 @@ Room = (function() {
     }
     if (this.room_number === 17) {
       if (indexOf.call(new_position, "bb") >= 0 || indexOf.call(new_position, "b9") >= 0) {
-        this.msg(30, charset_commodore_green);
         this.trigger = 1;
+        this.alphabet_pos = 441;
+        this.codenumber_pos = 392;
+        keymapping_codenumber = {
+          37: function() {
+            console.log("faggot party");
+          },
+          38: function() {
+            player.set_position(38);
+          },
+          39: function() {
+            player.set_position(39);
+          },
+          40: function() {
+            player.set_position(40);
+          },
+          32: function() {
+            room.check_spacebar_event();
+          }
+        };
+        KeyboardController(keymapping_codenumber, 120);
         this.animation_interval = setInterval(((function(_this) {
           return function() {
             _this.trigger = _this.trigger * -1;
+            _this.current_char = all_msg.screen_data[30][_this.alphabet_pos];
             if (_this.trigger === 1) {
-              return _this.screen_data[40] = "a9";
+              all_msg.screen_data[30][_this.codenumber_pos] = "60";
+              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_char) - 128).toString(16);
             } else {
-              return _this.screen_data[40] = "df";
+              all_msg.screen_data[30][_this.codenumber_pos] = "e0";
+              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_char) + 128).toString(16);
             }
+            return _this.msg(30, charset_commodore_green);
           };
-        })(this)), 60);
+        })(this)), 120);
       }
       if (indexOf.call(new_position, "f4") >= 0) {
         this.die('starving', 21);

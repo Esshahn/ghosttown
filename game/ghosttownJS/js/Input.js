@@ -34,7 +34,7 @@ KeyboardController = function(keys, repeat) {
       delete timers[key];
     }
   };
-  window.onblur = function() {
+  return window.onblur = function() {
     var key;
     for (key in timers) {
       if (timers[key] !== null) {

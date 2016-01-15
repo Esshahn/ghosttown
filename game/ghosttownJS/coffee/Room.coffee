@@ -975,18 +975,44 @@ class Room
 
       # BOTTLE 
       if "bb" in new_position or "b9" in new_position
-        @msg(30,charset_commodore_green)
+        
         @trigger = 1
+        @alphabet_pos = 441
+        @codenumber_pos = 392
+
+        keymapping_codenumber = 
+          37: ->
+            console.log ("faggot party")
+            return
+          38: ->
+            player.set_position(38)
+            return
+          39: ->
+            player.set_position(39)
+            return
+          40: ->
+            player.set_position(40)
+            return
+          32: ->      
+            room.check_spacebar_event()
+            return
+        
+        KeyboardController keymapping_codenumber, 120
+
         @animation_interval = setInterval((=>
-          
             @trigger = @trigger * -1
-            
+            @current_char = all_msg.screen_data[30][@alphabet_pos]
+
             if @trigger is 1
-              @screen_data[40] = "a9"
+              all_msg.screen_data[30][@codenumber_pos] = "60"
+              all_msg.screen_data[30][@alphabet_pos] = (parseInt("0x"+@current_char)-128).toString(16)
             else
-              @screen_data[40] = "df"
-                          
-        ), 60)     
+              all_msg.screen_data[30][@codenumber_pos] = "e0"
+              all_msg.screen_data[30][@alphabet_pos] = (parseInt("0x"+@current_char)+128).toString(16)
+
+            @msg(30,charset_commodore_green)   
+
+        ), 120)     
  
       # LEFT PRISON CELL
       if "f4" in new_position

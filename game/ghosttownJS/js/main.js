@@ -15,8 +15,8 @@ init = function() {
 };
 
 init_game = function() {
-  var chars_commodore_green_tx, chars_commodore_tx, chars_game_tx, chars_hint_tx;
-  KeyboardController({
+  var chars_commodore_green_tx, chars_commodore_tx, chars_game_tx, chars_hint_tx, keymapping;
+  keymapping = {
     37: function() {
       player.set_position(37);
     },
@@ -32,7 +32,8 @@ init_game = function() {
     32: function() {
       room.check_spacebar_event();
     }
-  }, 60);
+  };
+  KeyboardController(keymapping, 60);
   chars_game_tx = new PIXI.Texture.fromImage('img/chars.png');
   this.charset_game = new Generate_charset(chars_game_tx, 8, 8, 16, 16);
   chars_commodore_tx = new PIXI.Texture.fromImage('img/chars-commodore.png');
