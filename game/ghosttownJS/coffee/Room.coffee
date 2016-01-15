@@ -42,6 +42,7 @@ class Room
     @screen_data = clone(all_lvl.screen_data[@room_number])
 
     @insert_player(position)
+    @playround_data.gamestate = "game"
     display.show_data()
 
     # this makes sure animations are played
@@ -76,12 +77,14 @@ class Room
   die : (deathID,msgID = 1) ->
     ui_log("You would have died by the <b>"+deathID+"</b>", "red")
     clearInterval @animation_interval
+    @playround_data.gamestate = "die"
     display.show_death(msgID)
 
 #-------------------------------------------------------------------
 
   msg : (msgID = 1, charset) ->
     @playround_data.pauseInterval = true
+    @playround_data.gamestate = "msg"
     display.show_msg(msgID, charset)
 
 #-------------------------------------------------------------------
@@ -115,7 +118,16 @@ class Room
 
 #-------------------------------------------------------------------
 
+  check_spacebar_event : ->
+    # checks what the spacebar key should actually do
+    # game states can be "die", "msg" and "game"
+    # another dirty hack
 
+    if @playround_data.gamestate is "msg"
+      @update(player.get_position())
+
+
+#-------------------------------------------------------------------
 
 
 
@@ -145,6 +157,7 @@ class Room
     @room_info = levels_config[@room_number]
     player.position = @room_info.playerpos1 if player_entry_pos == "forward"
     player.position = @room_info.playerpos2 if player_entry_pos == "back"
+
     @update(player.position)
 
 #-------------------------------------------------------------------
@@ -963,6 +976,17 @@ class Room
       # BOTTLE 
       if "bb" in new_position or "b9" in new_position
         @msg(30,charset_commodore_green)
+        @trigger = 1
+        @animation_interval = setInterval((=>
+          
+            @trigger = @trigger * -1
+            
+            if @trigger is 1
+              @screen_data[40] = "a9"
+            else
+              @screen_data[40] = "df"
+                          
+        ), 60)     
  
       # LEFT PRISON CELL
       if "f4" in new_position

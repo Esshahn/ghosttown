@@ -29,6 +29,9 @@ init_game = ->
     40: ->
       player.set_position(40)
       return
+    32: ->      
+      room.check_spacebar_event()
+      return
   }, 60
 
   # load in the charmap

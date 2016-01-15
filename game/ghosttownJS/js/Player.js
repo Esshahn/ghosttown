@@ -18,21 +18,23 @@ Player = (function() {
   };
 
   Player.prototype.set_position = function(direction) {
-    if (direction === KEY.LEFT && room.check_room(KEY.LEFT)) {
-      this.position -= 1;
-      room.update(this.position);
-    }
-    if (direction === KEY.RIGHT && room.check_room(KEY.RIGHT)) {
-      this.position += 1;
-      room.update(this.position);
-    }
-    if (direction === KEY.UP && room.check_room(KEY.UP)) {
-      this.position -= 40;
-      room.update(this.position);
-    }
-    if (direction === KEY.DOWN && room.check_room(KEY.DOWN)) {
-      this.position += 40;
-      return room.update(this.position);
+    if (room.playround_data.gamestate === "game") {
+      if (direction === KEY.LEFT && room.check_room(KEY.LEFT)) {
+        this.position -= 1;
+        room.update(this.position);
+      }
+      if (direction === KEY.RIGHT && room.check_room(KEY.RIGHT)) {
+        this.position += 1;
+        room.update(this.position);
+      }
+      if (direction === KEY.UP && room.check_room(KEY.UP)) {
+        this.position -= 40;
+        room.update(this.position);
+      }
+      if (direction === KEY.DOWN && room.check_room(KEY.DOWN)) {
+        this.position += 40;
+        return room.update(this.position);
+      }
     }
   };
 

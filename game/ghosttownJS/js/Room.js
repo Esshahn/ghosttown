@@ -33,6 +33,7 @@ Room = (function() {
     }
     this.screen_data = clone(all_lvl.screen_data[this.room_number]);
     this.insert_player(position);
+    this.playround_data.gamestate = "game";
     display.show_data();
     this.playround_data.pauseInterval = false;
     msg = 'Room ' + this.room_number + ' "' + this.room_info.name + '"';
@@ -64,6 +65,7 @@ Room = (function() {
     }
     ui_log("You would have died by the <b>" + deathID + "</b>", "red");
     clearInterval(this.animation_interval);
+    this.playround_data.gamestate = "die";
     return display.show_death(msgID);
   };
 
@@ -72,6 +74,7 @@ Room = (function() {
       msgID = 1;
     }
     this.playround_data.pauseInterval = true;
+    this.playround_data.gamestate = "msg";
     return display.show_msg(msgID, charset);
   };
 
@@ -98,6 +101,12 @@ Room = (function() {
 
   Room.prototype.get_tile_at = function(tile) {
     return this.screen_data[tile];
+  };
+
+  Room.prototype.check_spacebar_event = function() {
+    if (this.playround_data.gamestate === "msg") {
+      return this.update(player.get_position());
+    }
   };
 
   Room.prototype.set = function(room_number1, player_entry_pos) {
@@ -651,6 +660,17 @@ Room = (function() {
     if (this.room_number === 17) {
       if (indexOf.call(new_position, "bb") >= 0 || indexOf.call(new_position, "b9") >= 0) {
         this.msg(30, charset_commodore_green);
+        this.trigger = 1;
+        this.animation_interval = setInterval(((function(_this) {
+          return function() {
+            _this.trigger = _this.trigger * -1;
+            if (_this.trigger === 1) {
+              return _this.screen_data[40] = "a9";
+            } else {
+              return _this.screen_data[40] = "df";
+            }
+          };
+        })(this)), 60);
       }
       if (indexOf.call(new_position, "f4") >= 0) {
         this.die('starving', 21);

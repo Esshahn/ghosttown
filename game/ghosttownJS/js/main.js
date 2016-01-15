@@ -28,6 +28,9 @@ init_game = function() {
     },
     40: function() {
       player.set_position(40);
+    },
+    32: function() {
+      room.check_spacebar_event();
     }
   }, 60);
   chars_game_tx = new PIXI.Texture.fromImage('img/chars.png');
