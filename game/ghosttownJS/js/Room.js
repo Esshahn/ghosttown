@@ -659,37 +659,52 @@ Room = (function() {
     }
     if (this.room_number === 17) {
       if (indexOf.call(new_position, "bb") >= 0 || indexOf.call(new_position, "b9") >= 0) {
+        this.screen_data_clone = clone(all_msg.screen_data[30]);
         this.trigger = 1;
         this.alphabet_pos = 441;
         this.codenumber_pos = 392;
+        this.codeword = "";
         keymapping_codenumber = {
-          37: function() {
-            console.log("faggot party");
-          },
-          38: function() {
-            player.set_position(38);
-          },
-          39: function() {
-            player.set_position(39);
-          },
-          40: function() {
-            player.set_position(40);
-          },
-          32: function() {
-            room.check_spacebar_event();
-          }
+          37: (function(_this) {
+            return function() {
+              if (_this.alphabet_pos > 441) {
+                all_msg.screen_data[30][_this.alphabet_pos] = _this.screen_data_clone[_this.alphabet_pos];
+                _this.alphabet_pos -= 1;
+                _this.trigger = 1;
+              }
+            };
+          })(this),
+          39: (function(_this) {
+            return function() {
+              if (_this.alphabet_pos < 478) {
+                all_msg.screen_data[30][_this.alphabet_pos] = _this.screen_data_clone[_this.alphabet_pos];
+                _this.alphabet_pos += 1;
+                _this.trigger = 1;
+              }
+            };
+          })(this),
+          32: (function(_this) {
+            return function() {
+              if (_this.codenumber_pos < 397) {
+                all_msg.screen_data[30][_this.codenumber_pos] = _this.screen_data_clone[_this.alphabet_pos];
+                _this.codenumber_pos += 1;
+                _this.trigger = 1;
+              }
+            };
+          })(this)
         };
         KeyboardController(keymapping_codenumber, 120);
         this.animation_interval = setInterval(((function(_this) {
           return function() {
             _this.trigger = _this.trigger * -1;
-            _this.current_char = all_msg.screen_data[30][_this.alphabet_pos];
+            _this.current_alphabet = all_msg.screen_data[30][_this.alphabet_pos];
+            _this.current_code = all_msg.screen_data[30][_this.codenumber_pos];
             if (_this.trigger === 1) {
-              all_msg.screen_data[30][_this.codenumber_pos] = "60";
-              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_char) - 128).toString(16);
+              all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) - 128).toString(16);
+              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) - 128).toString(16);
             } else {
-              all_msg.screen_data[30][_this.codenumber_pos] = "e0";
-              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_char) + 128).toString(16);
+              all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) + 128).toString(16);
+              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) + 128).toString(16);
             }
             return _this.msg(30, charset_commodore_green);
           };

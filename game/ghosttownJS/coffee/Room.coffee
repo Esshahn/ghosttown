@@ -975,40 +975,52 @@ class Room
 
       # BOTTLE 
       if "bb" in new_position or "b9" in new_position
-        
-        @trigger = 1
-        @alphabet_pos = 441
-        @codenumber_pos = 392
 
+        # copy the screen data for restoring the alphabet when the cursor moves
+        @screen_data_clone = clone (all_msg.screen_data[30])
+
+        @trigger        = 1
+        @alphabet_pos   = 441
+        @codenumber_pos = 392
+        @codeword       = ""
+
+        # special keyboard controls for this screen
         keymapping_codenumber = 
-          37: ->
-            console.log ("faggot party")
+          37: =>
+            # cursor left
+            if @alphabet_pos > 441
+              all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
+              @alphabet_pos -= 1
+              @trigger = 1
             return
-          38: ->
-            player.set_position(38)
+          39: =>
+            # cursor right
+            if @alphabet_pos < 478
+              all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
+              @alphabet_pos += 1
+              @trigger = 1
             return
-          39: ->
-            player.set_position(39)
-            return
-          40: ->
-            player.set_position(40)
-            return
-          32: ->      
-            room.check_spacebar_event()
+          32: => 
+            # spacebar
+            if @codenumber_pos < 397
+              all_msg.screen_data[30][@codenumber_pos] = @screen_data_clone[@alphabet_pos]   
+              @codenumber_pos += 1
+              @trigger = 1
             return
         
         KeyboardController keymapping_codenumber, 120
 
         @animation_interval = setInterval((=>
-            @trigger = @trigger * -1
-            @current_char = all_msg.screen_data[30][@alphabet_pos]
+            @trigger          = @trigger * -1
+            @current_alphabet = all_msg.screen_data[30][@alphabet_pos]
+            @current_code     = all_msg.screen_data[30][@codenumber_pos]
 
             if @trigger is 1
-              all_msg.screen_data[30][@codenumber_pos] = "60"
-              all_msg.screen_data[30][@alphabet_pos] = (parseInt("0x"+@current_char)-128).toString(16)
+              all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)-128).toString(16)
+              all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)-128).toString(16)
             else
-              all_msg.screen_data[30][@codenumber_pos] = "e0"
-              all_msg.screen_data[30][@alphabet_pos] = (parseInt("0x"+@current_char)+128).toString(16)
+              all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)+128).toString(16)
+              all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)+128).toString(16)
 
             @msg(30,charset_commodore_green)   
 
