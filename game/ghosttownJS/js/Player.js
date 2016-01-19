@@ -18,6 +18,7 @@ Player = (function() {
   };
 
   Player.prototype.set_position = function(direction) {
+    console.log(direction);
     if (room.playround_data.gamestate === "game") {
       if (direction === KEY.LEFT && room.check_room(KEY.LEFT)) {
         this.position -= 1;

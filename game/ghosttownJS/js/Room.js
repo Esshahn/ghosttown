@@ -367,7 +367,7 @@ Room = (function() {
   };
 
   Room.prototype.check_room = function(direction) {
-    var keymapping_codenumber, new_position, new_room;
+    var new_position, new_room;
     new_position = [];
     if (direction === KEY.LEFT) {
       new_position = [this.screen_data[player.position + 0 * 40 - 1], this.screen_data[player.position + 1 * 40 - 1], this.screen_data[player.position + 2 * 40 - 1]];
@@ -480,8 +480,7 @@ Room = (function() {
       }
       if (indexOf.call(new_position, "f6") >= 0 && indexOf.call(new_position, "06") >= 0 && indexOf.call(new_position, "09") >= 0) {
         if (indexOf.call(player.inventory, "coffin key") >= 0) {
-          new_room = this.room_number + 1;
-          this.set(new_room, "forward");
+          this.set(this.room_number + 1, "forward");
         }
       }
     }
@@ -659,56 +658,90 @@ Room = (function() {
     }
     if (this.room_number === 17) {
       if (indexOf.call(new_position, "bb") >= 0 || indexOf.call(new_position, "b9") >= 0) {
-        this.screen_data_clone = clone(all_msg.screen_data[30]);
-        this.trigger = 1;
-        this.alphabet_pos = 441;
-        this.codenumber_pos = 392;
-        this.codeword = "";
-        keymapping_codenumber = {
-          37: (function(_this) {
+        if (this.only_call_once == null) {
+          this.only_call_once = true;
+          this.screen_data_clone = clone(all_msg.screen_data[30]);
+          this.trigger = 1;
+          this.alphabet_pos = 441;
+          this.codenumber_pos = 392;
+          this.animation_interval = setInterval(((function(_this) {
             return function() {
-              if (_this.alphabet_pos > 441) {
-                all_msg.screen_data[30][_this.alphabet_pos] = _this.screen_data_clone[_this.alphabet_pos];
-                _this.alphabet_pos -= 1;
-                _this.trigger = 1;
+              _this.trigger = _this.trigger * -1;
+              _this.current_alphabet = all_msg.screen_data[30][_this.alphabet_pos];
+              _this.current_code = all_msg.screen_data[30][_this.codenumber_pos];
+              if (_this.trigger === 1) {
+                all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) - 128).toString(16);
+                all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) - 128).toString(16);
+              } else {
+                all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) + 128).toString(16);
+                all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) + 128).toString(16);
               }
+              return _this.msg(30, charset_commodore_green);
             };
-          })(this),
-          39: (function(_this) {
-            return function() {
-              if (_this.alphabet_pos < 478) {
-                all_msg.screen_data[30][_this.alphabet_pos] = _this.screen_data_clone[_this.alphabet_pos];
-                _this.alphabet_pos += 1;
-                _this.trigger = 1;
-              }
-            };
-          })(this),
-          32: (function(_this) {
-            return function() {
-              if (_this.codenumber_pos < 397) {
-                all_msg.screen_data[30][_this.codenumber_pos] = _this.screen_data_clone[_this.alphabet_pos];
-                _this.codenumber_pos += 1;
-                _this.trigger = 1;
-              }
-            };
-          })(this)
-        };
-        KeyboardController(keymapping_codenumber, 120);
-        this.animation_interval = setInterval(((function(_this) {
-          return function() {
-            _this.trigger = _this.trigger * -1;
-            _this.current_alphabet = all_msg.screen_data[30][_this.alphabet_pos];
-            _this.current_code = all_msg.screen_data[30][_this.codenumber_pos];
-            if (_this.trigger === 1) {
-              all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) - 128).toString(16);
-              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) - 128).toString(16);
-            } else {
-              all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) + 128).toString(16);
-              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) + 128).toString(16);
-            }
-            return _this.msg(30, charset_commodore_green);
+          })(this)), 80);
+          this.keymapping_codenumber = {
+            37: (function(_this) {
+              return function() {
+                if (_this.alphabet_pos > 441) {
+                  all_msg.screen_data[30][_this.alphabet_pos] = _this.screen_data_clone[_this.alphabet_pos];
+                  _this.alphabet_pos -= 1;
+                  _this.trigger = 1;
+                }
+              };
+            })(this),
+            39: (function(_this) {
+              return function() {
+                if (_this.alphabet_pos < 478) {
+                  all_msg.screen_data[30][_this.alphabet_pos] = _this.screen_data_clone[_this.alphabet_pos];
+                  _this.alphabet_pos += 1;
+                  _this.trigger = 1;
+                }
+              };
+            })(this),
+            32: (function(_this) {
+              return function() {
+                if (_this.codenumber_pos < 397 && _this.alphabet_pos < 478) {
+                  all_msg.screen_data[30][_this.codenumber_pos] = _this.screen_data_clone[_this.alphabet_pos];
+                  _this.codenumber_pos += 1;
+                  _this.trigger = 1;
+                  if (_this.codenumber_pos === 397) {
+                    if (all_msg.screen_data[30][392] === "30" && all_msg.screen_data[30][393] === "36" && all_msg.screen_data[30][394] === "31" && all_msg.screen_data[30][395] === "33" && all_msg.screen_data[30][396] === "38") {
+                      clearInterval(_this.animation_interval);
+                      _this.keymapping = {
+                        37: function() {
+                          player.set_position(37);
+                        },
+                        38: function() {
+                          player.set_position(38);
+                        },
+                        39: function() {
+                          player.set_position(39);
+                        },
+                        40: function() {
+                          player.set_position(40);
+                        },
+                        32: function() {
+                          room.check_spacebar_event();
+                        }
+                      };
+                      KeyboardController(_this.keymapping, 60);
+                      _this.set(2);
+                      return;
+                    } else {
+                      console.log("code wrong");
+                      _this.die("codenumber", 29);
+                    }
+                  }
+                }
+                if (_this.alphabet_pos === 478 && _this.codenumber_pos > 392) {
+                  _this.codenumber_pos -= 1;
+                  _this.trigger = 1;
+                }
+              };
+            })(this)
           };
-        })(this)), 120);
+          KeyboardController(this.keymapping_codenumber, 80);
+        }
       }
       if (indexOf.call(new_position, "f4") >= 0) {
         this.die('starving', 21);

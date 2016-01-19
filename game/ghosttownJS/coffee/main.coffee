@@ -15,27 +15,6 @@ init = ->
 
 init_game = ->
 
-  keymapping = 
-    37: ->
-      player.set_position(37)
-      return
-    38: ->
-      player.set_position(38)
-      return
-    39: ->
-      player.set_position(39)
-      return
-    40: ->
-      player.set_position(40)
-      return
-    32: ->      
-      room.check_spacebar_event()
-      return
-  
-  # Arrow key movement
-  KeyboardController keymapping, 60
-
-
   # load in the charmap
   chars_game_tx            = new (PIXI.Texture.fromImage)('img/chars.png')
   @charset_game            = new Generate_charset(chars_game_tx, 8, 8, 16, 16)
@@ -57,6 +36,27 @@ init_game = ->
   @player  = new Player()
   @display = new Display()
   @display.renderloop()
+
+  @keymapping = 
+  37: ->
+    player.set_position(37)
+    return
+  38: ->
+    player.set_position(38)
+    return
+  39: ->
+    player.set_position(39)
+    return
+  40: ->
+    player.set_position(40)
+    return
+  32: ->
+    room.check_spacebar_event()
+    return
+  
+  # Arrow key movement
+  KeyboardController @keymapping, 60
+
 
   # some UI status to kick notifications off
   ui_log("Ghost Town JS. Current build: 15.12.17","green")

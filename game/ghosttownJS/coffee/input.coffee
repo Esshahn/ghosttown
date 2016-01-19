@@ -17,7 +17,7 @@ KeyboardController = (keys, repeat) ->
   
 
   document.onkeydown = (event) ->
-    key = (event or window.event).keyCode
+    key = (event or window.event).keyCode    
     if !(key of keys)
       return true
     if !(key of timers)
@@ -37,6 +37,7 @@ KeyboardController = (keys, repeat) ->
         clearInterval timers[key]
       delete timers[key]
     return
+
 
   # When window is unfocused we may not get key events. To prevent this
   # causing a key to 'get stuck down', cancel all held keys

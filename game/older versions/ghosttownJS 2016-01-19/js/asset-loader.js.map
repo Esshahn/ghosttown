@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "asset-loader.js",
+  "sourceRoot": "..",
+  "sources": [
+    "coffee/asset-loader.coffee"
+  ],
+  "names": [],
+  "mappings": ";;AAAA;;;;;AAAA,IAAA;;AAOA,WAAA,GAAc,SAAC,EAAD;AACZ,MAAA;EAAA,MAAA,GAAS,IAAI,CAAC;EAEd,MAAM,CAAC,GAAP,CAAW,OAAX,EAAsC,eAAtC;EACA,MAAM,CAAC,GAAP,CAAW,iBAAX,EAAsC,yBAAtC;EACA,MAAM,CAAC,GAAP,CAAW,uBAAX,EAAsC,+BAAtC;EACA,MAAM,CAAC,GAAP,CAAW,YAAX,EAAsC,oBAAtC;EAEA,MAAM,CAAC,IAAP,CAAY,UAAZ,EAAwB,SAAA;WACtB,EAAA,CAAA;EADsB,CAAxB;EAEA,MAAM,CAAC,IAAP,CAAA;AAVY"
+}

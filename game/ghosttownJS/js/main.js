@@ -15,8 +15,23 @@ init = function() {
 };
 
 init_game = function() {
-  var chars_commodore_green_tx, chars_commodore_tx, chars_game_tx, chars_hint_tx, keymapping;
-  keymapping = {
+  var chars_commodore_green_tx, chars_commodore_tx, chars_game_tx, chars_hint_tx;
+  chars_game_tx = new PIXI.Texture.fromImage('img/chars.png');
+  this.charset_game = new Generate_charset(chars_game_tx, 8, 8, 16, 16);
+  chars_commodore_tx = new PIXI.Texture.fromImage('img/chars-commodore.png');
+  this.charset_commodore = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16);
+  chars_commodore_green_tx = new PIXI.Texture.fromImage('img/chars-commodore-green.png');
+  this.charset_commodore_green = new Generate_charset(chars_commodore_green_tx, 8, 8, 16, 16);
+  chars_hint_tx = new PIXI.Texture.fromImage('img/chars-hint.png');
+  this.charset_hint = new Generate_charset(chars_hint_tx, 8, 8, 16, 16);
+  this.all_lvl = new BinaryImport("lvl");
+  this.all_msg = new BinaryImport("msg");
+  this.all_other = new BinaryImport("other");
+  this.room = new Room();
+  this.player = new Player();
+  this.display = new Display();
+  this.display.renderloop();
+  this.keymapping = {
     37: function() {
       player.set_position(37);
     },
@@ -33,22 +48,7 @@ init_game = function() {
       room.check_spacebar_event();
     }
   };
-  KeyboardController(keymapping, 60);
-  chars_game_tx = new PIXI.Texture.fromImage('img/chars.png');
-  this.charset_game = new Generate_charset(chars_game_tx, 8, 8, 16, 16);
-  chars_commodore_tx = new PIXI.Texture.fromImage('img/chars-commodore.png');
-  this.charset_commodore = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16);
-  chars_commodore_green_tx = new PIXI.Texture.fromImage('img/chars-commodore-green.png');
-  this.charset_commodore_green = new Generate_charset(chars_commodore_green_tx, 8, 8, 16, 16);
-  chars_hint_tx = new PIXI.Texture.fromImage('img/chars-hint.png');
-  this.charset_hint = new Generate_charset(chars_hint_tx, 8, 8, 16, 16);
-  this.all_lvl = new BinaryImport("lvl");
-  this.all_msg = new BinaryImport("msg");
-  this.all_other = new BinaryImport("other");
-  this.room = new Room();
-  this.player = new Player();
-  this.display = new Display();
-  this.display.renderloop();
+  KeyboardController(this.keymapping, 60);
   ui_log("Ghost Town JS. Current build: 15.12.17", "green");
   ui_log("User cursor keys to move the player.", "green");
   return setTimeout((function(_this) {

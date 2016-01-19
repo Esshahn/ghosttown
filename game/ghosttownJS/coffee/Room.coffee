@@ -138,19 +138,17 @@ class Room
 
 
   set : (@room_number,player_entry_pos = "forward") ->
-  	# changes the room
-  	# read in the given level from the all levels data
+    # changes the room
+    # read in the given level from the all levels data
     # level_data is now the current worksheet to work with
 
     # stops all intervals when entering a room
     clearInterval @animation_interval
 
-
     # INIT FOR ROOMS
     # Some rooms need to be reset when entering (nails room, laser room)
     if @room_number in [10,11,14,15,16]
       @reset(@room_number)
-
 
     @screen_data = clone(all_lvl.screen_data[@room_number])
 
@@ -659,8 +657,7 @@ class Room
       # DOOR to next room
       if "f6" in new_position and "06" in new_position and "09" in new_position
         if "coffin key" in player.inventory
-          new_room = @room_number + 1
-          @set(new_room,"forward")
+          @set(@room_number + 1,"forward")
 
 
 #-------------------------------------------------------------------
@@ -971,46 +968,26 @@ class Room
 #   ROOM 17 
 #-------------------------------------------------------------------
 
-    if @room_number is 17
+    if @room_number is 17 
 
       # BOTTLE 
       if "bb" in new_position or "b9" in new_position
 
-        # copy the screen data for restoring the alphabet when the cursor moves
-        @screen_data_clone = clone (all_msg.screen_data[30])
+        # init        
+        # shitty code award, first place: make sure it runs only once
+        if not @only_call_once?
 
-        @trigger        = 1
-        @alphabet_pos   = 441
-        @codenumber_pos = 392
-        @codeword       = ""
+          @only_call_once = true
 
-        # special keyboard controls for this screen
-        keymapping_codenumber = 
-          37: =>
-            # cursor left
-            if @alphabet_pos > 441
-              all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
-              @alphabet_pos -= 1
-              @trigger = 1
-            return
-          39: =>
-            # cursor right
-            if @alphabet_pos < 478
-              all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
-              @alphabet_pos += 1
-              @trigger = 1
-            return
-          32: => 
-            # spacebar
-            if @codenumber_pos < 397
-              all_msg.screen_data[30][@codenumber_pos] = @screen_data_clone[@alphabet_pos]   
-              @codenumber_pos += 1
-              @trigger = 1
-            return
-        
-        KeyboardController keymapping_codenumber, 120
+          # copy the screen data for restoring the alphabet when the cursor moves
+          @screen_data_clone = clone (all_msg.screen_data[30])
 
-        @animation_interval = setInterval((=>
+          @trigger        = 1
+          @alphabet_pos   = 441
+          @codenumber_pos = 392
+          
+          # set the animation of the characters
+          @animation_interval = setInterval((=>
             @trigger          = @trigger * -1
             @current_alphabet = all_msg.screen_data[30][@alphabet_pos]
             @current_code     = all_msg.screen_data[30][@codenumber_pos]
@@ -1022,10 +999,81 @@ class Room
               all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)+128).toString(16)
               all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)+128).toString(16)
 
-            @msg(30,charset_commodore_green)   
+            @msg(30,charset_commodore_green)  
 
-        ), 120)     
- 
+          ), 80) 
+
+          
+          # special keyboard controls for this screen
+          @keymapping_codenumber = 
+            37: =>
+              # cursor left
+              if @alphabet_pos > 441
+                all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
+                @alphabet_pos -= 1
+                @trigger = 1
+              return
+            39: =>
+              # cursor right
+              if @alphabet_pos < 478
+                all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
+                @alphabet_pos += 1
+                @trigger = 1
+              return
+            32: => 
+              # spacebar
+              if @codenumber_pos < 397 and @alphabet_pos < 478
+                all_msg.screen_data[30][@codenumber_pos] = @screen_data_clone[@alphabet_pos]   
+                @codenumber_pos += 1
+                @trigger = 1
+
+                # if 5 characters are entered
+                # check for the code number
+                if @codenumber_pos is 397
+                  # check if the code number 06138 is entered (hex 30 36 31 33 38)
+                  if all_msg.screen_data[30][392] is "30" and
+                  all_msg.screen_data[30][393] is "36" and
+                  all_msg.screen_data[30][394] is "31" and
+                  all_msg.screen_data[30][395] is "33" and
+                  all_msg.screen_data[30][396] is "38"
+                    clearInterval @animation_interval
+
+                    @keymapping = 
+                      37: ->                        
+                        player.set_position(37)
+                        return
+                      38: ->
+                        player.set_position(38)
+                        return
+                      39: ->                        
+                        player.set_position(39)
+                        return
+                      40: ->
+                        player.set_position(40)
+                        return
+                      32: ->
+                        room.check_spacebar_event()
+                        return
+                      
+                    # Arrow key movement
+                    KeyboardController @keymapping, 60
+
+                    @set(2)
+                    return
+                    
+                  else
+                    console.log ("code wrong")
+                    @die("codenumber",29)
+
+              # go back one position if the back symbol "<" was selected
+              if @alphabet_pos is 478 and @codenumber_pos > 392
+                @codenumber_pos -= 1
+                @trigger = 1
+
+              return
+
+          KeyboardController @keymapping_codenumber, 80
+
       # LEFT PRISON CELL
       if "f4" in new_position
         @die('starving',21)   
@@ -1033,6 +1081,7 @@ class Room
       # RIGHT PRISON CELL
       if "d9" in new_position or "da" in new_position or "db" in new_position or "dc" in new_position
         @die('wizard',20)  
+
 #-------------------------------------------------------------------
 #   ROOM 18 
 #-------------------------------------------------------------------
@@ -1123,7 +1172,7 @@ class Room
 #-------------------------------------------------------------------
 #   DOORS
 #-------------------------------------------------------------------
-   
+
     # DOOR to previous room
     if "05" in new_position and "08" in new_position and "0b" in new_position and @room_number isnt 1
       new_room = @room_number - 1
