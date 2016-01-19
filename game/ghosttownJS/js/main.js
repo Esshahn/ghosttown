@@ -31,24 +31,7 @@ init_game = function() {
   this.player = new Player();
   this.display = new Display();
   this.display.renderloop();
-  this.keymapping = {
-    37: function() {
-      player.set_position(37);
-    },
-    38: function() {
-      player.set_position(38);
-    },
-    39: function() {
-      player.set_position(39);
-    },
-    40: function() {
-      player.set_position(40);
-    },
-    32: function() {
-      room.check_spacebar_event();
-    }
-  };
-  KeyboardController(this.keymapping, 60);
+  this.controls = new KeyboardController("game", 60);
   ui_log("Ghost Town JS. Current build: 15.12.17", "green");
   ui_log("User cursor keys to move the player.", "green");
   return setTimeout((function(_this) {

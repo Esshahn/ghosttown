@@ -2,102 +2,106 @@
 
 /*
   
-  input manager
+  KeyboardController 
+  Keyboard input with customisable repeat (set to 0 for no key repeat)
  */
-var KEY, KeyboardController;
+var KeyboardController;
 
-KeyboardController = function(keys, repeat) {
-  var timers;
-  timers = {};
-  document.onkeydown = function(event) {
-    var key;
-    key = (event || window.event).keyCode;
-    if (!(key in keys)) {
-      return true;
-    }
-    if (!(key in timers)) {
-      timers[key] = null;
-      keys[key]();
-      if (repeat !== 0) {
-        timers[key] = setInterval(keys[key], repeat);
-      }
-    }
-    return false;
-  };
-  document.onkeyup = function(event) {
-    var key;
-    key = (event || window.event).keyCode;
-    if (key in timers) {
-      if (timers[key] !== null) {
-        clearInterval(timers[key]);
-      }
-      delete timers[key];
-    }
-  };
-  return window.onblur = function() {
-    var key;
-    for (key in timers) {
-      if (timers[key] !== null) {
-        clearInterval(timers[key]);
-      }
-    }
-    timers = {};
-  };
-};
+KeyboardController = (function() {
+  function KeyboardController(keyset, repeat) {
+    this.keyset = keyset;
+    this.repeat = repeat;
+    this.timers = {};
+    this.init(this.keyset, this.repeat);
+  }
 
-KEY = {
-  BACKSPACE: 8,
-  TAB: 9,
-  RETURN: 13,
-  ESC: 27,
-  SPACE: 32,
-  PAGEUP: 33,
-  PAGEDOWN: 34,
-  END: 35,
-  HOME: 36,
-  LEFT: 37,
-  UP: 38,
-  RIGHT: 39,
-  DOWN: 40,
-  INSERT: 45,
-  DELETE: 46,
-  ZERO: 48,
-  ONE: 49,
-  TWO: 50,
-  THREE: 51,
-  FOUR: 52,
-  FIVE: 53,
-  SIX: 54,
-  SEVEN: 55,
-  EIGHT: 56,
-  NINE: 57,
-  A: 65,
-  B: 66,
-  C: 67,
-  D: 68,
-  E: 69,
-  F: 70,
-  G: 71,
-  H: 72,
-  I: 73,
-  J: 74,
-  K: 75,
-  L: 76,
-  M: 77,
-  N: 78,
-  O: 79,
-  P: 80,
-  Q: 81,
-  R: 82,
-  S: 83,
-  T: 84,
-  U: 85,
-  V: 86,
-  W: 87,
-  X: 88,
-  Y: 89,
-  Z: 90,
-  TILDA: 192
-};
+  KeyboardController.prototype.destroy = function() {
+    var key;
+    for (key in this.timers) {
+      if (this.timers[key] !== null) {
+        clearInterval(this.timers[key]);
+      }
+    }
+    this.timers = {};
+  };
+
+  KeyboardController.prototype.init = function(keyset, repeat) {
+    this.keyset = keyset;
+    this.repeat = repeat;
+    if (this.keyset === "game") {
+      this.keys = {
+        37: function() {
+          player.set_position(37);
+        },
+        38: function() {
+          player.set_position(38);
+        },
+        39: function() {
+          player.set_position(39);
+        },
+        40: function() {
+          player.set_position(40);
+        },
+        32: function() {
+          room.check_spacebar_event();
+        }
+      };
+    }
+    if (this.keyset === "codenumber") {
+      this.keys = {
+        37: function() {
+          room.check_codenumber_keys(37);
+        },
+        39: function() {
+          room.check_codenumber_keys(39);
+        },
+        32: function() {
+          room.check_codenumber_keys(32);
+        }
+      };
+    }
+    document.onkeydown = (function(_this) {
+      return function(event) {
+        var key;
+        key = (event || window.event).keyCode;
+        if (!(key in _this.keys)) {
+          return true;
+        }
+        if (!(key in _this.timers)) {
+          _this.timers[key] = null;
+          _this.keys[key]();
+          if (_this.repeat !== 0) {
+            _this.timers[key] = setInterval(_this.keys[key], _this.repeat);
+          }
+        }
+        return false;
+      };
+    })(this);
+    document.onkeyup = (function(_this) {
+      return function(event) {
+        var key;
+        key = (event || window.event).keyCode;
+        if (key in _this.timers) {
+          if (_this.timers[key] !== null) {
+            clearInterval(_this.timers[key]);
+          }
+          delete _this.timers[key];
+        }
+      };
+    })(this);
+    return window.onblur = function() {
+      var key;
+      for (key in this.timers) {
+        if (this.timers[key] !== null) {
+          clearInterval(this.timers[key]);
+        }
+      }
+      this.timers = {};
+    };
+  };
+
+  return KeyboardController;
+
+})();
 
 //# sourceMappingURL=input.js.map

@@ -36,26 +36,9 @@ init_game = ->
   @player  = new Player()
   @display = new Display()
   @display.renderloop()
-
-  @keymapping = 
-  37: ->
-    player.set_position(37)
-    return
-  38: ->
-    player.set_position(38)
-    return
-  39: ->
-    player.set_position(39)
-    return
-  40: ->
-    player.set_position(40)
-    return
-  32: ->
-    room.check_spacebar_event()
-    return
   
   # Arrow key movement
-  KeyboardController @keymapping, 60
+  @controls = new KeyboardController "game", 60
 
 
   # some UI status to kick notifications off
