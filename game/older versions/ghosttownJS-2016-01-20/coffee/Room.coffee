@@ -156,40 +156,24 @@ class Room
         # if 5 characters are entered
         # check for the code number
         if @codenumber_pos is 397
-          
-          # store the numbers entered in the codenumber
-          @codenumber = []
-          i = 0
-          while i<5            
-            @codenumber[i] = all_msg.screen_data[30][392+i]
-            i++
-
           # check if the code number 06138 is entered (hex 30 36 31 33 38)
-          if @codenumber[0] is "30" and
-          @codenumber[1] is "36" and
-          @codenumber[2] is "31" and
-          @codenumber[3] is "33" and
-          @codenumber[4] is "38"
-
-            # codenumber is correct
-            clearInterval @animation_interval              
+          if all_msg.screen_data[30][392] is "30" and
+          all_msg.screen_data[30][393] is "36" and
+          all_msg.screen_data[30][394] is "31" and
+          all_msg.screen_data[30][395] is "33" and
+          all_msg.screen_data[30][396] is "38"
+            clearInterval @animation_interval
+              
             # Arrow key movement
             controls.destroy()
             controls.init "game", 60
-            @set(18)
-            return            
-          else
-            # codenumber is wrong
-            clearInterval @animation_interval           
-            
-            # the code number entered is put pack onto the error message
-            i = 0
-            while i<5            
-              all_msg.screen_data[29][392+i] = @codenumber[i] 
-              i++
 
-            @msg(29)
-            @playround_data.gamestate = "die"
+            @set(18)
+            return
+            
+          else
+            console.log ("code wrong")
+            @die("codenumber",29)
 
         # go back one position if the back symbol "<" was selected
         if @alphabet_pos is 478 and @codenumber_pos > 392
@@ -1038,15 +1022,8 @@ class Room
       if "bb" in new_position or "b9" in new_position
 
         # init        
-        
         # copy the screen data for restoring the alphabet when the cursor moves
-        # and if @screen_data_clone is already set (meaning the player was on the code screen
-        # before and entered the code right), reset the all_msg so no old code is visible
-        if @screen_data_clone?
-          console.log("reenter")
-          all_msg.screen_data[30] = clone (@screen_data_clone)
-        else
-          @screen_data_clone = clone (all_msg.screen_data[30])
+        @screen_data_clone = clone (all_msg.screen_data[30])
 
         @trigger        = 1
         @alphabet_pos   = 441

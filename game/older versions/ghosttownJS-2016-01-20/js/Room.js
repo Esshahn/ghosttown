@@ -110,7 +110,6 @@ Room = (function() {
   };
 
   Room.prototype.check_codenumber_keys = function(direction) {
-    var i;
     if (direction === KEY.LEFT) {
       if (this.alphabet_pos > 441) {
         all_msg.screen_data[30][this.alphabet_pos] = this.screen_data_clone[this.alphabet_pos];
@@ -133,27 +132,15 @@ Room = (function() {
         this.codenumber_pos += 1;
         this.trigger = 1;
         if (this.codenumber_pos === 397) {
-          this.codenumber = [];
-          i = 0;
-          while (i < 5) {
-            this.codenumber[i] = all_msg.screen_data[30][392 + i];
-            i++;
-          }
-          if (this.codenumber[0] === "30" && this.codenumber[1] === "36" && this.codenumber[2] === "31" && this.codenumber[3] === "33" && this.codenumber[4] === "38") {
+          if (all_msg.screen_data[30][392] === "30" && all_msg.screen_data[30][393] === "36" && all_msg.screen_data[30][394] === "31" && all_msg.screen_data[30][395] === "33" && all_msg.screen_data[30][396] === "38") {
             clearInterval(this.animation_interval);
             controls.destroy();
             controls.init("game", 60);
             this.set(18);
             return;
           } else {
-            clearInterval(this.animation_interval);
-            i = 0;
-            while (i < 5) {
-              all_msg.screen_data[29][392 + i] = this.codenumber[i];
-              i++;
-            }
-            this.msg(29);
-            this.playround_data.gamestate = "die";
+            console.log("code wrong");
+            this.die("codenumber", 29);
           }
         }
         if (this.alphabet_pos === 478 && this.codenumber_pos > 392) {
@@ -165,7 +152,7 @@ Room = (function() {
   };
 
   Room.prototype.set = function(room_number1, player_entry_pos) {
-    var j, ref;
+    var i, ref;
     this.room_number = room_number1;
     if (player_entry_pos == null) {
       player_entry_pos = "forward";
@@ -267,7 +254,7 @@ Room = (function() {
     }
     if (this.room_number === 15) {
       if (indexOf.call(player.inventory, "bulb holder") < 0 || indexOf.call(player.inventory, "light bulb") < 0 || indexOf.call(player.inventory, "socket") < 0) {
-        for (j = 0; j < 24; j++) {
+        for (i = 0; i < 24; i++) {
           this.replace("d7", "ff");
         }
       }
@@ -713,12 +700,7 @@ Room = (function() {
     }
     if (this.room_number === 17) {
       if (indexOf.call(new_position, "bb") >= 0 || indexOf.call(new_position, "b9") >= 0) {
-        if (this.screen_data_clone != null) {
-          console.log("reenter");
-          all_msg.screen_data[30] = clone(this.screen_data_clone);
-        } else {
-          this.screen_data_clone = clone(all_msg.screen_data[30]);
-        }
+        this.screen_data_clone = clone(all_msg.screen_data[30]);
         this.trigger = 1;
         this.alphabet_pos = 441;
         this.codenumber_pos = 392;
