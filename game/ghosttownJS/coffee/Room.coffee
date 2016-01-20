@@ -126,77 +126,6 @@ class Room
     if @playround_data.gamestate is "msg"
       @update(player.get_position())
 
-#-------------------------------------------------------------------
-
-  check_codenumber_keys : (direction) ->
-
-    if direction is KEY.LEFT
-      # cursor left
-      if @alphabet_pos > 441
-        all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
-        @alphabet_pos -= 1
-        @trigger = 1
-      return
-
-    if direction is KEY.RIGHT
-      # cursor right
-      if @alphabet_pos < 478
-        all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
-        @alphabet_pos += 1
-        @trigger = 1
-      return
-
-    if direction is KEY.SPACE
-      # spacebar
-      if @codenumber_pos < 397 and @alphabet_pos < 478
-        all_msg.screen_data[30][@codenumber_pos] = @screen_data_clone[@alphabet_pos]   
-        @codenumber_pos += 1
-        @trigger = 1
-
-        # if 5 characters are entered
-        # check for the code number
-        if @codenumber_pos is 397
-          
-          # store the numbers entered in the codenumber
-          @codenumber = []
-          i = 0
-          while i<5            
-            @codenumber[i] = all_msg.screen_data[30][392+i]
-            i++
-
-          # check if the code number 06138 is entered (hex 30 36 31 33 38)
-          if @codenumber[0] is "30" and
-          @codenumber[1] is "36" and
-          @codenumber[2] is "31" and
-          @codenumber[3] is "33" and
-          @codenumber[4] is "38"
-
-            # codenumber is correct
-            clearInterval @animation_interval              
-            # Arrow key movement
-            controls.destroy()
-            controls.init "game", 60
-            @set(18)
-            return            
-          else
-            # codenumber is wrong
-            clearInterval @animation_interval           
-            
-            # the code number entered is put pack onto the error message
-            i = 0
-            while i<5            
-              all_msg.screen_data[29][392+i] = @codenumber[i] 
-              i++
-
-            @msg(29)
-            @playround_data.gamestate = "die"
-
-        # go back one position if the back symbol "<" was selected
-        if @alphabet_pos is 478 and @codenumber_pos > 392
-          @codenumber_pos -= 1
-          @trigger = 1
-
-        return
 
 #-------------------------------------------------------------------
 
@@ -1048,22 +977,28 @@ class Room
         else
           @screen_data_clone = clone (all_msg.screen_data[30])
 
-        @trigger        = 1
+        @trigger_alphabet = 1
+        @trigger_code = 1
         @alphabet_pos   = 441
         @codenumber_pos = 392
         
         # set the animation of the characters
         @animation_interval = setInterval((=>
-          @trigger          = @trigger * -1
+          @trigger_alphabet = @trigger_alphabet * -1
+          @trigger_code = @trigger_code * -1
           @current_alphabet = all_msg.screen_data[30][@alphabet_pos]
           @current_code     = all_msg.screen_data[30][@codenumber_pos]
 
-          if @trigger is 1
-            all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)-128).toString(16)
+          if @trigger_alphabet is 1
             all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)-128).toString(16)
           else
-            all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)+128).toString(16)
             all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)+128).toString(16)
+
+          if @trigger_code is 1
+            all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)-128).toString(16)
+          else
+            all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)+128).toString(16)
+
 
           @msg(30,charset_commodore_green)  
 
@@ -1196,3 +1131,77 @@ class Room
      
     ui_room("Tiles: " + new_position[0] + " | "+ new_position[1] + " | "+ new_position[2])
     false
+
+#-------------------------------------------------------------------
+
+  check_codenumber_keys : (direction) ->
+
+    if direction is KEY.LEFT
+      # cursor left
+      if @alphabet_pos > 441
+        all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
+        @alphabet_pos -= 1
+        @trigger_alphabet = 1
+      return
+
+    if direction is KEY.RIGHT
+      # cursor right
+      if @alphabet_pos < 478
+        all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
+        @alphabet_pos += 1
+        @trigger_alphabet = 1
+      return
+
+    if direction is KEY.SPACE
+      # spacebar
+      if @codenumber_pos < 397 and @alphabet_pos < 478
+        all_msg.screen_data[30][@codenumber_pos] = @screen_data_clone[@alphabet_pos]   
+        @codenumber_pos += 1
+        @trigger_code = 1
+
+        # if 5 characters are entered
+        # check for the code number
+        if @codenumber_pos is 397
+          
+          # store the numbers entered in the codenumber
+          @codenumber = []
+          i = 0
+          while i<5            
+            @codenumber[i] = all_msg.screen_data[30][392+i]
+            i++
+
+          # check if the code number 06138 is entered (hex 30 36 31 33 38)
+          if @codenumber[0] is "30" and
+          @codenumber[1] is "36" and
+          @codenumber[2] is "31" and
+          @codenumber[3] is "33" and
+          @codenumber[4] is "38"
+
+            # codenumber is correct
+            clearInterval @animation_interval              
+            # Arrow key movement
+            controls.destroy()
+            controls.init "game", 60
+            @set(18)
+            return            
+          else
+            # codenumber is wrong
+            clearInterval @animation_interval           
+            
+            # the code number entered is put pack onto the error message
+            i = 0
+            while i<5            
+              all_msg.screen_data[29][392+i] = @codenumber[i] 
+              i++
+
+            @msg(29)
+            @playround_data.gamestate = "die"
+
+      # go back one position if the back symbol "<" was selected
+      if @alphabet_pos is 478 and @codenumber_pos > 392
+        # going back one position with the cursor, restore the non-inverse char
+        if @trigger_code isnt 1
+          all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+all_msg.screen_data[30][@codenumber_pos])-128).toString(16)
+          @trigger_code = 1 
+        @codenumber_pos -= 1
+        return

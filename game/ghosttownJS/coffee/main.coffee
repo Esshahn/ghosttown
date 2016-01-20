@@ -55,5 +55,5 @@ init_game = ->
     @all_lvl.screen_data_copy = clone (@all_lvl.screen_data)
 
     # start with this room
-    @room.set(18)
+    @room.set(1)
   ,300)

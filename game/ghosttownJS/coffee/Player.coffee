@@ -20,7 +20,6 @@ class Player
 #-------------------------------------------------------------------
 
   set_position : (direction) ->
-    console.log direction
     if room.playround_data.gamestate is "game"
       if direction is KEY.LEFT && room.check_room(KEY.LEFT) 
         @position -= 1
