@@ -8,7 +8,7 @@ class Display
 
   constructor : ->
     # the main stage is including all borders and set to double size
-    @renderer = new (PIXI.autoDetectRenderer)(768, 576, backgroundColor: COLOR_RED)
+    @renderer = new (PIXI.autoDetectRenderer)(768, 576, backgroundColor: COLOR_BLACK)
     
     # the line below should be used when not using the CRT shader
     #document.getElementById("game").appendChild @renderer.view
@@ -17,7 +17,7 @@ class Display
     codefCRTemulator.setup(@renderer.view,"game")
 
     # set this to on or off for the crt emulation
-    @crt_emulation = on
+    @crt_emulation = off
 
     if @crt_emulation is on 
       codefCRTemulator.set.scanlines true
@@ -76,6 +76,11 @@ class Display
     @bg_yellow.drawRect 0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR , (SCREEN_HEIGHT - 8) * SCALE_FACTOR 
     @bg_yellow.endFill()
 
+    @bg_grey = new (PIXI.Graphics)
+    @bg_grey.beginFill(COLOR_GREY)
+    @bg_grey.drawRect 0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR , (SCREEN_HEIGHT - 8) * SCALE_FACTOR 
+    @bg_grey.endFill()
+
 #-------------------------------------------------------------------
 
   show_data : (charset = charset_game) ->
@@ -123,9 +128,9 @@ class Display
 
 #-------------------------------------------------------------------
 
-  show_other : (msg_number, charset = charset_commodore) ->
-    
-    @renderer.backgroundColor = COLOR_YELLOW
+  show_other : (msg_number, charset = charset_commodore, color = COLOR_YELLOW) ->
+
+    @renderer.backgroundColor = color
     @screen.mask = @maskFull
 
     @level_data = all_other.screen_data[msg_number]
@@ -133,7 +138,16 @@ class Display
     # clear the screen
     @clear()
     # then draw the background
-    @screen.addChild @bg_yellow
+
+    if color is COLOR_YELLOW
+      @screen.addChild @bg_yellow
+
+    if color is COLOR_GREY
+      @screen.addChild @bg_grey
+
+    if color is COLOR_BLACK
+      @screen.addChild @bg_black
+
     @create_level_data(@level_data,charset)
 
 #-------------------------------------------------------------------

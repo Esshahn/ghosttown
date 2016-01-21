@@ -57,6 +57,16 @@ class KeyboardController
         room.check_codenumber_keys(32)
         return
 
+    if @keyset is "title"
+      @keys =
+      32: ->
+        room.check_title_keys()
+        return
+      49: ->
+        room.check_title_keys()
+        return
+
+
     document.onkeydown = (event) =>
       key = (event or window.event).keyCode    
       if !(key of @keys)

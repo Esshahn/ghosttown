@@ -60,6 +60,16 @@ KeyboardController = (function() {
         }
       };
     }
+    if (this.keyset === "title") {
+      this.keys = {
+        32: function() {
+          room.check_title_keys();
+        },
+        49: function() {
+          room.check_title_keys();
+        }
+      };
+    }
     document.onkeydown = (function(_this) {
       return function(event) {
         var key;

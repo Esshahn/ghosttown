@@ -78,11 +78,11 @@ Room = (function() {
     return display.show_msg(msgID, charset);
   };
 
-  Room.prototype.other = function(msgID) {
+  Room.prototype.other = function(msgID, charset, color) {
     if (msgID == null) {
       msgID = 1;
     }
-    return display.show_other(msgID);
+    return display.show_other(msgID, charset, color);
   };
 
   Room.prototype.replace = function(tile, tile_code) {
@@ -106,6 +106,76 @@ Room = (function() {
   Room.prototype.check_spacebar_event = function() {
     if (this.playround_data.gamestate === "msg") {
       return this.update(player.get_position());
+    }
+  };
+
+  Room.prototype.check_codenumber_keys = function(direction) {
+    var i;
+    if (direction === KEY.LEFT) {
+      if (this.alphabet_pos > 441) {
+        all_msg.screen_data[30][this.alphabet_pos] = this.screen_data_clone[this.alphabet_pos];
+        this.alphabet_pos -= 1;
+        this.trigger_alphabet = 1;
+      }
+      return;
+    }
+    if (direction === KEY.RIGHT) {
+      if (this.alphabet_pos < 478) {
+        all_msg.screen_data[30][this.alphabet_pos] = this.screen_data_clone[this.alphabet_pos];
+        this.alphabet_pos += 1;
+        this.trigger_alphabet = 1;
+      }
+      return;
+    }
+    if (direction === KEY.SPACE) {
+      if (this.codenumber_pos < 397 && this.alphabet_pos < 478) {
+        all_msg.screen_data[30][this.codenumber_pos] = this.screen_data_clone[this.alphabet_pos];
+        this.codenumber_pos += 1;
+        this.trigger_code = 1;
+        if (this.codenumber_pos === 397) {
+          this.codenumber = [];
+          i = 0;
+          while (i < 5) {
+            this.codenumber[i] = all_msg.screen_data[30][392 + i];
+            i++;
+          }
+          if (this.codenumber[0] === "30" && this.codenumber[1] === "36" && this.codenumber[2] === "31" && this.codenumber[3] === "33" && this.codenumber[4] === "38") {
+            clearInterval(this.animation_interval);
+            controls.destroy();
+            controls.init("game", 60);
+            this.set(18);
+            return;
+          } else {
+            clearInterval(this.animation_interval);
+            i = 0;
+            while (i < 5) {
+              all_msg.screen_data[29][392 + i] = this.codenumber[i];
+              i++;
+            }
+            this.msg(29);
+            this.playround_data.gamestate = "die";
+          }
+        }
+      }
+      if (this.alphabet_pos === 478 && this.codenumber_pos > 392) {
+        if (this.trigger_code !== 1) {
+          all_msg.screen_data[30][this.codenumber_pos] = (parseInt("0x" + all_msg.screen_data[30][this.codenumber_pos]) - 128).toString(16);
+          this.trigger_code = 1;
+        }
+        this.codenumber_pos -= 1;
+      }
+    }
+  };
+
+  Room.prototype.check_title_keys = function() {
+    if (this.intro == null) {
+      this.intro = true;
+      return this.other(2, charset_commodore_orange, COLOR_BLACK);
+    } else {
+      this.intro = false;
+      controls.destroy();
+      controls.init("game", 60);
+      return this.set(1);
     }
   };
 
@@ -759,64 +829,6 @@ Room = (function() {
     }
     ui_room("Tiles: " + new_position[0] + " | " + new_position[1] + " | " + new_position[2]);
     return false;
-  };
-
-  Room.prototype.check_codenumber_keys = function(direction) {
-    var i;
-    if (direction === KEY.LEFT) {
-      if (this.alphabet_pos > 441) {
-        all_msg.screen_data[30][this.alphabet_pos] = this.screen_data_clone[this.alphabet_pos];
-        this.alphabet_pos -= 1;
-        this.trigger_alphabet = 1;
-      }
-      return;
-    }
-    if (direction === KEY.RIGHT) {
-      if (this.alphabet_pos < 478) {
-        all_msg.screen_data[30][this.alphabet_pos] = this.screen_data_clone[this.alphabet_pos];
-        this.alphabet_pos += 1;
-        this.trigger_alphabet = 1;
-      }
-      return;
-    }
-    if (direction === KEY.SPACE) {
-      if (this.codenumber_pos < 397 && this.alphabet_pos < 478) {
-        all_msg.screen_data[30][this.codenumber_pos] = this.screen_data_clone[this.alphabet_pos];
-        this.codenumber_pos += 1;
-        this.trigger_code = 1;
-        if (this.codenumber_pos === 397) {
-          this.codenumber = [];
-          i = 0;
-          while (i < 5) {
-            this.codenumber[i] = all_msg.screen_data[30][392 + i];
-            i++;
-          }
-          if (this.codenumber[0] === "30" && this.codenumber[1] === "36" && this.codenumber[2] === "31" && this.codenumber[3] === "33" && this.codenumber[4] === "38") {
-            clearInterval(this.animation_interval);
-            controls.destroy();
-            controls.init("game", 60);
-            this.set(18);
-            return;
-          } else {
-            clearInterval(this.animation_interval);
-            i = 0;
-            while (i < 5) {
-              all_msg.screen_data[29][392 + i] = this.codenumber[i];
-              i++;
-            }
-            this.msg(29);
-            this.playround_data.gamestate = "die";
-          }
-        }
-      }
-      if (this.alphabet_pos === 478 && this.codenumber_pos > 392) {
-        if (this.trigger_code !== 1) {
-          all_msg.screen_data[30][this.codenumber_pos] = (parseInt("0x" + all_msg.screen_data[30][this.codenumber_pos]) - 128).toString(16);
-          this.trigger_code = 1;
-        }
-        this.codenumber_pos -= 1;
-      }
-    }
   };
 
   return Room;

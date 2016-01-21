@@ -22,6 +22,8 @@ init_game = ->
   @charset_commodore       = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16)
   chars_commodore_green_tx = new (PIXI.Texture.fromImage)('img/chars-commodore-green.png')
   @charset_commodore_green = new Generate_charset(chars_commodore_green_tx, 8, 8, 16, 16)
+  chars_commodore_orange_tx = new (PIXI.Texture.fromImage)('img/chars-commodore-orange.png')
+  @charset_commodore_orange = new Generate_charset(chars_commodore_orange_tx, 8, 8, 16, 16)
   chars_hint_tx            = new (PIXI.Texture.fromImage)('img/chars-hint.png')
   @charset_hint            = new Generate_charset(chars_hint_tx, 8, 8, 16, 16)
   
@@ -38,7 +40,7 @@ init_game = ->
   @display.renderloop()
   
   # Arrow key movement
-  @controls = new KeyboardController "game", 60
+  #@controls = new KeyboardController "game", 60
 
 
   # some UI status to kick notifications off
@@ -55,5 +57,7 @@ init_game = ->
     @all_lvl.screen_data_copy = clone (@all_lvl.screen_data)
 
     # start with this room
-    @room.set(1)
-  ,300)
+    @room.other(1, charset_commodore, COLOR_GREY)
+    @controls = new KeyboardController "title", 60
+    #@room.set(1)
+  ,1000)

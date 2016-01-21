@@ -11,10 +11,10 @@ Display = (function() {
   function Display() {
     this.renderloop = bind(this.renderloop, this);
     this.renderer = new PIXI.autoDetectRenderer(768, 576, {
-      backgroundColor: COLOR_RED
+      backgroundColor: COLOR_BLACK
     });
     codefCRTemulator.setup(this.renderer.view, "game");
-    this.crt_emulation = true;
+    this.crt_emulation = false;
     if (this.crt_emulation === true) {
       codefCRTemulator.set.scanlines(true);
       codefCRTemulator.set.gaussian(0.6);
@@ -61,6 +61,10 @@ Display = (function() {
     this.bg_yellow.beginFill(COLOR_YELLOW);
     this.bg_yellow.drawRect(0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR, (SCREEN_HEIGHT - 8) * SCALE_FACTOR);
     this.bg_yellow.endFill();
+    this.bg_grey = new PIXI.Graphics;
+    this.bg_grey.beginFill(COLOR_GREY);
+    this.bg_grey.drawRect(0, 0, (SCREEN_WIDTH - 8) * SCALE_FACTOR, (SCREEN_HEIGHT - 8) * SCALE_FACTOR);
+    this.bg_grey.endFill();
   }
 
   Display.prototype.show_data = function(charset) {
@@ -99,15 +103,26 @@ Display = (function() {
     return this.create_level_data(this.level_data, charset);
   };
 
-  Display.prototype.show_other = function(msg_number, charset) {
+  Display.prototype.show_other = function(msg_number, charset, color) {
     if (charset == null) {
       charset = charset_commodore;
     }
-    this.renderer.backgroundColor = COLOR_YELLOW;
+    if (color == null) {
+      color = COLOR_YELLOW;
+    }
+    this.renderer.backgroundColor = color;
     this.screen.mask = this.maskFull;
     this.level_data = all_other.screen_data[msg_number];
     this.clear();
-    this.screen.addChild(this.bg_yellow);
+    if (color === COLOR_YELLOW) {
+      this.screen.addChild(this.bg_yellow);
+    }
+    if (color === COLOR_GREY) {
+      this.screen.addChild(this.bg_grey);
+    }
+    if (color === COLOR_BLACK) {
+      this.screen.addChild(this.bg_black);
+    }
     return this.create_level_data(this.level_data, charset);
   };
 
