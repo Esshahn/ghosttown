@@ -25,12 +25,11 @@ class Room
     
     # here we define the random game data for each round of the game
     # this is information specific to one play round e.g. the coffin number
-    # it might not be the best place to define this, needs rethinking
     
     @playround_data = []
 
     # create copies of all data
-
+    # so we can always start a new game by copying the original data into the playround
     @playround_data.all_lvl   = clone (all_lvl)
     @playround_data.all_msg   = clone (all_msg)
     @playround_data.all_other = clone (all_other)
@@ -47,7 +46,6 @@ class Room
 
   reset : (@room_number) ->
     # resets the screen data of the room
-
     @playround_data.all_lvl.screen_data[@room_number] = clone(all_lvl[@room_number])
 
 #-------------------------------------------------------------------
