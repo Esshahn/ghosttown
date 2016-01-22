@@ -10,16 +10,22 @@ var Room,
 
 Room = (function() {
   function Room() {
+    this.init();
+  }
+
+  Room.prototype.init = function() {
     this.screen_data = [];
     this.room_number = 1;
     this.room_info;
-    this.room_updated_tiles = [];
     this.playround_data = [];
+    this.playround_data.all_lvl = clone(all_lvl);
+    this.playround_data.all_msg = clone(all_msg);
+    this.playround_data.all_other = clone(all_other);
     this.playround_data.coffin_all = ["A", "B", "C", "D", "E", "F", "G", "H"];
     this.playround_data.coffin = this.playround_data.coffin_all[Math.floor(Math.random() * this.playround_data.coffin_all.length)];
     this.playround_data.coffin_hex = this.playround_data.coffin.charCodeAt(0) - 24;
-    this.playround_data.belegro_is_alive = true;
-  }
+    return this.playround_data.belegro_is_alive = true;
+  };
 
   Room.prototype.reset = function(room_number1) {
     this.room_number = room_number1;

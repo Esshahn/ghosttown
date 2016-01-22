@@ -6,7 +6,7 @@
   Original version created by Udo Gertz, copyright Kingsoft 1985
   Remake written by Ingo Hinterding 2015,2016
  */
-var init, init_game;
+var init, init_game, start_game;
 
 init = function() {
   load_assets(function() {
@@ -26,22 +26,22 @@ init_game = function() {
   this.charset_commodore_orange = new Generate_charset(chars_commodore_orange_tx, 8, 8, 16, 16);
   chars_hint_tx = new PIXI.Texture.fromImage('img/chars-hint.png');
   this.charset_hint = new Generate_charset(chars_hint_tx, 8, 8, 16, 16);
+  this.all_levels_counter = 0;
   this.all_lvl = new BinaryImport("lvl");
   this.all_msg = new BinaryImport("msg");
   this.all_other = new BinaryImport("other");
-  this.room = new Room();
   this.player = new Player();
   this.display = new Display();
-  this.display.renderloop();
-  ui_log("Ghost Town JS. Current build: 15.12.17", "green");
-  ui_log("User cursor keys to move the player.", "green");
-  return setTimeout((function(_this) {
-    return function() {
-      _this.all_lvl.screen_data_copy = clone(_this.all_lvl.screen_data);
-      _this.room.other(1, charset_commodore, COLOR_GREY);
-      return _this.controls = new KeyboardController("title", 60);
-    };
-  })(this), 1000);
+  return this.display.renderloop();
+};
+
+start_game = function() {
+  ui_log("Ghost Town JS. Current build: 16.01.22", "green");
+  ui_log("User cursor keys and space to move the player.", "green");
+  this.room = new Room();
+  this.all_lvl.screen_data_copy = clone(this.all_lvl.screen_data);
+  this.room.other(1, charset_commodore, COLOR_GREY);
+  return this.controls = new KeyboardController("title", 60);
 };
 
 //# sourceMappingURL=main.js.map

@@ -9,10 +9,19 @@ class Room
 
   constructor : ->
 
+    @init()
+
+#-------------------------------------------------------------------
+
+  init : ->
+
+    # init data for the game
+    # we store everything that is related to one play round
+    # here, so we can call it again later to reset the game
+
     @screen_data = []
     @room_number = 1
     @room_info
-    @room_updated_tiles = []
     
     # here we define the random game data for each round of the game
     # this is information specific to one play round e.g. the coffin number
@@ -20,6 +29,11 @@ class Room
     
     @playround_data = []
 
+    # create copies of all data
+
+    @playround_data.all_lvl   = clone (all_lvl)
+    @playround_data.all_msg   = clone (all_msg)
+    @playround_data.all_other = clone (all_other)
 
     # choose random coffin number for room 5
     @playround_data.coffin_all = ["A","B","C","D","E","F","G","H"]

@@ -16,48 +16,42 @@ init = ->
 init_game = ->
 
   # load in the charmap
-  chars_game_tx            = new (PIXI.Texture.fromImage)('img/chars.png')
-  @charset_game            = new Generate_charset(chars_game_tx, 8, 8, 16, 16)
-  chars_commodore_tx       = new (PIXI.Texture.fromImage)('img/chars-commodore.png')
-  @charset_commodore       = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16)
-  chars_commodore_green_tx = new (PIXI.Texture.fromImage)('img/chars-commodore-green.png')
-  @charset_commodore_green = new Generate_charset(chars_commodore_green_tx, 8, 8, 16, 16)
+  chars_game_tx             = new (PIXI.Texture.fromImage)('img/chars.png')
+  @charset_game             = new Generate_charset(chars_game_tx, 8, 8, 16, 16)
+  chars_commodore_tx        = new (PIXI.Texture.fromImage)('img/chars-commodore.png')
+  @charset_commodore        = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16)
+  chars_commodore_green_tx  = new (PIXI.Texture.fromImage)('img/chars-commodore-green.png')
+  @charset_commodore_green  = new Generate_charset(chars_commodore_green_tx, 8, 8, 16, 16)
   chars_commodore_orange_tx = new (PIXI.Texture.fromImage)('img/chars-commodore-orange.png')
   @charset_commodore_orange = new Generate_charset(chars_commodore_orange_tx, 8, 8, 16, 16)
-  chars_hint_tx            = new (PIXI.Texture.fromImage)('img/chars-hint.png')
-  @charset_hint            = new Generate_charset(chars_hint_tx, 8, 8, 16, 16)
+  chars_hint_tx             = new (PIXI.Texture.fromImage)('img/chars-hint.png')
+  @charset_hint             = new Generate_charset(chars_hint_tx, 8, 8, 16, 16)
   
 
   # load in all levels, messages and other stuff
+  @all_levels_counter = 0
   @all_lvl   = new BinaryImport("lvl")
   @all_msg   = new BinaryImport("msg")
   @all_other = new BinaryImport("other")
 
   # setup the main classes
-  @room    = new Room()
   @player  = new Player()
   @display = new Display()
   @display.renderloop()
   
-  # Arrow key movement
-  #@controls = new KeyboardController "game", 60
 
+start_game = ->
 
   # some UI status to kick notifications off
-  ui_log("Ghost Town JS. Current build: 15.12.17","green")
-  ui_log("User cursor keys to move the player.","green")
+  ui_log("Ghost Town JS. Current build: 16.01.22","green")
+  ui_log("User cursor keys and space to move the player.","green")
 
+  # start with this room
+  @room    = new Room()
 
-  # hacky ugly timeout to make the first level being loaded
-  # a bit more likely. still needs proper asset loading
-  setTimeout( =>
+  # create a copy of the screen data to use when a room needs to be reset
+  # TODO: make sure the data for copying is actually there (race condition)
+  @all_lvl.screen_data_copy = clone (@all_lvl.screen_data)
+  @room.other(1, charset_commodore, COLOR_GREY)
+  @controls = new KeyboardController "title", 60
 
-    # create a copy of the screen data to use when a room needs to be reset
-    # TODO: make sure the data for copying is actually there (race condition)
-    @all_lvl.screen_data_copy = clone (@all_lvl.screen_data)
-
-    # start with this room
-    @room.other(1, charset_commodore, COLOR_GREY)
-    @controls = new KeyboardController "title", 60
-    #@room.set(1)
-  ,1000)

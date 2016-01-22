@@ -13,6 +13,7 @@ BinaryImport = (function() {
     this.binary_type = binary_type != null ? binary_type : "lvl";
     this.screen_data = [];
     this.screen_data_copy = [];
+    this.all_levels_total = 52;
     if (this.binary_type === "lvl") {
       this.amount_of_files_to_load = 19;
       this.file_path = 'data/lvl/lvl-';
@@ -40,19 +41,25 @@ BinaryImport = (function() {
     oReq = new XMLHttpRequest;
     oReq.open('GET', file_fullpath, true);
     oReq.responseType = 'arraybuffer';
-    oReq.onload = function(oEvent) {
-      var arrayBuffer, byteArray, char, i;
-      arrayBuffer = oReq.response;
-      if (arrayBuffer) {
-        byteArray = new Uint8Array(arrayBuffer);
-        i = 2;
-        while (i < byteArray.byteLength) {
-          char = ('0' + byteArray[i].toString(16)).slice(-2);
-          screendat.push(char);
-          i++;
+    oReq.onload = (function(_this) {
+      return function(oEvent) {
+        var arrayBuffer, byteArray, char, i;
+        arrayBuffer = oReq.response;
+        if (arrayBuffer) {
+          byteArray = new Uint8Array(arrayBuffer);
+          i = 2;
+          while (i < byteArray.byteLength) {
+            char = ('0' + byteArray[i].toString(16)).slice(-2);
+            screendat.push(char);
+            i++;
+          }
         }
-      }
-    };
+        all_levels_counter++;
+        if (all_levels_counter === _this.all_levels_total) {
+          start_game();
+        }
+      };
+    })(this);
     oReq.send(null);
     return screendat;
   };

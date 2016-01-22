@@ -13,6 +13,7 @@ class BinaryImport
 
     @screen_data = []
     @screen_data_copy = []
+    @all_levels_total = 52
 
 #-------------------------------------------------------------------
 #   first we need to setup the different possible binary types
@@ -41,6 +42,7 @@ class BinaryImport
       filename = ('0' + i).slice(-2)
       @screen_data[i] = @import_screen_data(filename)
 
+      
 
   import_screen_data: (filename) ->
     # loads in a level binary file
@@ -50,7 +52,7 @@ class BinaryImport
     oReq.open 'GET', file_fullpath, true
     oReq.responseType = 'arraybuffer'
 
-    oReq.onload = (oEvent) ->
+    oReq.onload = (oEvent) =>
       arrayBuffer = oReq.response
       # Note: not oReq.responseText
       if arrayBuffer
@@ -63,6 +65,11 @@ class BinaryImport
           # put all hex data in level_data
           screendat.push char
           i++
+      all_levels_counter++
+      if all_levels_counter is @all_levels_total
+        # all levels loaded?
+        # then start the game
+        start_game()      
       return
 
     oReq.send null
