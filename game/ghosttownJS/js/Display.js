@@ -85,7 +85,7 @@ Display = (function() {
     }
     this.renderer.backgroundColor = COLOR_BLUE;
     this.screen.mask = this.maskFull;
-    this.level_data = all_msg.screen_data[msg_number];
+    this.level_data = room.playround_data.all_msg.screen_data[msg_number];
     this.clear();
     this.screen.addChild(this.bg_blue);
     return this.create_level_data(this.level_data, charset);
@@ -97,7 +97,7 @@ Display = (function() {
     }
     this.renderer.backgroundColor = COLOR_RED;
     this.screen.mask = this.maskFull;
-    this.level_data = all_msg.screen_data[msg_number];
+    this.level_data = room.playround_data.all_msg.screen_data[msg_number];
     this.clear();
     this.screen.addChild(this.bg_black);
     return this.create_level_data(this.level_data, charset);
@@ -112,7 +112,7 @@ Display = (function() {
     }
     this.renderer.backgroundColor = color;
     this.screen.mask = this.maskFull;
-    this.level_data = all_other.screen_data[msg_number];
+    this.level_data = room.playround_data.all_other.screen_data[msg_number];
     this.clear();
     if (color === COLOR_YELLOW) {
       this.screen.addChild(this.bg_yellow);

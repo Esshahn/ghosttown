@@ -29,7 +29,7 @@ Room = (function() {
 
   Room.prototype.reset = function(room_number1) {
     this.room_number = room_number1;
-    return all_lvl.screen_data[this.room_number] = clone(all_lvl.screen_data_copy[this.room_number]);
+    return this.playround_data.all_lvl.screen_data[this.room_number] = clone(all_lvl[this.room_number]);
   };
 
   Room.prototype.update = function(position) {
@@ -37,7 +37,7 @@ Room = (function() {
     if (position == null) {
       position = player.get_position();
     }
-    this.screen_data = clone(all_lvl.screen_data[this.room_number]);
+    this.screen_data = clone(this.playround_data.all_lvl.screen_data[this.room_number]);
     this.insert_player(position);
     this.playround_data.gamestate = "game";
     display.show_data();
@@ -95,7 +95,7 @@ Room = (function() {
     if (typeof tile === "string") {
       tile = this.find(tile);
     }
-    all_lvl.screen_data[this.room_number][tile] = tile_code;
+    this.playround_data.all_lvl.screen_data[this.room_number][tile] = tile_code;
     return this.update(player.get_position());
   };
 
@@ -119,7 +119,7 @@ Room = (function() {
     var i;
     if (direction === KEY.LEFT) {
       if (this.alphabet_pos > 441) {
-        all_msg.screen_data[30][this.alphabet_pos] = this.screen_data_clone[this.alphabet_pos];
+        this.playround_data.all_msg.screen_data[30][this.alphabet_pos] = this.screen_data_clone[this.alphabet_pos];
         this.alphabet_pos -= 1;
         this.trigger_alphabet = 1;
       }
@@ -127,7 +127,7 @@ Room = (function() {
     }
     if (direction === KEY.RIGHT) {
       if (this.alphabet_pos < 478) {
-        all_msg.screen_data[30][this.alphabet_pos] = this.screen_data_clone[this.alphabet_pos];
+        this.playround_data.all_msg.screen_data[30][this.alphabet_pos] = this.screen_data_clone[this.alphabet_pos];
         this.alphabet_pos += 1;
         this.trigger_alphabet = 1;
       }
@@ -135,14 +135,14 @@ Room = (function() {
     }
     if (direction === KEY.SPACE) {
       if (this.codenumber_pos < 397 && this.alphabet_pos < 478) {
-        all_msg.screen_data[30][this.codenumber_pos] = this.screen_data_clone[this.alphabet_pos];
+        this.playround_data.all_msg.screen_data[30][this.codenumber_pos] = this.screen_data_clone[this.alphabet_pos];
         this.codenumber_pos += 1;
         this.trigger_code = 1;
         if (this.codenumber_pos === 397) {
           this.codenumber = [];
           i = 0;
           while (i < 5) {
-            this.codenumber[i] = all_msg.screen_data[30][392 + i];
+            this.codenumber[i] = this.playround_data.all_msg.screen_data[30][392 + i];
             i++;
           }
           if (this.codenumber[0] === "30" && this.codenumber[1] === "36" && this.codenumber[2] === "31" && this.codenumber[3] === "33" && this.codenumber[4] === "38") {
@@ -155,7 +155,7 @@ Room = (function() {
             clearInterval(this.animation_interval);
             i = 0;
             while (i < 5) {
-              all_msg.screen_data[29][392 + i] = this.codenumber[i];
+              this.playround_data.all_msg.screen_data[29][392 + i] = this.codenumber[i];
               i++;
             }
             this.msg(29);
@@ -165,7 +165,7 @@ Room = (function() {
       }
       if (this.alphabet_pos === 478 && this.codenumber_pos > 392) {
         if (this.trigger_code !== 1) {
-          all_msg.screen_data[30][this.codenumber_pos] = (parseInt("0x" + all_msg.screen_data[30][this.codenumber_pos]) - 128).toString(16);
+          this.playround_data.all_msg.screen_data[30][this.codenumber_pos] = (parseInt("0x" + this.playround_data.all_msg.screen_data[30][this.codenumber_pos]) - 128).toString(16);
           this.trigger_code = 1;
         }
         this.codenumber_pos -= 1;
@@ -195,7 +195,7 @@ Room = (function() {
     if ((ref = this.room_number) === 10 || ref === 11 || ref === 14 || ref === 15 || ref === 16) {
       this.reset(this.room_number);
     }
-    this.screen_data = clone(all_lvl.screen_data[this.room_number]);
+    this.screen_data = clone(this.playround_data.all_lvl.screen_data[this.room_number]);
     this.room_info = levels_config[this.room_number];
     if (player_entry_pos === "forward") {
       player.position = this.room_info.playerpos1;
@@ -541,7 +541,7 @@ Room = (function() {
     }
     if (this.room_number === 4) {
       if (indexOf.call(new_position, "1e") >= 0 || indexOf.call(new_position, "1f") >= 0 || indexOf.call(new_position, "20") >= 0 || indexOf.call(new_position, "21") >= 0 || indexOf.call(new_position, "24") >= 0 || indexOf.call(new_position, "25") >= 0 || indexOf.call(new_position, "26") >= 0) {
-        all_msg.screen_data[5][470] = this.playround_data.coffin_hex;
+        this.playround_data.all_msg.screen_data[5][470] = this.playround_data.coffin_hex;
         this.msg(5);
       }
     }
@@ -736,9 +736,9 @@ Room = (function() {
       if (indexOf.call(new_position, "bb") >= 0 || indexOf.call(new_position, "b9") >= 0) {
         if (this.screen_data_clone != null) {
           console.log("reenter");
-          all_msg.screen_data[30] = clone(this.screen_data_clone);
+          this.playround_data.all_msg.screen_data[30] = clone(this.screen_data_clone);
         } else {
-          this.screen_data_clone = clone(all_msg.screen_data[30]);
+          this.screen_data_clone = clone(this.playround_data.all_msg.screen_data[30]);
         }
         this.trigger_alphabet = 1;
         this.trigger_code = 1;
@@ -748,17 +748,17 @@ Room = (function() {
           return function() {
             _this.trigger_alphabet = _this.trigger_alphabet * -1;
             _this.trigger_code = _this.trigger_code * -1;
-            _this.current_alphabet = all_msg.screen_data[30][_this.alphabet_pos];
-            _this.current_code = all_msg.screen_data[30][_this.codenumber_pos];
+            _this.current_alphabet = _this.playround_data.all_msg.screen_data[30][_this.alphabet_pos];
+            _this.current_code = _this.playround_data.all_msg.screen_data[30][_this.codenumber_pos];
             if (_this.trigger_alphabet === 1) {
-              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) - 128).toString(16);
+              _this.playround_data.all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) - 128).toString(16);
             } else {
-              all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) + 128).toString(16);
+              _this.playround_data.all_msg.screen_data[30][_this.alphabet_pos] = (parseInt("0x" + _this.current_alphabet) + 128).toString(16);
             }
             if (_this.trigger_code === 1) {
-              all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) - 128).toString(16);
+              _this.playround_data.all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) - 128).toString(16);
             } else {
-              all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) + 128).toString(16);
+              _this.playround_data.all_msg.screen_data[30][_this.codenumber_pos] = (parseInt("0x" + _this.current_code) + 128).toString(16);
             }
             return _this.msg(30, charset_commodore_green);
           };

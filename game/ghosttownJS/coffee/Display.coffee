@@ -103,7 +103,7 @@ class Display
     @renderer.backgroundColor = COLOR_BLUE
     @screen.mask = @maskFull
 
-    @level_data = all_msg.screen_data[msg_number]
+    @level_data = room.playround_data.all_msg.screen_data[msg_number]
 
     # clear the screen
     @clear()
@@ -118,7 +118,7 @@ class Display
     @renderer.backgroundColor = COLOR_RED
     @screen.mask = @maskFull
 
-    @level_data = all_msg.screen_data[msg_number]
+    @level_data = room.playround_data.all_msg.screen_data[msg_number]
 
     # clear the screen
     @clear()
@@ -133,7 +133,7 @@ class Display
     @renderer.backgroundColor = color
     @screen.mask = @maskFull
 
-    @level_data = all_other.screen_data[msg_number]
+    @level_data = room.playround_data.all_other.screen_data[msg_number]
 
     # clear the screen
     @clear()

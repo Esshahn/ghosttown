@@ -48,13 +48,13 @@ class Room
   reset : (@room_number) ->
     # resets the screen data of the room
 
-    all_lvl.screen_data[@room_number] = clone(all_lvl.screen_data_copy[@room_number])
+    @playround_data.all_lvl.screen_data[@room_number] = clone(all_lvl[@room_number])
 
 #-------------------------------------------------------------------
 
   update : (position = player.get_position()) ->
 
-    @screen_data = clone(all_lvl.screen_data[@room_number])
+    @screen_data = clone(@playround_data.all_lvl.screen_data[@room_number])
 
     @insert_player(position)
     @playround_data.gamestate = "game"
@@ -115,7 +115,7 @@ class Room
     # tile_code is the tile code that replaces the original tile
 
     tile = @find tile if typeof tile is "string"
-    all_lvl.screen_data[@room_number][tile] = tile_code
+    @playround_data.all_lvl.screen_data[@room_number][tile] = tile_code
     @update(player.get_position())
 
 #-------------------------------------------------------------------
@@ -148,7 +148,7 @@ class Room
     if direction is KEY.LEFT
       # cursor left
       if @alphabet_pos > 441
-        all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
+        @playround_data.all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
         @alphabet_pos -= 1
         @trigger_alphabet = 1
       return
@@ -156,7 +156,7 @@ class Room
     if direction is KEY.RIGHT
       # cursor right
       if @alphabet_pos < 478
-        all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
+        @playround_data.all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
         @alphabet_pos += 1
         @trigger_alphabet = 1
       return
@@ -164,7 +164,7 @@ class Room
     if direction is KEY.SPACE
       # spacebar
       if @codenumber_pos < 397 and @alphabet_pos < 478
-        all_msg.screen_data[30][@codenumber_pos] = @screen_data_clone[@alphabet_pos]   
+        @playround_data.all_msg.screen_data[30][@codenumber_pos] = @screen_data_clone[@alphabet_pos]   
         @codenumber_pos += 1
         @trigger_code = 1
 
@@ -176,7 +176,7 @@ class Room
           @codenumber = []
           i = 0
           while i<5            
-            @codenumber[i] = all_msg.screen_data[30][392+i]
+            @codenumber[i] = @playround_data.all_msg.screen_data[30][392+i]
             i++
 
           # check if the code number 06138 is entered (hex 30 36 31 33 38)
@@ -200,7 +200,7 @@ class Room
             # the code number entered is put pack onto the error message
             i = 0
             while i<5            
-              all_msg.screen_data[29][392+i] = @codenumber[i] 
+              @playround_data.all_msg.screen_data[29][392+i] = @codenumber[i] 
               i++
 
             @msg(29)
@@ -210,7 +210,7 @@ class Room
       if @alphabet_pos is 478 and @codenumber_pos > 392
         # going back one position with the cursor, restore the non-inverse char
         if @trigger_code isnt 1
-          all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+all_msg.screen_data[30][@codenumber_pos])-128).toString(16)
+          @playround_data.all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@playround_data.all_msg.screen_data[30][@codenumber_pos])-128).toString(16)
           @trigger_code = 1 
         @codenumber_pos -= 1
         return
@@ -243,7 +243,7 @@ class Room
     if @room_number in [10,11,14,15,16]
       @reset(@room_number)
 
-    @screen_data = clone(all_lvl.screen_data[@room_number])
+    @screen_data = clone(@playround_data.all_lvl.screen_data[@room_number])
 
     @room_info = levels_config[@room_number]
     player.position = @room_info.playerpos1 if player_entry_pos == "forward"
@@ -721,7 +721,7 @@ class Room
         # we replace the code char in the message binary with the
         # random new char (A to H) we generated in the constructor
         # it's a bit ugly as it happens every time, but we shouldn't give a fuck
-        all_msg.screen_data[5][470] = @playround_data.coffin_hex
+        @playround_data.all_msg.screen_data[5][470] = @playround_data.coffin_hex
         @msg(5)
         
 
@@ -1073,9 +1073,9 @@ class Room
         # before and entered the code right), reset the all_msg so no old code is visible
         if @screen_data_clone?
           console.log("reenter")
-          all_msg.screen_data[30] = clone (@screen_data_clone)
+          @playround_data.all_msg.screen_data[30] = clone (@screen_data_clone)
         else
-          @screen_data_clone = clone (all_msg.screen_data[30])
+          @screen_data_clone = clone (@playround_data.all_msg.screen_data[30])
 
         @trigger_alphabet = 1
         @trigger_code = 1
@@ -1086,18 +1086,18 @@ class Room
         @animation_interval = setInterval((=>
           @trigger_alphabet = @trigger_alphabet * -1
           @trigger_code = @trigger_code * -1
-          @current_alphabet = all_msg.screen_data[30][@alphabet_pos]
-          @current_code     = all_msg.screen_data[30][@codenumber_pos]
+          @current_alphabet = @playround_data.all_msg.screen_data[30][@alphabet_pos]
+          @current_code     = @playround_data.all_msg.screen_data[30][@codenumber_pos]
 
           if @trigger_alphabet is 1
-            all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)-128).toString(16)
+            @playround_data.all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)-128).toString(16)
           else
-            all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)+128).toString(16)
+            @playround_data.all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)+128).toString(16)
 
           if @trigger_code is 1
-            all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)-128).toString(16)
+            @playround_data.all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)-128).toString(16)
           else
-            all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)+128).toString(16)
+            @playround_data.all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)+128).toString(16)
 
 
           @msg(30,charset_commodore_green)  
