@@ -96,7 +96,7 @@ class Room
 
 #-------------------------------------------------------------------
 
-  die_timeout : (@millisecs = 3 * 1000 )->  
+  die_timeout : (@millisecs = 8 * 1000 )->  
     setTimeout( =>
           console.log("reset")
           controls.destroy()
@@ -157,44 +157,44 @@ class Room
 
     if direction is KEY.LEFT
       # cursor left
-      if alphabet_pos > 441
-        @playround_data.all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
-        @alphabet_pos -= 1
-        @trigger_alphabet = 1
+      if @playround_data.alphabet_pos > 441
+        @playround_data.all_msg.screen_data[30][@playround_data.alphabet_pos] = @screen_data_clone[@playround_data.alphabet_pos]
+        @playround_data.alphabet_pos -= 1
+        @playround_data.trigger_alphabet = 1
       return
 
     if direction is KEY.RIGHT
       # cursor right
-      if @alphabet_pos < 478
-        @playround_data.all_msg.screen_data[30][@alphabet_pos] = @screen_data_clone[@alphabet_pos]
-        @alphabet_pos += 1
-        @trigger_alphabet = 1
+      if @playround_data.alphabet_pos < 478
+        @playround_data.all_msg.screen_data[30][@playround_data.alphabet_pos] = @screen_data_clone[@playround_data.alphabet_pos]
+        @playround_data.alphabet_pos += 1
+        @playround_data.trigger_alphabet = 1
       return
 
     if direction is KEY.SPACE
       # spacebar
-      if @codenumber_pos < 397 and @alphabet_pos < 478
-        @playround_data.all_msg.screen_data[30][@codenumber_pos] = @screen_data_clone[@alphabet_pos]   
-        @codenumber_pos += 1
-        @trigger_code = 1
+      if @playround_data.codenumber_pos < 397 and @playround_data.alphabet_pos < 478
+        @playround_data.all_msg.screen_data[30][@playround_data.codenumber_pos] = @screen_data_clone[@playround_data.alphabet_pos]   
+        @playround_data.codenumber_pos += 1
+        @playround_data.trigger_code = 1
 
         # if 5 characters are entered
         # check for the code number
-        if @codenumber_pos is 397
+        if @playround_data.codenumber_pos is 397
           
           # store the numbers entered in the codenumber
-          @codenumber = []
+          @playround_data.codenumber = []
           i = 0
           while i<5            
-            @codenumber[i] = @playround_data.all_msg.screen_data[30][392+i]
+            @playround_data.codenumber[i] = @playround_data.all_msg.screen_data[30][392+i]
             i++
 
           # check if the code number 06138 is entered (hex 30 36 31 33 38)
-          if @codenumber[0] is "30" and
-          @codenumber[1] is "36" and
-          @codenumber[2] is "31" and
-          @codenumber[3] is "33" and
-          @codenumber[4] is "38"
+          if @playround_data.codenumber[0] is "30" and
+          @playround_data.codenumber[1] is "36" and
+          @playround_data.codenumber[2] is "31" and
+          @playround_data.codenumber[3] is "33" and
+          @playround_data.codenumber[4] is "38"
 
             # codenumber is correct
             clearInterval @animation_interval              
@@ -210,19 +210,20 @@ class Room
             # the code number entered is put pack onto the error message
             i = 0
             while i<5            
-              @playround_data.all_msg.screen_data[29][392+i] = @codenumber[i] 
+              @playround_data.all_msg.screen_data[29][392+i] = @playround_data.codenumber[i] 
               i++
 
             @msg(29)
             @playround_data.gamestate = "die"
+            @die_timeout()
 
       # go back one position if the back symbol "<" was selected
-      if @alphabet_pos is 478 and @codenumber_pos > 392
+      if @playround_data.alphabet_pos is 478 and @playround_data.codenumber_pos > 392
         # going back one position with the cursor, restore the non-inverse char
-        if @trigger_code isnt 1
-          @playround_data.all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@playround_data.all_msg.screen_data[30][@codenumber_pos])-128).toString(16)
-          @trigger_code = 1 
-        @codenumber_pos -= 1
+        if @playround_data.trigger_code isnt 1
+          @playround_data.all_msg.screen_data[30][@playround_data.codenumber_pos] = (parseInt("0x"+@playround_data.all_msg.screen_data[30][@playround_data.codenumber_pos])-128).toString(16)
+          @playround_data.trigger_code = 1 
+        @playround_data.codenumber_pos -= 1
         return
 
 #-------------------------------------------------------------------
@@ -266,14 +267,14 @@ class Room
 #-------------------------------------------------------------------
     
     if @room_number is 10
-      @trigger = 0
+      @playround_data.trigger = 0
       @animation_interval = setInterval((=>
         if @playround_data.pauseInterval isnt true
-          @trigger++
+          @playround_data.trigger++
           
-          if @trigger < 6
+          if @playround_data.trigger < 6
             # spider should go down
-            @replace_y = @trigger - 0
+            @replace_y = @playround_data.trigger - 0
 
             # is the spider (left bottom or right bottom) hitting anything else than "df" (nothing)?
             if @screen_data[15+40*(@replace_y+2)] isnt "df" or
@@ -284,7 +285,7 @@ class Room
 
           else
             # spider should go up
-            @replace_y = 12 - @trigger
+            @replace_y = 12 - @playround_data.trigger
 
             # is the spider (left top or right top) hitting anything else than "df" (nothing)?
             if @screen_data[15+40*(@replace_y)] isnt "df" and
@@ -295,7 +296,7 @@ class Room
               @die('boris the spider',26)
               return
 
-          if @trigger < 7
+          if @playround_data.trigger < 7
             # the spider is going down?
             # then add the spider net on top
             @replace(15+40*(@replace_y+0),"df")
@@ -309,7 +310,7 @@ class Room
           @replace(16+40*(@replace_y+2),"e8")
           @replace(17+40*(@replace_y+2),"e9")
          
-          if @trigger > 6
+          if @playround_data.trigger > 6
             # the spider is going up?
             # then clear the spider image at the bottom
             @replace(15+40*(@replace_y+3),"df")
@@ -317,7 +318,7 @@ class Room
             @replace(17+40*(@replace_y+3),"df")
            
           # is the spider animated completely? then restart 
-          if @trigger is 11 then @trigger = 1
+          if @playround_data.trigger is 11 then @playround_data.trigger = 1
           
         ), 120)
 
@@ -336,12 +337,12 @@ class Room
         @replace("ce","df")
         @replace("cf","df")
 
-      @trigger = -1
+      @playround_data.trigger = -1
       @animation_interval = setInterval((=>
         if @playround_data.pauseInterval isnt true
-          @trigger = @trigger * -1
+          @playround_data.trigger = @playround_data.trigger * -1
           
-          if @trigger is 1
+          if @playround_data.trigger is 1
             # Shut the laser fence down
             @replace(379+0*40,"df") 
             @replace(379+1*40,"df")
@@ -383,15 +384,15 @@ class Room
 #-------------------------------------------------------------------
     
     if @room_number is 16
-      @trigger = 0
+      @playround_data.trigger = 0
       @animation_interval = setInterval((=>
         if @playround_data.pauseInterval isnt true
-          if @trigger < 8
+          if @playround_data.trigger < 8
             # monster should go right
-            @replace_x = @trigger 
+            @replace_x = @playround_data.trigger 
           else
             # monster should go left
-            @replace_x = 14 - @trigger
+            @replace_x = 14 - @playround_data.trigger
 
           # clear left side of monster
           @replace(484+@replace_x+40*0,"df")
@@ -417,10 +418,10 @@ class Room
             @replace(488+@replace_x+40*1,"df")
             @replace(488+@replace_x+40*2,"df")
 
-          @trigger++ 
+          @playround_data.trigger++ 
 
           # is the monster animated completely? then restart 
-          if @trigger is 14 then @trigger = 0
+          if @playround_data.trigger is 14 then @playround_data.trigger = 0
 
           # collision check
           # first check for the right side of the monster
@@ -1087,27 +1088,27 @@ class Room
         else
           @screen_data_clone = clone (@playround_data.all_msg.screen_data[30])
 
-        @trigger_alphabet = 1
-        @trigger_code = 1
-        @alphabet_pos   = 441
-        @codenumber_pos = 392
+        @playround_data.trigger_alphabet = 1
+        @playround_data.trigger_code = 1
+        @playround_data.alphabet_pos   = 441
+        @playround_data.codenumber_pos = 392
         
         # set the animation of the characters
         @animation_interval = setInterval((=>
-          @trigger_alphabet = @trigger_alphabet * -1
-          @trigger_code = @trigger_code * -1
-          @current_alphabet = @playround_data.all_msg.screen_data[30][@alphabet_pos]
-          @current_code     = @playround_data.all_msg.screen_data[30][@codenumber_pos]
+          @playround_data.trigger_alphabet = @playround_data.trigger_alphabet * -1
+          @playround_data.trigger_code = @playround_data.trigger_code * -1
+          @current_alphabet = @playround_data.all_msg.screen_data[30][@playround_data.alphabet_pos]
+          @current_code     = @playround_data.all_msg.screen_data[30][@playround_data.codenumber_pos]
 
-          if @trigger_alphabet is 1
-            @playround_data.all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)-128).toString(16)
+          if @playround_data.trigger_alphabet is 1
+            @playround_data.all_msg.screen_data[30][@playround_data.alphabet_pos]   = (parseInt("0x"+@current_alphabet)-128).toString(16)
           else
-            @playround_data.all_msg.screen_data[30][@alphabet_pos]   = (parseInt("0x"+@current_alphabet)+128).toString(16)
+            @playround_data.all_msg.screen_data[30][@playround_data.alphabet_pos]   = (parseInt("0x"+@current_alphabet)+128).toString(16)
 
-          if @trigger_code is 1
-            @playround_data.all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)-128).toString(16)
+          if @playround_data.trigger_code is 1
+            @playround_data.all_msg.screen_data[30][@playround_data.codenumber_pos] = (parseInt("0x"+@current_code)-128).toString(16)
           else
-            @playround_data.all_msg.screen_data[30][@codenumber_pos] = (parseInt("0x"+@current_code)+128).toString(16)
+            @playround_data.all_msg.screen_data[30][@playround_data.codenumber_pos] = (parseInt("0x"+@current_code)+128).toString(16)
 
 
           @msg(30,charset_commodore_green)  
@@ -1138,33 +1139,33 @@ class Room
       if player.position is 264
         # and the boulder hasn't been moving before and belegro is dead
         if @screen_data[270] is "78" and not @playround_data.belegro_is_alive
-          @trigger = 0
+          @playround_data.trigger = 0
           @animation_interval = setInterval((=>
             
             if @playround_data.pauseInterval isnt true
               
-              @trigger++
+              @playround_data.trigger++
               
               # move the boulder
               # top row
-              @replace(270+0*40-@trigger,"78") 
-              @replace(271+0*40-@trigger,"79")
-              @replace(272+0*40-@trigger,"7a")
-              @replace(273+0*40-@trigger,"df")
+              @replace(270+0*40-@playround_data.trigger,"78") 
+              @replace(271+0*40-@playround_data.trigger,"79")
+              @replace(272+0*40-@playround_data.trigger,"7a")
+              @replace(273+0*40-@playround_data.trigger,"df")
 
               # middle row
-              @replace(270+1*40-@trigger,"7b") 
-              @replace(271+1*40-@trigger,"7c")
-              @replace(272+1*40-@trigger,"7d")
-              @replace(273+1*40-@trigger,"df")
+              @replace(270+1*40-@playround_data.trigger,"7b") 
+              @replace(271+1*40-@playround_data.trigger,"7c")
+              @replace(272+1*40-@playround_data.trigger,"7d")
+              @replace(273+1*40-@playround_data.trigger,"df")
 
               # bottom row
-              @replace(270+2*40-@trigger,"7e") 
-              @replace(271+2*40-@trigger,"7f")
-              @replace(272+2*40-@trigger,"80")
-              @replace(273+2*40-@trigger,"df")
+              @replace(270+2*40-@playround_data.trigger,"7e") 
+              @replace(271+2*40-@playround_data.trigger,"7f")
+              @replace(272+2*40-@playround_data.trigger,"80")
+              @replace(273+2*40-@playround_data.trigger,"df")
 
-              if @trigger > 26
+              if @playround_data.trigger > 26
                 clearInterval @animation_interval  
 
               # get the x and y position of the player in the matrix
@@ -1172,8 +1173,8 @@ class Room
               @playround_data.player_y = Math.round(player.get_position() / 40)
               
               # get the x and y position of the boulder in the matrix
-              @playround_data.boulder_x = (270 - @trigger) % 40
-              @playround_data.boulder_y = Math.round((270 - @trigger) / 40)
+              @playround_data.boulder_x = (270 - @playround_data.trigger) % 40
+              @playround_data.boulder_y = Math.round((270 - @playround_data.trigger) / 40)
 
               # collision check
               if Math.abs(@playround_data.boulder_x - @playround_data.player_x) in [0,1,2] and
