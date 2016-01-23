@@ -46,7 +46,7 @@ class Room
 
   reset : (@room_number) ->
     # resets the screen data of the room
-    @playround_data.all_lvl.screen_data[@room_number] = clone(all_lvl[@room_number])
+    @playround_data.all_lvl.screen_data[@room_number] = clone(all_lvl.screen_data[@room_number])
 
 #-------------------------------------------------------------------
 
@@ -240,6 +240,18 @@ class Room
 
 #-------------------------------------------------------------------
 
+  check_win_keys : ->
+    player.reset()
+    controls.destroy()
+    controls.init "title", 60
+    @other(1, charset_commodore, COLOR_YELLOW)
+    @init()
+    setTimeout( =>
+      @other(1, charset_commodore, COLOR_GREY)      
+    ,6 * 1000)
+
+#-------------------------------------------------------------------
+
 
   set : (@room_number,player_entry_pos = "forward") ->
     # changes the room
@@ -251,8 +263,10 @@ class Room
 
     # INIT FOR ROOMS
     # Some rooms need to be reset when entering (nails room, laser room)
+    
     if @room_number in [10,11,14,15,16]
       @reset(@room_number)
+  
 
     @screen_data = clone(@playround_data.all_lvl.screen_data[@room_number])
 
@@ -1083,7 +1097,6 @@ class Room
         # and if @screen_data_clone is already set (meaning the player was on the code screen
         # before and entered the code right), reset the all_msg so no old code is visible
         if @screen_data_clone?
-          console.log("reenter")
           @playround_data.all_msg.screen_data[30] = clone (@screen_data_clone)
         else
           @screen_data_clone = clone (@playround_data.all_msg.screen_data[30])
@@ -1201,7 +1214,7 @@ class Room
     if @room_number is 19
       
       # TREASURE CHEST
-      if "treasure key" in player.inventory
+      if "treasure key" not in player.inventory
         if "81" in new_position or 
         "84" in new_position or 
         "87" in new_position or
@@ -1213,6 +1226,9 @@ class Room
         "8f" in new_position or
         "92" in new_position
           @other(3)
+          controls.destroy()
+          controls.init("win",60)
+          
 
 #-------------------------------------------------------------------
 #   DOORS

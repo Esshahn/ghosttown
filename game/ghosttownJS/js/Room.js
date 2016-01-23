@@ -29,7 +29,7 @@ Room = (function() {
 
   Room.prototype.reset = function(room_number1) {
     this.room_number = room_number1;
-    return this.playround_data.all_lvl.screen_data[this.room_number] = clone(all_lvl[this.room_number]);
+    return this.playround_data.all_lvl.screen_data[this.room_number] = clone(all_lvl.screen_data[this.room_number]);
   };
 
   Room.prototype.update = function(position) {
@@ -198,6 +198,19 @@ Room = (function() {
       controls.init("game", 60);
       return this.set(1);
     }
+  };
+
+  Room.prototype.check_win_keys = function() {
+    player.reset();
+    controls.destroy();
+    controls.init("title", 60);
+    this.other(1, charset_commodore, COLOR_YELLOW);
+    this.init();
+    return setTimeout((function(_this) {
+      return function() {
+        return _this.other(1, charset_commodore, COLOR_GREY);
+      };
+    })(this), 6 * 1000);
   };
 
   Room.prototype.set = function(room_number1, player_entry_pos) {
@@ -750,7 +763,6 @@ Room = (function() {
     if (this.room_number === 17) {
       if (indexOf.call(new_position, "bb") >= 0 || indexOf.call(new_position, "b9") >= 0) {
         if (this.screen_data_clone != null) {
-          console.log("reenter");
           this.playround_data.all_msg.screen_data[30] = clone(this.screen_data_clone);
         } else {
           this.screen_data_clone = clone(this.playround_data.all_msg.screen_data[30]);
@@ -831,9 +843,11 @@ Room = (function() {
       }
     }
     if (this.room_number === 19) {
-      if (indexOf.call(player.inventory, "treasure key") >= 0) {
+      if (indexOf.call(player.inventory, "treasure key") < 0) {
         if (indexOf.call(new_position, "81") >= 0 || indexOf.call(new_position, "84") >= 0 || indexOf.call(new_position, "87") >= 0 || indexOf.call(new_position, "82") >= 0 || indexOf.call(new_position, "83") >= 0 || indexOf.call(new_position, "8a") >= 0 || indexOf.call(new_position, "8b") >= 0 || indexOf.call(new_position, "8c") >= 0 || indexOf.call(new_position, "8f") >= 0 || indexOf.call(new_position, "92") >= 0) {
           this.other(3);
+          controls.destroy();
+          controls.init("win", 60);
         }
       }
     }

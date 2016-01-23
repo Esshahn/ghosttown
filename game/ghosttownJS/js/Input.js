@@ -70,6 +70,13 @@ KeyboardController = (function() {
         }
       };
     }
+    if (this.keyset === "win") {
+      this.keys = {
+        32: function() {
+          room.check_win_keys();
+        }
+      };
+    }
     document.onkeydown = (function(_this) {
       return function(event) {
         var key;

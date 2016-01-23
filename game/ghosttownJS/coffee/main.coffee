@@ -51,7 +51,6 @@ start_game = ->
 
   # create a copy of the screen data to use when a room needs to be reset
   # TODO: make sure the data for copying is actually there (race condition)
-  @all_lvl.screen_data_copy = clone (@all_lvl.screen_data)
   @room.other(1, charset_commodore, COLOR_GREY)
   @controls = new KeyboardController "title", 60
 

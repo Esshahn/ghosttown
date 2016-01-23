@@ -66,6 +66,11 @@ class KeyboardController
         room.check_title_keys()
         return
 
+    if @keyset is "win"
+      @keys =
+      32: ->
+        room.check_win_keys()
+        return
 
     document.onkeydown = (event) =>
       key = (event or window.event).keyCode    

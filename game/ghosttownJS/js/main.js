@@ -39,7 +39,6 @@ start_game = function() {
   ui_log("Ghost Town JS. Current build: 16.01.22", "green");
   ui_log("User cursor keys and space to move the player.", "green");
   this.room = new Room();
-  this.all_lvl.screen_data_copy = clone(this.all_lvl.screen_data);
   this.room.other(1, charset_commodore, COLOR_GREY);
   return this.controls = new KeyboardController("title", 60);
 };

@@ -67,7 +67,7 @@ levels_config =
   17:
     name: 'The Prison'
     playerpos1: 123
-    playerpos2: 101
+    playerpos2: 149
   18:
     name: 'Belegro'
     playerpos1: 123
