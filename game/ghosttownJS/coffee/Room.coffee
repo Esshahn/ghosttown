@@ -98,7 +98,7 @@ class Room
 
   die_timeout : (@millisecs = 8 * 1000 )->  
     setTimeout( =>
-          console.log("reset")
+          player.reset()
           controls.destroy()
           controls.init "title", 60
           @other(1, charset_commodore, COLOR_GREY)

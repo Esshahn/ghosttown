@@ -60,4 +60,8 @@ class Player
 
 #-------------------------------------------------------------------
 
+  reset : () ->
+    @inventory = []
+    ui_inventory(@inventory)
+
       

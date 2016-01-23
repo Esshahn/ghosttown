@@ -54,6 +54,11 @@ Player = (function() {
     }
   };
 
+  Player.prototype.reset = function() {
+    this.inventory = [];
+    return ui_inventory(this.inventory);
+  };
+
   return Player;
 
 })();

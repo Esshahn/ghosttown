@@ -80,7 +80,7 @@ Room = (function() {
     this.millisecs = millisecs != null ? millisecs : 8 * 1000;
     return setTimeout((function(_this) {
       return function() {
-        console.log("reset");
+        player.reset();
         controls.destroy();
         controls.init("title", 60);
         _this.other(1, charset_commodore, COLOR_GREY);
