@@ -13,6 +13,7 @@ load_assets = (cb) ->
   loader.add 'chars_commodore_green',   'img/chars-commodore-green.png'
   loader.add 'chars_commodore_orange',   'img/chars-commodore-orange.png'
   loader.add 'chars_hint',              'img/chars-hint.png'
+  loader.add 'music',              'sound/ghost-town-loop.ogg'
   
   loader.once 'complete', ->
     cb()

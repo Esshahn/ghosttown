@@ -82,9 +82,10 @@ Room = (function() {
       return function() {
         player.reset();
         controls.destroy();
-        controls.init("title", 60);
+        controls.init("title", 300);
         _this.other(1, charset_commodore, COLOR_GREY);
-        return _this.init();
+        _this.init();
+        return sound.volume(1);
       };
     })(this), this.millisecs);
   };
@@ -191,11 +192,12 @@ Room = (function() {
   Room.prototype.check_title_keys = function() {
     if (this.playround_data.intro == null) {
       this.playround_data.intro = true;
-      return this.other(2, charset_commodore_orange, COLOR_BLACK);
+      return this.other(2, charset_commodore_orange, COLOR_GREY);
     } else {
       this.playround_data.intro = false;
       controls.destroy();
       controls.init("game", 60);
+      sound.volume(0.3);
       return this.set(1);
     }
   };
@@ -203,9 +205,10 @@ Room = (function() {
   Room.prototype.check_win_keys = function() {
     player.reset();
     controls.destroy();
-    controls.init("title", 60);
+    controls.init("title", 300);
     this.other(1, charset_commodore, COLOR_YELLOW);
     this.init();
+    sound.volume(1);
     return setTimeout((function(_this) {
       return function() {
         return _this.other(1, charset_commodore, COLOR_GREY);
@@ -843,7 +846,7 @@ Room = (function() {
       }
     }
     if (this.room_number === 19) {
-      if (indexOf.call(player.inventory, "treasure key") < 0) {
+      if (indexOf.call(player.inventory, "treasure key") >= 0) {
         if (indexOf.call(new_position, "81") >= 0 || indexOf.call(new_position, "84") >= 0 || indexOf.call(new_position, "87") >= 0 || indexOf.call(new_position, "82") >= 0 || indexOf.call(new_position, "83") >= 0 || indexOf.call(new_position, "8a") >= 0 || indexOf.call(new_position, "8b") >= 0 || indexOf.call(new_position, "8c") >= 0 || indexOf.call(new_position, "8f") >= 0 || indexOf.call(new_position, "92") >= 0) {
           this.other(3);
           controls.destroy();

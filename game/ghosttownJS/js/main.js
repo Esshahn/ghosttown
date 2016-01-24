@@ -36,11 +36,17 @@ init_game = function() {
 };
 
 start_game = function() {
+  this.sound = new Howl({
+    urls: ['sound/ghost-town-loop.ogg'],
+    autoplay: true,
+    loop: true,
+    volume: 1.0
+  });
   ui_log("Ghost Town JS. Current build: 16.01.22", "green");
   ui_log("User cursor keys and space to move the player.", "green");
   this.room = new Room();
   this.room.other(1, charset_commodore, COLOR_GREY);
-  return this.controls = new KeyboardController("title", 60);
+  return this.controls = new KeyboardController("title", 300);
 };
 
 //# sourceMappingURL=main.js.map

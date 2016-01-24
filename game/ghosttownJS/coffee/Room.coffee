@@ -100,9 +100,10 @@ class Room
     setTimeout( =>
           player.reset()
           controls.destroy()
-          controls.init "title", 60
+          controls.init "title", 300
           @other(1, charset_commodore, COLOR_GREY)
           @init()
+          sound.volume(1)
     ,@millisecs)
 
 #-------------------------------------------------------------------
@@ -231,11 +232,12 @@ class Room
   check_title_keys : ->
     if not @playround_data.intro?
       @playround_data.intro = true
-      @other(2, charset_commodore_orange, COLOR_BLACK)
+      @other(2, charset_commodore_orange, COLOR_GREY)
     else
       @playround_data.intro = false
       controls.destroy()
       controls.init "game", 60
+      sound.volume(0.3)
       @set(1)
 
 #-------------------------------------------------------------------
@@ -243,9 +245,10 @@ class Room
   check_win_keys : ->
     player.reset()
     controls.destroy()
-    controls.init "title", 60
+    controls.init "title", 300
     @other(1, charset_commodore, COLOR_YELLOW)
     @init()
+    sound.volume(1)
     setTimeout( =>
       @other(1, charset_commodore, COLOR_GREY)      
     ,6 * 1000)
@@ -1214,7 +1217,7 @@ class Room
     if @room_number is 19
       
       # TREASURE CHEST
-      if "treasure key" not in player.inventory
+      if "treasure key" in player.inventory
         if "81" in new_position or 
         "84" in new_position or 
         "87" in new_position or

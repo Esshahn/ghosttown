@@ -148,6 +148,10 @@ class Display
     if color is COLOR_BLACK
       @screen.addChild @bg_black
 
+    # for the intro screen set the background to black
+    if msg_number is 2
+      @screen.addChild @bg_black
+
     @create_level_data(@level_data,charset)
 
 #-------------------------------------------------------------------

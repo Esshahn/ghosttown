@@ -123,6 +123,9 @@ Display = (function() {
     if (color === COLOR_BLACK) {
       this.screen.addChild(this.bg_black);
     }
+    if (msg_number === 2) {
+      this.screen.addChild(this.bg_black);
+    }
     return this.create_level_data(this.level_data, charset);
   };
 

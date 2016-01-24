@@ -42,6 +42,9 @@ init_game = ->
 
 start_game = ->
 
+  # init the sound
+  @sound = new Howl({urls: ['sound/ghost-town-loop.ogg'],  autoplay: true, loop: true, volume: 1.0})
+
   # some UI status to kick notifications off
   ui_log("Ghost Town JS. Current build: 16.01.22","green")
   ui_log("User cursor keys and space to move the player.","green")
@@ -52,5 +55,5 @@ start_game = ->
   # create a copy of the screen data to use when a room needs to be reset
   # TODO: make sure the data for copying is actually there (race condition)
   @room.other(1, charset_commodore, COLOR_GREY)
-  @controls = new KeyboardController "title", 60
+  @controls = new KeyboardController "title", 300
 
