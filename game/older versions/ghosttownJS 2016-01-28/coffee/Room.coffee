@@ -13,15 +13,11 @@ class Room
 
 #-------------------------------------------------------------------
 
-  # init data for the game
-  # we store everything that is related to one play round
-  # here, so we can call it again later to reset the game
-
   init : ->
 
-    # I think in the end the clearInterval is not needed anymore here
-    # but it doesnt hurt to keep it in
-    clearInterval @animation_interval
+    # init data for the game
+    # we store everything that is related to one play round
+    # here, so we can call it again later to reset the game
 
     @screen_data = []
     @room_number = 1
@@ -100,17 +96,14 @@ class Room
 
 #-------------------------------------------------------------------
 
-  # sets the timeout when the player died
-  # till the title screen is shown again
-
-  die_timeout : (@millisecs = 8 * 1000 )->
-    sound.fade(0.3,1.0,6000)
-    player.reset()
-    controls.destroy()
-    setTimeout( =>      
-      controls.init "title", 300
-      @other(1, charset_commodore, COLOR_GREY)
-      @init()      
+  die_timeout : (@millisecs = 8 * 1000 )->  
+    setTimeout( =>
+          player.reset()
+          controls.destroy()
+          controls.init "title", 300
+          @other(1, charset_commodore, COLOR_GREY)
+          @init()
+          sound.volume(1)
     ,@millisecs)
 
 #-------------------------------------------------------------------
@@ -127,37 +120,34 @@ class Room
 
 #-------------------------------------------------------------------
 
-  # replaces a tile by another
-  # tile can be a position on screen (number, e.g. 297) or a tile code (string, e.g. "a9")
-  # tile_code is the tile code that replaces the original tile
-  
   replace : (tile,tile_code) ->
+    # replaces a tile by another
+    # tile can be a position on screen (number, e.g. 297) or a tile code (string, e.g. "a9")
+    # tile_code is the tile code that replaces the original tile
+
     tile = @find tile if typeof tile is "string"
     @playround_data.all_lvl.screen_data[@room_number][tile] = tile_code
     @update(player.get_position())
 
 #-------------------------------------------------------------------
 
-  # returns the first position (e.g. 294) of a give tile_code (e.g. "a9" on the screen)
-
   find : (tile) ->
+    # returns the first position (e.g. 294) of a give tile_code (e.g. "a9" on the screen)
     if tile in @screen_data
       @screen_data.indexOf(tile)
 
 #-------------------------------------------------------------------
 
-  # returns the tile code at a given index position in the array
-
-  get_tile_at : (tile) ->    
+  get_tile_at : (tile) ->
+    # returns the tile code at a given index position in the array
     @screen_data[tile]
 
 #-------------------------------------------------------------------
-  
-  # checks what the spacebar key should actually do
-  # game states can be "die", "msg" and "game"
-  # another dirty hack
 
   check_spacebar_event : ->
+    # checks what the spacebar key should actually do
+    # game states can be "die", "msg" and "game"
+    # another dirty hack
 
     if @playround_data.gamestate is "msg"
       @update(player.get_position())
@@ -265,11 +255,11 @@ class Room
 
 #-------------------------------------------------------------------
 
-  # changes the room
-  # read in the given level from the all levels data
-  # level_data is now the current worksheet to work with
 
   set : (@room_number,player_entry_pos = "forward") ->
+    # changes the room
+    # read in the given level from the all levels data
+    # level_data is now the current worksheet to work with
 
     # stops all intervals when entering a room
     clearInterval @animation_interval

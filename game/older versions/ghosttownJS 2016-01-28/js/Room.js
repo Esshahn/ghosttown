@@ -14,7 +14,6 @@ Room = (function() {
   }
 
   Room.prototype.init = function() {
-    clearInterval(this.animation_interval);
     this.screen_data = [];
     this.room_number = 1;
     this.room_info;
@@ -79,14 +78,14 @@ Room = (function() {
 
   Room.prototype.die_timeout = function(millisecs) {
     this.millisecs = millisecs != null ? millisecs : 8 * 1000;
-    sound.fade(0.3, 1.0, 6000);
-    player.reset();
-    controls.destroy();
     return setTimeout((function(_this) {
       return function() {
+        player.reset();
+        controls.destroy();
         controls.init("title", 300);
         _this.other(1, charset_commodore, COLOR_GREY);
-        return _this.init();
+        _this.init();
+        return sound.volume(1);
       };
     })(this), this.millisecs);
   };
