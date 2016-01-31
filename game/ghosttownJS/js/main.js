@@ -26,10 +26,11 @@ init_game = function() {
   this.charset_commodore_orange = new Generate_charset(chars_commodore_orange_tx, 8, 8, 16, 16);
   chars_hint_tx = new PIXI.Texture.fromImage('img/chars-hint.png');
   this.charset_hint = new Generate_charset(chars_hint_tx, 8, 8, 16, 16);
+  this.locale = "de";
   this.all_levels_counter = 0;
   this.all_lvl = new BinaryImport("lvl");
-  this.all_msg = new BinaryImport("msg");
-  this.all_other = new BinaryImport("other");
+  this.all_msg = new BinaryImport("msg", this.locale);
+  this.all_other = new BinaryImport("other", this.locale);
   this.player = new Player();
   this.display = new Display();
   return this.display.renderloop();
@@ -42,6 +43,7 @@ start_game = function() {
     loop: true,
     volume: 1.0
   });
+  this.sound.volume(0);
   ui_log("Ghost Town JS. Current build: 16.01.22", "green");
   ui_log("User cursor keys and space to move the player.", "green");
   this.room = new Room();

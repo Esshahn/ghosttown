@@ -580,8 +580,12 @@ Room = (function() {
     if (this.room_number === 5) {
       if (indexOf.call(new_position, "3b") >= 0 || indexOf.call(new_position, "42") >= 0) {
         if ((player.position === 123 && this.playround_data.coffin === "A") || (player.position === 363 && this.playround_data.coffin === "B") || (player.position === 603 && this.playround_data.coffin === "C") || (player.position === 843 && this.playround_data.coffin === "D") || (player.position === 153 && this.playround_data.coffin === "E") || (player.position === 393 && this.playround_data.coffin === "F") || (player.position === 633 && this.playround_data.coffin === "G") || (player.position === 873 && this.playround_data.coffin === "H")) {
-          this.msg(12);
-          player.add("coffin key");
+          if (indexOf.call(player.inventory, "coffin key") < 0) {
+            this.msg(12);
+            player.add("coffin key");
+          } else {
+            this.die("zombie", 13);
+          }
         } else {
           this.die("zombie", 13);
         }

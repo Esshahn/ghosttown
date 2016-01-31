@@ -27,12 +27,14 @@ init_game = ->
   chars_hint_tx             = new (PIXI.Texture.fromImage)('img/chars-hint.png')
   @charset_hint             = new Generate_charset(chars_hint_tx, 8, 8, 16, 16)
   
+  # set the game language
+  @locale = "de"
 
   # load in all levels, messages and other stuff
   @all_levels_counter = 0
   @all_lvl   = new BinaryImport("lvl")
-  @all_msg   = new BinaryImport("msg")
-  @all_other = new BinaryImport("other")
+  @all_msg   = new BinaryImport("msg",@locale)
+  @all_other = new BinaryImport("other",@locale)
 
   # setup the main classes
   @player  = new Player()
@@ -44,6 +46,7 @@ start_game = ->
 
   # init the sound
   @sound = new Howl({urls: ['sound/ghost-town-loop.ogg'],  autoplay: true, loop: true, volume: 1.0})
+  @sound.volume 0
 
   # some UI status to kick notifications off
   ui_log("Ghost Town JS. Current build: 16.01.22","green")
@@ -55,5 +58,6 @@ start_game = ->
   # create a copy of the screen data to use when a room needs to be reset
   # TODO: make sure the data for copying is actually there (race condition)
   @room.other(1, charset_commodore, COLOR_GREY)
+  #@room.msg(30)
   @controls = new KeyboardController "title", 300
 

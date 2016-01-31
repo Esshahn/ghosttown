@@ -780,8 +780,11 @@ class Room
         (player.position is 393 and @playround_data.coffin is "F") or
         (player.position is 633 and @playround_data.coffin is "G") or
         (player.position is 873 and @playround_data.coffin is "H")
-          @msg(12)
-          player.add("coffin key")
+          if "coffin key" not in player.inventory
+            @msg(12)
+            player.add("coffin key")
+          else
+            @die("zombie",13)
         else
           @die("zombie",13)
 

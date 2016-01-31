@@ -9,7 +9,7 @@ class BinaryImport
   ###
 
 
-  constructor: (@binary_type = "lvl") -> 
+  constructor: (@binary_type = "lvl",@locale = "en") -> 
 
     @screen_data = []
     @screen_data_copy = []
@@ -28,11 +28,11 @@ class BinaryImport
 
     if @binary_type is "msg"
       @amount_of_files_to_load = 30
-      @file_path = 'data/msg/msg-'
+      @file_path = 'data/msg/'+@locale+'/msg-'
 
     if @binary_type is "other"
       @amount_of_files_to_load = 3
-      @file_path = 'data/other/other-'
+      @file_path = 'data/other/'+@locale+'/other-'
 
     # load in the levels
     i = 0

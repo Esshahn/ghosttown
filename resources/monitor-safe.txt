@@ -9,7 +9,7 @@ exit
 
 
 zuhause
-save "/Users/ingo/Dropbox/awsm/ghosttown/screen-lvl-02.bin" 0 0c00 0fe7
+save "/Users/ingo/Desktop/gt/msg-.bin" 0 0c00 0fe7
 Büro
 save "/Users/ingohinterding/Dropbox/awsm/ghosttown/screen-lvl-02.bin" 0 0c00 0fe7
 

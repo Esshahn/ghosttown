@@ -8,9 +8,10 @@ BinaryImport = (function() {
     GHOST TOWN JS
     LEVEL GENERATOR
    */
-  function BinaryImport(binary_type) {
+  function BinaryImport(binary_type, locale) {
     var filename, i;
     this.binary_type = binary_type != null ? binary_type : "lvl";
+    this.locale = locale != null ? locale : "en";
     this.screen_data = [];
     this.screen_data_copy = [];
     this.all_levels_total = 52;
@@ -20,11 +21,11 @@ BinaryImport = (function() {
     }
     if (this.binary_type === "msg") {
       this.amount_of_files_to_load = 30;
-      this.file_path = 'data/msg/msg-';
+      this.file_path = 'data/msg/' + this.locale + '/msg-';
     }
     if (this.binary_type === "other") {
       this.amount_of_files_to_load = 3;
-      this.file_path = 'data/other/other-';
+      this.file_path = 'data/other/' + this.locale + '/other-';
     }
     i = 0;
     while (i < this.amount_of_files_to_load) {
