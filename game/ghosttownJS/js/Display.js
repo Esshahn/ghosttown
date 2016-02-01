@@ -14,16 +14,16 @@ Display = (function() {
       backgroundColor: COLOR_BLACK
     });
     codefCRTemulator.setup(this.renderer.view, "game");
-    this.crt_emulation = true;
+    this.crt_emulation = false;
     if (this.crt_emulation === true) {
       codefCRTemulator.set.scanlines(true);
       codefCRTemulator.set.gaussian(0.6);
       codefCRTemulator.set.light(8);
       codefCRTemulator.set.curvature(true);
-      codefCRTemulator.set.gamma(1);
+      codefCRTemulator.set.gamma(0.8);
       codefCRTemulator.set.contrast(0.9);
       codefCRTemulator.set.saturation(0.8);
-      codefCRTemulator.set.brightness(1.4);
+      codefCRTemulator.set.brightness(1.6);
     } else {
       codefCRTemulator.set.scanlines(false);
       codefCRTemulator.set.gaussian(0);
