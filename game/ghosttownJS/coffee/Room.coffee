@@ -1054,6 +1054,7 @@ class Room
       "25" in new_position or 
       "26" in new_position
         @msg(17)
+        @reset(14)
     
 #-------------------------------------------------------------------
 #   ROOM 15 

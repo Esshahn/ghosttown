@@ -8,7 +8,7 @@ class Display
 
   constructor : ->
     # the main stage is including all borders and set to double size
-    @renderer = new (PIXI.autoDetectRenderer)(768, 576, backgroundColor: COLOR_BLACK)
+    @renderer = new (PIXI.autoDetectRenderer)(CANVAS_WIDTH, CANVAS_HEIGHT, backgroundColor: COLOR_BLACK)
     
     # the line below should be used when not using the CRT shader
     #document.getElementById("game").appendChild @renderer.view
@@ -17,7 +17,7 @@ class Display
     codefCRTemulator.setup(@renderer.view,"game")
 
     # set this to on or off for the crt emulation
-    @crt_emulation = off
+    @crt_emulation = on
 
     if @crt_emulation is on 
       codefCRTemulator.set.scanlines true

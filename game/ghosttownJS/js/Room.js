@@ -752,6 +752,7 @@ Room = (function() {
       }
       if (indexOf.call(new_position, "1e") >= 0 || indexOf.call(new_position, "1f") >= 0 || indexOf.call(new_position, "20") >= 0 || indexOf.call(new_position, "21") >= 0 || indexOf.call(new_position, "22") >= 0 || indexOf.call(new_position, "23") >= 0 || indexOf.call(new_position, "24") >= 0 || indexOf.call(new_position, "25") >= 0 || indexOf.call(new_position, "26") >= 0) {
         this.msg(17);
+        this.reset(14);
       }
     }
     if (this.room_number === 15) {

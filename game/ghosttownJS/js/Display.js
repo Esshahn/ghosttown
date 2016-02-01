@@ -10,11 +10,11 @@ var Display,
 Display = (function() {
   function Display() {
     this.renderloop = bind(this.renderloop, this);
-    this.renderer = new PIXI.autoDetectRenderer(768, 576, {
+    this.renderer = new PIXI.autoDetectRenderer(CANVAS_WIDTH, CANVAS_HEIGHT, {
       backgroundColor: COLOR_BLACK
     });
     codefCRTemulator.setup(this.renderer.view, "game");
-    this.crt_emulation = false;
+    this.crt_emulation = true;
     if (this.crt_emulation === true) {
       codefCRTemulator.set.scanlines(true);
       codefCRTemulator.set.gaussian(0.6);
