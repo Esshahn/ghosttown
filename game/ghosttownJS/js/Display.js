@@ -14,7 +14,7 @@ Display = (function() {
       backgroundColor: COLOR_BLACK
     });
     codefCRTemulator.setup(this.renderer.view, "game");
-    this.crt_emulation = false;
+    this.crt_emulation = true;
     if (this.crt_emulation === true) {
       codefCRTemulator.set.scanlines(true);
       codefCRTemulator.set.gaussian(0.6);
