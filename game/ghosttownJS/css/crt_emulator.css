@@ -1,0 +1,32 @@
+/*
+By Dave Eggleston (frutbunn)  http://frutbunn.tk  frutbunn@gmail.com
+
+A CRT emulator for CODEF/CANVAS! Version: 0.3a
+
+This work is licensed under the Creative Commons Attribution 4.0 International License. 
+To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/
+*/
+
+.crt-emulator {
+    border: 0px solid #000; 
+    border-radius: 0px;
+    background-color: #000;
+    padding: 0px;
+    box-shadow: 0px 0px 0px #000;
+}
+
+:-webkit-full-screen {
+    overflow: hidden;
+}
+ 
+:-moz-full-screen {
+    overflow: hidden;
+}
+ 
+:-ms-fullscreen {
+    overflow: hidden;
+}
+ 
+:fullscreen {
+    overflow: hidden;
+}
