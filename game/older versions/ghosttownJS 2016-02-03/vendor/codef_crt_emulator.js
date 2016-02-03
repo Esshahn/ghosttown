@@ -783,7 +783,6 @@ void main() { \n\
 		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_2D, state.texture);
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, state.sourceCanvas);
-
 		gl.uniform1i(state.prgCRT.iChannel0, 0);
 
 		gl.viewport(0,0, canvas.width, canvas.height);
