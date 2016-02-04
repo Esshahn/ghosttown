@@ -14,29 +14,29 @@ class Display
     #document.getElementById("game").appendChild @renderer.view
 
     # this is used for the CRT shader effect
-    codefCRTemulator.setup(@renderer.view,"game")
+    crtEmulator.init(@renderer.view,"game");
 
     # set this to on or off for the crt emulation
-    @crt_emulation = off
+    @crt_emulation = on
 
     if @crt_emulation is on 
-      codefCRTemulator.set.scanlines true
-      codefCRTemulator.set.gaussian 0.6
-      codefCRTemulator.set.light 8
-      codefCRTemulator.set.curvature true
-      codefCRTemulator.set.gamma 0.8
-      codefCRTemulator.set.contrast 0.9
-      codefCRTemulator.set.saturation 0.8
-      codefCRTemulator.set.brightness 1.6
+      crtEmulator.scanlines = true
+      crtEmulator.gaussian = 0.6
+      crtEmulator.light = 8
+      crtEmulator.curvature = true
+      crtEmulator.gamma = 0.8
+      crtEmulator.contrast = 0.9
+      crtEmulator.saturation = 0.8
+      crtEmulator.brightness = 1.6
     else 
-      codefCRTemulator.set.scanlines false
-      codefCRTemulator.set.gaussian 0
-      codefCRTemulator.set.light 0
-      codefCRTemulator.set.curvature false
-      codefCRTemulator.set.gamma 1
-      codefCRTemulator.set.contrast 1
-      codefCRTemulator.set.saturation 1
-      codefCRTemulator.set.brightness 1
+      crtEmulator.scanlines = false
+      crtEmulator.gaussian = 0
+      crtEmulator.light = 0
+      crtEmulator.curvature = false
+      crtEmulator.gamma = 1
+      crtEmulator.contrast = 1
+      crtEmulator.saturation = 1
+      crtEmulator.brightness = 1
     
     @stage = new (PIXI.Container)
 
@@ -193,6 +193,6 @@ class Display
   renderloop : =>
 
     @renderer.render @stage
-    codefCRTemulator.draw()
+    crtEmulator.updateFrame()
     requestAnimationFrame @renderloop
     return

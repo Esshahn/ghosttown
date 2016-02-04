@@ -121,7 +121,8 @@ a
   text-decoration: none;
 }
 
-canvas{
+canvas
+{
   -webkit-box-shadow: 0px 11px 23px -1px rgba(0,0,0,0.7);
   -moz-box-shadow:    0px 11px 23px -1px rgba(0,0,0,0.7);
   box-shadow:         0px 11px 23px -1px rgba(0,0,0,0.7);

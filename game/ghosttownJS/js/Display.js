@@ -13,26 +13,26 @@ Display = (function() {
     this.renderer = new PIXI.autoDetectRenderer(CANVAS_WIDTH, CANVAS_HEIGHT, {
       backgroundColor: COLOR_BLACK
     });
-    codefCRTemulator.setup(this.renderer.view, "game");
-    this.crt_emulation = false;
+    crtEmulator.init(this.renderer.view, "game");
+    this.crt_emulation = true;
     if (this.crt_emulation === true) {
-      codefCRTemulator.set.scanlines(true);
-      codefCRTemulator.set.gaussian(0.6);
-      codefCRTemulator.set.light(8);
-      codefCRTemulator.set.curvature(true);
-      codefCRTemulator.set.gamma(0.8);
-      codefCRTemulator.set.contrast(0.9);
-      codefCRTemulator.set.saturation(0.8);
-      codefCRTemulator.set.brightness(1.6);
+      crtEmulator.scanlines = true;
+      crtEmulator.gaussian = 0.6;
+      crtEmulator.light = 8;
+      crtEmulator.curvature = true;
+      crtEmulator.gamma = 0.8;
+      crtEmulator.contrast = 0.9;
+      crtEmulator.saturation = 0.8;
+      crtEmulator.brightness = 1.6;
     } else {
-      codefCRTemulator.set.scanlines(false);
-      codefCRTemulator.set.gaussian(0);
-      codefCRTemulator.set.light(0);
-      codefCRTemulator.set.curvature(false);
-      codefCRTemulator.set.gamma(1);
-      codefCRTemulator.set.contrast(1);
-      codefCRTemulator.set.saturation(1);
-      codefCRTemulator.set.brightness(1);
+      crtEmulator.scanlines = false;
+      crtEmulator.gaussian = 0;
+      crtEmulator.light = 0;
+      crtEmulator.curvature = false;
+      crtEmulator.gamma = 1;
+      crtEmulator.contrast = 1;
+      crtEmulator.saturation = 1;
+      crtEmulator.brightness = 1;
     }
     this.stage = new PIXI.Container;
     this.screen = new PIXI.Container;
@@ -165,7 +165,7 @@ Display = (function() {
 
   Display.prototype.renderloop = function() {
     this.renderer.render(this.stage);
-    codefCRTemulator.draw();
+    crtEmulator.updateFrame();
     requestAnimationFrame(this.renderloop);
   };
 
