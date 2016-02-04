@@ -11,8 +11,9 @@ class Display
     @renderer = new (PIXI.autoDetectRenderer)(CANVAS_WIDTH, CANVAS_HEIGHT, backgroundColor: COLOR_BLACK)
     
     # the line below should be used when not using the CRT shader
-    #document.getElementById("game").appendChild @renderer.view
+    document.getElementById("game").appendChild @renderer.view
 
+    ###
     # this is used for the CRT shader effect
     crtEmulator.init(@renderer.view,"game");
 
@@ -37,6 +38,7 @@ class Display
       crtEmulator.contrast = 1
       crtEmulator.saturation = 1
       crtEmulator.brightness = 1
+    ###
     
     @stage = new (PIXI.Container)
 
@@ -193,6 +195,6 @@ class Display
   renderloop : =>
 
     @renderer.render @stage
-    crtEmulator.updateFrame()
+    #crtEmulator.updateFrame()
     requestAnimationFrame @renderloop
     return

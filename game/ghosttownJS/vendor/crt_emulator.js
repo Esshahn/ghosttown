@@ -1219,6 +1219,7 @@ void main() {\n\
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, state.squareIndexBuffer);
 
 		gl.activeTexture(gl.TEXTURE0);
+
         if (state.sourceCanvas !== null) {
             gl.bindTexture(gl.TEXTURE_2D, state.texture);
 
