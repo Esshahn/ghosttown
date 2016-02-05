@@ -18,9 +18,11 @@
 <script type="text/javascript" src="js/asset-loader.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 
+
 <body onload="init()">
     <div id="top-spacer"></div>  
   <div id= "ui_container">
+ 
     <div id="ui_screen_selector">
         <button onclick="room.set(1)">01</button>
         <button onclick="room.set(2)">02</button>
@@ -41,13 +43,16 @@
         <button onclick="room.set(17)">17</button>
         <button onclick="room.set(18)">18</button>
         <button onclick="room.set(19)">19</button>
+        <button onclick="crtEmulator.toggleFullScreen();">FULLSCREEN</button>
+        <button onclick="display.toggleCRT();">TOGGLE CRT SHADER</button>
+        <button onclick="display.toggleCRT();">TOGGLE AUDIO</button>
     </div>
     <div id="ui_room"></div>
     <div id="ui_inventory"></div>
     <div id="ui_notification"></div>
   </div>
   <img class='img' id='toucharea' src="img/tv-web.png" alt="" />
-  <div id="game"> <button onclick="codefCRTemulator.toggleFullScreen('game');">FULLSCREEN</button></div>
+  <div id="game"></div>
  
 </body>
 </html>
