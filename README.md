@@ -12,30 +12,7 @@
 
 ## Current version
 
-The game is in a very early version.
-
-What's implemented:
-* loading in the original binary data of the C16 game
-* parsing the binary data into JS and display it with pixi.js
-* all 19 rooms can be accessed
-* move the player with the cursor keys
-* entering and leaving rooms through the doors
-* player inventory (normally not shown to the player in the original)
-* basic logic for picking up and using items
-* basic logic for dying
-* multiple charset support
-* first three rooms are playable
-
-What's not implemented:
-* display the original death messages
-* display info messages (e.g. from the question marks)
-* title screen
-* intro/story screen
-* final/win screen
-* death
-* gameplay logic for all rooms
-* animations (Boris, Belegro, Boulder)
-* music (I need help on this...)
+The game is fully implemented with all rooms and items.
 
 
 # Playable build
