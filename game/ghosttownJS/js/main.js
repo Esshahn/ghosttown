@@ -9,9 +9,18 @@
 var init, init_game, start_game;
 
 init = function() {
-  load_assets(function() {
+  var loader;
+  loader = PIXI.loader;
+  loader.add('chars', 'img/chars.png');
+  loader.add('chars_commodore', 'img/chars-commodore.png');
+  loader.add('chars_commodore_green', 'img/chars-commodore-green.png');
+  loader.add('chars_commodore_orange', 'img/chars-commodore-orange.png');
+  loader.add('chars_hint', 'img/chars-hint.png');
+  loader.add('music', 'sound/ghost-town-loop.ogg');
+  loader.once('complete', function() {
     return init_game();
   });
+  loader.load();
 };
 
 init_game = function() {
