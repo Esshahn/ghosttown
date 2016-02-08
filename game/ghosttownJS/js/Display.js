@@ -10,7 +10,7 @@ var Display,
 Display = (function() {
   function Display() {
     this.renderloop = bind(this.renderloop, this);
-    this.renderer = new PIXI.autoDetectRenderer(CANVAS_WIDTH, CANVAS_HEIGHT, {
+    this.renderer = new PIXI.CanvasRenderer(CANVAS_WIDTH, CANVAS_HEIGHT, {
       backgroundColor: COLOR_BLACK
     });
     this.crt_emulation = true;

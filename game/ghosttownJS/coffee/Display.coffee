@@ -8,7 +8,8 @@ class Display
 
   constructor : ->
     # the main stage is including all borders and set to double size
-    @renderer = new (PIXI.autoDetectRenderer)(CANVAS_WIDTH, CANVAS_HEIGHT, backgroundColor: COLOR_BLACK)
+    #@renderer = new (PIXI.autoDetectRenderer)(CANVAS_WIDTH, CANVAS_HEIGHT, backgroundColor: COLOR_BLACK)
+    @renderer = new (PIXI.CanvasRenderer)(CANVAS_WIDTH, CANVAS_HEIGHT, backgroundColor: COLOR_BLACK)
     
     # set this to on or off for the crt emulation
     @crt_emulation = on
