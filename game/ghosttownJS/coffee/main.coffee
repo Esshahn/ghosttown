@@ -42,6 +42,8 @@ init_game = ->
   @all_msg   = new BinaryImport("msg",@locale)
   @all_other = new BinaryImport("other",@locale)
 
+  @display = new Display()
+
 #-------------------------------------------------------------------
 
 # start_game gets called from the Binary Import class 
@@ -51,7 +53,6 @@ start_game = ->
 
   # setup the main classes
   @player  = new Player()
-  @display = new Display()
 
   # init the sound
   @sound = new Howl({urls: ['sound/ghost-town-loop.ogg'],  autoplay: true, loop: true, volume: 1.0})

@@ -96,7 +96,6 @@ class KeyboardController
     # When window is unfocused we may not get key events. To prevent this
     # causing a key to 'get stuck down', cancel all held keys
 
-
     window.onblur = ->
       for key of @timers
         if @timers[key] != null

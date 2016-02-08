@@ -30,12 +30,12 @@ init_game = function() {
   this.all_levels_counter = 0;
   this.all_lvl = new BinaryImport("lvl");
   this.all_msg = new BinaryImport("msg", this.locale);
-  return this.all_other = new BinaryImport("other", this.locale);
+  this.all_other = new BinaryImport("other", this.locale);
+  return this.display = new Display();
 };
 
 start_game = function() {
   this.player = new Player();
-  this.display = new Display();
   this.sound = new Howl({
     urls: ['sound/ghost-town-loop.ogg'],
     autoplay: true,
