@@ -2,16 +2,22 @@
 
   Ghost Town JS - a JavaScript remake of the Commodore C16, C116, Plus/4 game
   Original version created by Udo Gertz, copyright Kingsoft 1985
-  Remake written by Ingo Hinterding 2015,2016
+  Written by Ingo Hinterding 2015,2016
 
 ###
 
+#-------------------------------------------------------------------
+
+# gets called from html body -> onload 
 
 init = ->
-  load_assets ->
+  load_assets ->    
     init_game()
   return
 
+#-------------------------------------------------------------------
+
+# gets called when all images are loaded
 
 init_game = ->
 
@@ -36,17 +42,20 @@ init_game = ->
   @all_msg   = new BinaryImport("msg",@locale)
   @all_other = new BinaryImport("other",@locale)
 
-  # setup the main classes
-  @player  = new Player()
-  @display = new Display()
-  @display.renderloop()
-  
+#-------------------------------------------------------------------
+
+# start_game gets called from the Binary Import class 
+# after all levels are loaded
 
 start_game = ->
 
+  # setup the main classes
+  @player  = new Player()
+  @display = new Display()
+
   # init the sound
   @sound = new Howl({urls: ['sound/ghost-town-loop.ogg'],  autoplay: true, loop: true, volume: 1.0})
-  @sound.volume 0
+  #@sound.volume 0
 
   # some UI status to kick notifications off
   ui_log("Ghost Town JS. Current build: 16.01.22","green")
@@ -61,5 +70,7 @@ start_game = ->
   #@room.msg(30)
   @controls = new KeyboardController "title", 300
 
+  @display.renderloop()
 
+#-------------------------------------------------------------------
 
