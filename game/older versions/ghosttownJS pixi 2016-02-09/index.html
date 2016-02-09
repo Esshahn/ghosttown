@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+
+<script type="text/javascript" src="vendor/pixi.min.js"></script>
+<script type="text/javascript" src="vendor/crt_emulator.js"></script>
+<script type="text/javascript" src="vendor/howler.min.js"></script>
+<script type="text/javascript" src="js/lib/awsm-lib.js"></script>
+<script type="text/javascript" src="js/config/config-game.js"></script>
+<script type="text/javascript" src="js/config/config-levels.js"></script>
+<script type="text/javascript" src="js/Generate_charset.js"></script>
+<script type="text/javascript" src="js/Display.js"></script>
+<script type="text/javascript" src="js/Room.js"></script>
+<script type="text/javascript" src="js/input.js"></script>
+<script type="text/javascript" src="js/BinaryImport.js"></script>
+<script type="text/javascript" src="js/Player.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+<body onload="init()">
+    <div id="top-spacer"></div>  
+  <div id= "ui_container">
+ 
+    <div id="ui_screen_selector">
+        <button onclick="room.set(1)">01</button>
+        <button onclick="room.set(2)">02</button>
+        <button onclick="room.set(3)">03</button>
+        <button onclick="room.set(4)">04</button>
+        <button onclick="room.set(5)">05</button>
+        <button onclick="room.set(6)">06</button>
+        <button onclick="room.set(7)">07</button>
+        <button onclick="room.set(8)">08</button>
+        <button onclick="room.set(9)">09</button>
+        <button onclick="room.set(10)">10</button>
+        <button onclick="room.set(11)">11</button>
+        <button onclick="room.set(12)">12</button>
+        <button onclick="room.set(13)">13</button>
+        <button onclick="room.set(14)">14</button>
+        <button onclick="room.set(15)">15</button>
+        <button onclick="room.set(16)">16</button>
+        <button onclick="room.set(17)">17</button>
+        <button onclick="room.set(18)">18</button>
+        <button onclick="room.set(19)">19</button>
+        <button onclick="crtEmulator.toggleFullScreen();">FULLSCREEN</button>
+        <button onclick="display.toggleCRT();">TOGGLE CRT SHADER</button>
+        <button onclick="display.toggleCRT();">TOGGLE AUDIO</button>
+    </div>
+    <div id="ui_room"></div>
+    <div id="ui_inventory"></div>
+    <div id="ui_notification"></div>
+  </div>
+  <img class='img' id='toucharea' src="img/tv-web.png" alt="" />
+  <div id="game"></div>
+ 
+</body>
+</html>
