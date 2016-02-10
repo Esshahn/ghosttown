@@ -72,8 +72,9 @@ class Room
 
 #-------------------------------------------------------------------
 
+  # returns the current room data after it is processed
+  
   get : (room_number) ->
-    # returns the current room data after it is processed
     @screen_data
 
 #-------------------------------------------------------------------

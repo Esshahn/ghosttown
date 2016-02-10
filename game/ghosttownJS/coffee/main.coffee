@@ -16,9 +16,11 @@ init = ->
   loader.add 'chars',                   'img/chars.png'
   loader.add 'chars_commodore',         'img/chars-commodore.png'
   loader.add 'chars_commodore_green',   'img/chars-commodore-green.png'
-  loader.add 'chars_commodore_orange',   'img/chars-commodore-orange.png'
+  loader.add 'chars_commodore_orange',  'img/chars-commodore-orange.png'
   loader.add 'chars_hint',              'img/chars-hint.png'
-  loader.add 'music',              'sound/ghost-town-loop.ogg'
+  loader.add 'kingsoft',                'img/kingsoft.png'
+  loader.add 'credits',                 'img/credits.png'
+  loader.add 'music',                   'sound/ghost-town-loop.ogg'
   
   loader.once 'complete', -> init_game()
   loader.load()
@@ -26,21 +28,27 @@ init = ->
 
 #-------------------------------------------------------------------
 
+init_loader = ->
+  @load_menu = new C16Loader()
+  #start_game()
+
+#-------------------------------------------------------------------
+
 # gets called when all images are loaded
+# loads in all levels
+# and if all levels are loaded, the init_loader method is called
 
 init_game = ->
 
+  @display = new Display()
+  @display.renderloop()
+
   # load in the charmap
-  chars_game_tx             = new (PIXI.Texture.fromImage)('img/chars.png')
-  @charset_game             = new Generate_charset(chars_game_tx, 8, 8, 16, 16)
-  chars_commodore_tx        = new (PIXI.Texture.fromImage)('img/chars-commodore.png')
-  @charset_commodore        = new Generate_charset(chars_commodore_tx, 8, 8, 16, 16)
-  chars_commodore_green_tx  = new (PIXI.Texture.fromImage)('img/chars-commodore-green.png')
-  @charset_commodore_green  = new Generate_charset(chars_commodore_green_tx, 8, 8, 16, 16)
-  chars_commodore_orange_tx = new (PIXI.Texture.fromImage)('img/chars-commodore-orange.png')
-  @charset_commodore_orange = new Generate_charset(chars_commodore_orange_tx, 8, 8, 16, 16)
-  chars_hint_tx             = new (PIXI.Texture.fromImage)('img/chars-hint.png')
-  @charset_hint             = new Generate_charset(chars_hint_tx, 8, 8, 16, 16)
+  @charset_game             = new Generate_charset(new (PIXI.Texture.fromImage)('img/chars.png'), 8, 8, 16, 16)
+  @charset_commodore        = new Generate_charset(new (PIXI.Texture.fromImage)('img/chars-commodore.png'), 8, 8, 16, 16)
+  @charset_commodore_green  = new Generate_charset(new (PIXI.Texture.fromImage)('img/chars-commodore-green.png'), 8, 8, 16, 16)
+  @charset_commodore_orange = new Generate_charset(new (PIXI.Texture.fromImage)('img/chars-commodore-orange.png'), 8, 8, 16, 16)
+  @charset_hint             = new Generate_charset(new (PIXI.Texture.fromImage)('img/chars-hint.png'), 8, 8, 16, 16)
   
   # set the game language
   @locale = "de"
@@ -51,7 +59,7 @@ init_game = ->
   @all_msg   = new BinaryImport("msg",@locale)
   @all_other = new BinaryImport("other",@locale)
 
-  @display = new Display()
+
 
 #-------------------------------------------------------------------
 
@@ -77,10 +85,7 @@ start_game = ->
   # create a copy of the screen data to use when a room needs to be reset
   # TODO: make sure the data for copying is actually there (race condition)
   @room.other(1, charset_commodore, COLOR_GREY)
-  #@room.msg(30)
   @controls = new KeyboardController "title", 300
-
-  @display.renderloop()
 
 #-------------------------------------------------------------------
 
