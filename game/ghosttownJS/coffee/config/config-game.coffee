@@ -7,10 +7,9 @@
 
 # ---------------- PIXI 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST
-
 # ---------------- DISPLAY SETUP
 
-CANVAS_WIDTH = 768
+CANVAS_WIDTH  = 768
 CANVAS_HEIGHT = 596
 SCREEN_WIDTH  = 320
 # width of the stage
@@ -22,11 +21,13 @@ TOP_BORDER    = 100
 # size of top border in pixels
 SCALE_FACTOR  = 2
 # scale factor of the stage
-COLOR_BLACK   = 0x000000
-COLOR_BLUE    = 0xcde3ff
-COLOR_RED     = 0x792e1d
-COLOR_YELLOW  = 0xd6f995
-COLOR_GREY	  = 0x353535
+COLOR_BLACK       = 0x000000
+COLOR_BLUE        = 0xcde3ff
+COLOR_RED         = 0x792e1d
+COLOR_YELLOW      = 0xd6f995
+COLOR_GREY        = 0x353535
+COLOR_BOOT_GREY   = 0xe4e4e4
+COLOR_BOOT_PURPLE = 0xbba3ff
 
 KEY = 
     BACKSPACE: 8

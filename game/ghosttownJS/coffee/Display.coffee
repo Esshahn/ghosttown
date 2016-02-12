@@ -158,6 +158,12 @@ class Display
 
 #-------------------------------------------------------------------
 
+
+  removeElement : (element) ->
+    @screen.removeChild element
+
+#-------------------------------------------------------------------
+
   toggleCRT : ->
 
     if @use_crt_shader

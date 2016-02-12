@@ -142,6 +142,10 @@ Display = (function() {
     return this.screen.addChild(element);
   };
 
+  Display.prototype.removeElement = function(element) {
+    return this.screen.removeChild(element);
+  };
+
   Display.prototype.toggleCRT = function() {
     if (this.use_crt_shader) {
       if (this.crt_emulation === false) {
