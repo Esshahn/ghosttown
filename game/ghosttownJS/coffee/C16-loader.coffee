@@ -1,4 +1,9 @@
 
+
+
+
+class C16Loader
+
 #-------------------------------------------------------------------
 # C16 Loader Class
 # 
@@ -9,9 +14,6 @@
 #   4. credits screen
 #-------------------------------------------------------------------
 
-
-class C16Loader
-
   constructor : ->
 
     @image_kingsoft = new PIXI.Sprite.fromImage('img/kingsoft.png')
@@ -20,11 +22,81 @@ class C16Loader
     
     @display_boot()
     @cover_screen 5, 25
-    @reveal_line 5, 8, 100, true, =>
-      @display_kingsoft()
- 
     @cursor = new Cursor()
-    
+    @step0()
+
+#-------------------------------------------------------------------
+
+  step0 : ->
+    @wait 1000 , => 
+      @step1()
+
+  step1 : ->
+    # DLOAD"*""
+    @reveal_line 5, 8, 240, true, =>
+      @step2()
+
+  step2 : ->
+    @cursor.hide()
+    @wait 500 , => 
+      @step3()
+
+  step3 : ->
+    # SEARCHING FOR *:0
+    @reveal_line 7, 40, 0, false, =>
+      @step4()
+
+  step4 : ->
+    @wait 2000 , =>
+      @step5()
+
+  step5 : ->
+    # LOADING
+    @reveal_line 8, 40, 0, false, =>
+      @step6()
+
+  step6 : ->
+    @wait 4000 , =>
+      @step7()
+
+  step7 : ->
+    # READY
+    @reveal_line 9, 40, 0, false, =>
+      @step8()
+
+  step8 : =>
+    @cursor.show()
+    @cursor.set_position(0,10)
+    @wait 1000 , =>
+      @step9()
+
+  step9 : ->
+    # RUN
+    @reveal_line 10, 3, 500, true, =>
+      @step10()
+
+  step10 : ->
+    @cursor.destroy()
+    @wait 1000 , =>
+      @step11()
+
+  step11 : ->
+    @display_kingsoft()
+    @wait 2000 , =>
+      @step12()
+
+  step12 : ->
+    @display_credits()
+
+#-------------------------------------------------------------------
+
+  wait : (@milliseconds, callback) ->  
+    setTimeout( =>      
+      callback()     
+    ,@milliseconds)
+
+#------------------------------------------------------------------- 
+
   cover_screen : (@start, @end, @color = COLOR_BOOT_GREY) ->
     # covers the screen 
     @empty_line = []
@@ -39,6 +111,8 @@ class C16Loader
       display.addElement(@empty_line[i])      
       i++
 
+#-------------------------------------------------------------------
+
   reveal_line : (@line, @amountOfCharacters = 40, @speed = 100, @showCursor = true, callback) ->
     # reveals a line
     # line = the line to reveal (that was covered before)
@@ -46,39 +120,63 @@ class C16Loader
     # speed = milliseconds
     # showCursor = showCursor or not
     
+    if @speed > 0
+      @line_interval = setInterval((=>
+        if @empty_line[@line].position.x / 8 < @amountOfCharacters
+          @empty_line[@line].position.x+=8
+          @cursor.set_position((@empty_line[@line].position.x)/8 , @line) if @showCursor
+        else
+          clearInterval @line_interval
+          callback()
+        ), @speed)
+    else
+      @empty_line[@line].position.x=320
+      callback()
 
-    @line_interval = setInterval((=>
-      if @empty_line[@line].position.x / 8 < @amountOfCharacters
-        console.log @empty_line[@line].position.x
-        @empty_line[@line].position.x+=8
-        @cursor.set_position((@empty_line[@line].position.x)/8 , @line) if @showCursor
+#-------------------------------------------------------------------
+
+  reveal_screen : (@speed) ->
+    i=0
+    @screen_interval = setInterval((=>
+      if i < 25
+        display.removeElement @empty_line[i]
+        i++
       else
-        clearInterval @line_interval
-        console.log callback
-        callback()
-      ), 100)
+        clearInterval @screen_interval
+      ), @speed)
 
+#-------------------------------------------------------------------
 
   display_kingsoft : ->
-    console.log @
     display.change_screen_colors "full", COLOR_BLUE, COLOR_BLUE
     display.clear()
     display.addElement(@image_kingsoft)
+    @cover_screen 0, 25, COLOR_BLUE
+    @reveal_screen 30
+
+#-------------------------------------------------------------------
 
   display_credits : ->
-
     display.change_screen_colors "full", COLOR_BLACK, COLOR_BLACK
     display.clear()
     display.addElement(@image_credits)
+    @cover_screen 0, 25, COLOR_BLACK
+    @reveal_screen 30
+
+#-------------------------------------------------------------------
 
   display_boot : ->
-
     display.change_screen_colors "full", COLOR_BOOT_PURPLE, COLOR_BOOT_GREY
     display.clear()
     display.addElement(@image_boot)
 
 
 #-------------------------------------------------------------------
+
+
+
+
+
 
 class Cursor
 
@@ -103,16 +201,32 @@ class Cursor
       ), 322)
     display.addElement(@cursor)
 
+  #-------------------------------------------------------------------
+  
   set_position : (x,y) ->
 
     @cursor.position.x = x * 8
     @cursor.position.y = y * 8
 
-  destroy_cursor : ->
-
+  #-------------------------------------------------------------------
+  
+  destroy : ->
     clearInterval @cursor_interval 
     display.removeElement(@cursor) 
 
+  #-------------------------------------------------------------------
+  
+  hide : ->
+    @cursor.visible = 0
+    clearInterval @cursor_interval
+
+  #-------------------------------------------------------------------
+  
+  show : ->
+    @cursor.visible = 1
+    @cursor_interval = setInterval((=>
+      @cursor.visible = 1 - @cursor.visible
+      ), 322)
     
 
 
