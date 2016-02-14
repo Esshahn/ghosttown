@@ -8,6 +8,8 @@ C16Loader = (function() {
     this.image_kingsoft = new PIXI.Sprite.fromImage('img/kingsoft.png');
     this.image_credits = new PIXI.Sprite.fromImage('img/credits.png');
     this.image_boot = new PIXI.Sprite.fromImage('img/boot.png');
+    this.image_loading = new PIXI.Sprite.fromImage('img/loading.png');
+    this.image_presents = new PIXI.Sprite.fromImage('img/presents.png');
     this.display_boot();
     this.cover_screen(5, 25);
     this.cursor = new Cursor();
@@ -116,6 +118,26 @@ C16Loader = (function() {
     return controls.init("credits", 300);
   };
 
+  C16Loader.prototype.step13 = function(lang) {
+    this.lang = lang;
+    this.display_loading();
+    return this.wait(1000, (function(_this) {
+      return function() {
+        return _this.step14(_this.lang);
+      };
+    })(this));
+  };
+
+  C16Loader.prototype.step14 = function(lang) {
+    this.lang = lang;
+    this.display_presents();
+    return this.wait(3000, (function(_this) {
+      return function() {
+        return init_lang(_this.lang);
+      };
+    })(this));
+  };
+
   C16Loader.prototype.wait = function(milliseconds, callback) {
     this.milliseconds = milliseconds;
     return setTimeout((function(_this) {
@@ -191,7 +213,7 @@ C16Loader = (function() {
     display.clear();
     display.addElement(this.image_kingsoft);
     this.cover_screen(0, 25, COLOR_BLUE);
-    return this.reveal_screen(30);
+    return this.reveal_screen(20);
   };
 
   C16Loader.prototype.display_credits = function() {
@@ -199,13 +221,29 @@ C16Loader = (function() {
     display.clear();
     display.addElement(this.image_credits);
     this.cover_screen(0, 25, COLOR_BLACK);
-    return this.reveal_screen(30);
+    return this.reveal_screen(60);
   };
 
   C16Loader.prototype.display_boot = function() {
     display.change_screen_colors("full", COLOR_BOOT_PURPLE, COLOR_BOOT_GREY);
     display.clear();
     return display.addElement(this.image_boot);
+  };
+
+  C16Loader.prototype.display_loading = function() {
+    display.change_screen_colors("full", COLOR_BOOT_PURPLE, COLOR_BOOT_GREY);
+    display.clear();
+    display.addElement(this.image_loading);
+    this.cover_screen(0, 25, COLOR_BOOT_GREY);
+    return this.reveal_screen(30);
+  };
+
+  C16Loader.prototype.display_presents = function() {
+    display.change_screen_colors("full", COLOR_BLACK, COLOR_BLACK);
+    display.clear();
+    display.addElement(this.image_presents);
+    this.cover_screen(0, 25, COLOR_BLACK);
+    return this.reveal_screen(30);
   };
 
   return C16Loader;

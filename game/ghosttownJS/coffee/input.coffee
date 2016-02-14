@@ -78,12 +78,12 @@ class KeyboardController
       65: ->
         # A
         # load german game
-        init_lang("de")
+        load_menu.step13("de")
         return
       66: ->
         # B
         # load english game
-        init_lang("en")
+        load_menu.step13("en")
         return
       67: ->
         # C

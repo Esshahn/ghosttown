@@ -18,6 +18,8 @@ init = function() {
   loader.add('chars_hint', 'img/chars-hint.png');
   loader.add('kingsoft', 'img/kingsoft.png');
   loader.add('credits', 'img/credits.png');
+  loader.add('loading', 'img/loading.png');
+  loader.add('presents', 'img/presents.png');
   loader.add('boot', 'img/boot.png');
   loader.add('music', 'sound/ghost-town-loop.ogg');
   loader.once('complete', function() {

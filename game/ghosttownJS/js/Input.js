@@ -78,10 +78,10 @@ KeyboardController = (function() {
     if (this.keyset === "kingsoft") {
       this.keys = {
         65: function() {
-          init_lang("de");
+          load_menu.step13("de");
         },
         66: function() {
-          init_lang("en");
+          load_menu.step13("en");
         },
         67: function() {
           load_menu.step12();

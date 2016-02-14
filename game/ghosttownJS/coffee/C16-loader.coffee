@@ -19,6 +19,8 @@ class C16Loader
     @image_kingsoft = new PIXI.Sprite.fromImage('img/kingsoft.png')
     @image_credits  = new PIXI.Sprite.fromImage('img/credits.png')
     @image_boot     = new PIXI.Sprite.fromImage('img/boot.png')
+    @image_loading  = new PIXI.Sprite.fromImage('img/loading.png')
+    @image_presents = new PIXI.Sprite.fromImage('img/presents.png')
     
     @display_boot()
     @cover_screen 5, 25
@@ -81,12 +83,26 @@ class C16Loader
       @step11()
 
   step11 : ->
+    # display the kingsoft screen
+    # the jump to the next step is handled in the input file
     @display_kingsoft()
     controls.init "kingsoft", 300
 
   step12 : ->
+    # the jump to the next step is handled in the input file
     @display_credits()
     controls.init "credits", 300
+
+  step13 : (@lang) ->
+    @display_loading()
+    @wait 1000 , =>
+      @step14(@lang)
+
+  step14 : (@lang) ->
+    # the jump to the next step is handled in the input file
+    @display_presents()
+    @wait 3000 , =>
+      init_lang(@lang)
 
 #-------------------------------------------------------------------
 
@@ -152,7 +168,7 @@ class C16Loader
     display.clear()
     display.addElement(@image_kingsoft)
     @cover_screen 0, 25, COLOR_BLUE
-    @reveal_screen 30
+    @reveal_screen 20
 
 #-------------------------------------------------------------------
 
@@ -161,7 +177,7 @@ class C16Loader
     display.clear()
     display.addElement(@image_credits)
     @cover_screen 0, 25, COLOR_BLACK
-    @reveal_screen 30
+    @reveal_screen 60
 
 #-------------------------------------------------------------------
 
@@ -173,9 +189,21 @@ class C16Loader
 
 #-------------------------------------------------------------------
 
+  display_loading : ->
+    display.change_screen_colors "full", COLOR_BOOT_PURPLE, COLOR_BOOT_GREY
+    display.clear()
+    display.addElement(@image_loading)
+    @cover_screen 0, 25, COLOR_BOOT_GREY
+    @reveal_screen 30
 
+#-------------------------------------------------------------------
 
-
+  display_presents : ->
+    display.change_screen_colors "full", COLOR_BLACK, COLOR_BLACK
+    display.clear()
+    display.addElement(@image_presents)
+    @cover_screen 0, 25, COLOR_BLACK
+    @reveal_screen 30
 
 
 class Cursor
