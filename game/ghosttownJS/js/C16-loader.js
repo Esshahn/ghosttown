@@ -108,15 +108,12 @@ C16Loader = (function() {
 
   C16Loader.prototype.step11 = function() {
     this.display_kingsoft();
-    return this.wait(2000, (function(_this) {
-      return function() {
-        return _this.step12();
-      };
-    })(this));
+    return controls.init("kingsoft", 300);
   };
 
   C16Loader.prototype.step12 = function() {
-    return this.display_credits();
+    this.display_credits();
+    return controls.init("credits", 300);
   };
 
   C16Loader.prototype.wait = function(milliseconds, callback) {

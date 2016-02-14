@@ -163,7 +163,6 @@ Room = (function() {
           }
           if (this.playround_data.codenumber[0] === "30" && this.playround_data.codenumber[1] === "36" && this.playround_data.codenumber[2] === "31" && this.playround_data.codenumber[3] === "33" && this.playround_data.codenumber[4] === "38") {
             clearInterval(this.animation_interval);
-            controls.destroy();
             controls.init("game", 60);
             this.set(18);
             return;
@@ -196,7 +195,6 @@ Room = (function() {
       return this.other(2, charset_commodore_orange, COLOR_GREY);
     } else {
       this.playround_data.intro = false;
-      controls.destroy();
       controls.init("game", 60);
       sound.volume(0.3);
       return this.set(1);
@@ -205,7 +203,6 @@ Room = (function() {
 
   Room.prototype.check_win_keys = function() {
     player.reset();
-    controls.destroy();
     controls.init("title", 300);
     this.other(1, charset_commodore, COLOR_YELLOW);
     this.init();
@@ -799,7 +796,6 @@ Room = (function() {
             return _this.msg(30, charset_commodore_green);
           };
         })(this)), 80);
-        controls.destroy();
         controls.init("codenumber", 80);
       }
       if (indexOf.call(new_position, "f4") >= 0) {
@@ -855,7 +851,6 @@ Room = (function() {
       if (indexOf.call(player.inventory, "treasure key") >= 0) {
         if (indexOf.call(new_position, "81") >= 0 || indexOf.call(new_position, "84") >= 0 || indexOf.call(new_position, "87") >= 0 || indexOf.call(new_position, "82") >= 0 || indexOf.call(new_position, "83") >= 0 || indexOf.call(new_position, "8a") >= 0 || indexOf.call(new_position, "8b") >= 0 || indexOf.call(new_position, "8c") >= 0 || indexOf.call(new_position, "8f") >= 0 || indexOf.call(new_position, "92") >= 0) {
           this.other(3);
-          controls.destroy();
           controls.init("win", 60);
         }
       }

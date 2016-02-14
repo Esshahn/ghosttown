@@ -69,7 +69,7 @@ class BinaryImport
       if all_levels_counter is @all_levels_total
         # all levels loaded?
         # then start the game
-        init_loader()      
+        start_game()      
       return
 
     oReq.send null

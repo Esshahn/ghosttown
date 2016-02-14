@@ -6,7 +6,7 @@
   Original version created by Udo Gertz, copyright Kingsoft 1985
   Written by Ingo Hinterding 2015,2016
  */
-var init, init_game, init_loader, start_game;
+var init, init_game, init_lang, start_game;
 
 init = function() {
   var loader;
@@ -26,19 +26,20 @@ init = function() {
   loader.load();
 };
 
-init_loader = function() {
-  return this.load_menu = new C16Loader();
-};
-
 init_game = function() {
   this.display = new Display();
   this.display.renderloop();
+  this.controls = new KeyboardController();
+  this.load_menu = new C16Loader();
   this.charset_game = new Generate_charset(new PIXI.Texture.fromImage('img/chars.png'), 8, 8, 16, 16);
   this.charset_commodore = new Generate_charset(new PIXI.Texture.fromImage('img/chars-commodore.png'), 8, 8, 16, 16);
   this.charset_commodore_green = new Generate_charset(new PIXI.Texture.fromImage('img/chars-commodore-green.png'), 8, 8, 16, 16);
   this.charset_commodore_orange = new Generate_charset(new PIXI.Texture.fromImage('img/chars-commodore-orange.png'), 8, 8, 16, 16);
-  this.charset_hint = new Generate_charset(new PIXI.Texture.fromImage('img/chars-hint.png'), 8, 8, 16, 16);
-  this.locale = "de";
+  return this.charset_hint = new Generate_charset(new PIXI.Texture.fromImage('img/chars-hint.png'), 8, 8, 16, 16);
+};
+
+init_lang = function(locale) {
+  this.locale = locale != null ? locale : "de";
   this.all_levels_counter = 0;
   this.all_lvl = new BinaryImport("lvl");
   this.all_msg = new BinaryImport("msg", this.locale);
@@ -57,7 +58,7 @@ start_game = function() {
   ui_log("User cursor keys and space to move the player.", "green");
   this.room = new Room();
   this.room.other(1, charset_commodore, COLOR_GREY);
-  return this.controls = new KeyboardController("title", 300);
+  return this.controls.init("title", 300);
 };
 
 //# sourceMappingURL=main.js.map

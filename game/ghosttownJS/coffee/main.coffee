@@ -29,20 +29,11 @@ init = ->
 
 #-------------------------------------------------------------------
 
-init_loader = ->
-  @load_menu = new C16Loader()
-  #start_game()
-
-#-------------------------------------------------------------------
-
-# gets called when all images are loaded
-# loads in all levels
-# and if all levels are loaded, the init_loader method is called
-
 init_game = ->
-
   @display = new Display()
   @display.renderloop()
+  @controls = new KeyboardController()
+  @load_menu = new C16Loader()
 
   # load in the charmap
   @charset_game             = new Generate_charset(new (PIXI.Texture.fromImage)('img/chars.png'), 8, 8, 16, 16)
@@ -51,16 +42,19 @@ init_game = ->
   @charset_commodore_orange = new Generate_charset(new (PIXI.Texture.fromImage)('img/chars-commodore-orange.png'), 8, 8, 16, 16)
   @charset_hint             = new Generate_charset(new (PIXI.Texture.fromImage)('img/chars-hint.png'), 8, 8, 16, 16)
   
-  # set the game language
-  @locale = "de"
+#-------------------------------------------------------------------
+
+init_lang = (@locale = "de") ->
+
+  # @locale sets the game language
+  # "de" or "en"
+  # gets called from the input file
 
   # load in all levels, messages and other stuff
   @all_levels_counter = 0
   @all_lvl   = new BinaryImport("lvl")
   @all_msg   = new BinaryImport("msg",@locale)
   @all_other = new BinaryImport("other",@locale)
-
-
 
 #-------------------------------------------------------------------
 
@@ -86,7 +80,9 @@ start_game = ->
   # create a copy of the screen data to use when a room needs to be reset
   # TODO: make sure the data for copying is actually there (race condition)
   @room.other(1, charset_commodore, COLOR_GREY)
-  @controls = new KeyboardController "title", 300
+  
+  @controls.init "title", 300
+  
 
 #-------------------------------------------------------------------
 

@@ -211,7 +211,7 @@ class Room
             # codenumber is correct
             clearInterval @animation_interval              
             # Arrow key movement
-            controls.destroy()
+            #controls.destroy()
             controls.init "game", 60
             @set(18)
             return            
@@ -246,7 +246,7 @@ class Room
       @other(2, charset_commodore_orange, COLOR_GREY)
     else
       @playround_data.intro = false
-      controls.destroy()
+      #controls.destroy()
       controls.init "game", 60
       sound.volume(0.3)
       @set(1)
@@ -255,7 +255,7 @@ class Room
 
   check_win_keys : ->
     player.reset()
-    controls.destroy()
+    #controls.destroy()
     controls.init "title", 300
     @other(1, charset_commodore, COLOR_YELLOW)
     @init()
@@ -1147,7 +1147,7 @@ class Room
         ), 80) 
 
         # setup the key controls for the code number
-        controls.destroy()
+        #controls.destroy()
         controls.init "codenumber", 80
 
       # LEFT PRISON CELL
@@ -1244,7 +1244,7 @@ class Room
         "8f" in new_position or
         "92" in new_position
           @other(3)
-          controls.destroy()
+          #controls.destroy()
           controls.init("win",60)
           
 

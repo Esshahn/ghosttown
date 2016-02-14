@@ -82,11 +82,11 @@ class C16Loader
 
   step11 : ->
     @display_kingsoft()
-    @wait 2000 , =>
-      @step12()
+    controls.init "kingsoft", 300
 
   step12 : ->
     @display_credits()
+    controls.init "credits", 300
 
 #-------------------------------------------------------------------
 

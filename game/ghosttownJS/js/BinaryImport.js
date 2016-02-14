@@ -57,7 +57,7 @@ BinaryImport = (function() {
         }
         all_levels_counter++;
         if (all_levels_counter === _this.all_levels_total) {
-          init_loader();
+          start_game();
         }
       };
     })(this);

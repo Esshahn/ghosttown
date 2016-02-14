@@ -8,11 +8,8 @@
 var KeyboardController;
 
 KeyboardController = (function() {
-  function KeyboardController(keyset, repeat) {
-    this.keyset = keyset;
-    this.repeat = repeat;
+  function KeyboardController() {
     this.timers = {};
-    this.init(this.keyset, this.repeat);
   }
 
   KeyboardController.prototype.destroy = function() {
@@ -28,6 +25,7 @@ KeyboardController = (function() {
   KeyboardController.prototype.init = function(keyset, repeat) {
     this.keyset = keyset;
     this.repeat = repeat;
+    this.destroy();
     if (this.keyset === "game") {
       this.keys = {
         37: function() {
@@ -74,6 +72,26 @@ KeyboardController = (function() {
       this.keys = {
         32: function() {
           room.check_win_keys();
+        }
+      };
+    }
+    if (this.keyset === "kingsoft") {
+      this.keys = {
+        65: function() {
+          init_lang("de");
+        },
+        66: function() {
+          init_lang("en");
+        },
+        67: function() {
+          load_menu.step12();
+        }
+      };
+    }
+    if (this.keyset === "credits") {
+      this.keys = {
+        32: function() {
+          load_menu.step11();
         }
       };
     }

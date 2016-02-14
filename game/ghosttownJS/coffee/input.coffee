@@ -8,11 +8,10 @@
 
 class KeyboardController 
 
-  constructor : (@keyset, @repeat) ->
+  constructor : ->
 
     # Lookup of key codes to timer ID, or null for no repeat
     @timers = {}
-    @init(@keyset,@repeat)
 
   destroy : ->
     # destroys all intervals setup earlier
@@ -26,6 +25,8 @@ class KeyboardController
   init : (@keyset, @repeat) ->
   # When key is pressed and we don't already think it's pressed, call the
   # key action callback and set a timer to generate another one after a delay
+
+    @destroy()
 
     if @keyset is "game"
       @keys = 
@@ -72,8 +73,34 @@ class KeyboardController
         room.check_win_keys()
         return
 
+    if @keyset is "kingsoft"
+      @keys =
+      65: ->
+        # A
+        # load german game
+        init_lang("de")
+        return
+      66: ->
+        # B
+        # load english game
+        init_lang("en")
+        return
+      67: ->
+        # C
+        # load credits
+        load_menu.step12()
+        return
+
+    if @keyset is "credits"
+      @keys =
+      32: ->
+        # SPACE
+        # load kingsoft menu
+        load_menu.step11()
+        return
+
     document.onkeydown = (event) =>
-      key = (event or window.event).keyCode    
+      key = (event or window.event).keyCode   
       if !(key of @keys)
         return true
       if !(key of @timers)
