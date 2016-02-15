@@ -1,30 +1,33 @@
 
 
 ui_log = (message, message_type = '') ->
-  # displays a message in the status window
-  # 'green' = green
-  # 'red' = red
-  # 'blue' = blue
-  # nothing = grey
+  if window.location.search is "?debug=true"
+    # displays a message in the status window
+    # 'green' = green
+    # 'red' = red
+    # 'blue' = blue
+    # nothing = grey
 
-  message_color = "notif-"+message_type
-   
-  date = new Date
-  n = date.toDateString()
-  time = date.toLocaleTimeString()
-  old_content = document.getElementById('ui_notification').innerHTML
-  new_content = '<div class=\'notification ' + message_color + '\'><span class=\'ui_time\'>' + time + '</span><br />' + message + '</div>'
-  document.getElementById('ui_notification').innerHTML = new_content + old_content
+    message_color = "notif-"+message_type
+     
+    date = new Date
+    n = date.toDateString()
+    time = date.toLocaleTimeString()
+    old_content = document.getElementById('ui_notification').innerHTML
+    new_content = '<div class=\'notification ' + message_color + '\'><span class=\'ui_time\'>' + time + '</span><br />' + message + '</div>'
+    document.getElementById('ui_notification').innerHTML = new_content + old_content
 
 
 ui_inventory = (message = "Your inventory is empty.") ->
-  # updates the inventory field of the UI
-  document.getElementById('ui_inventory').innerHTML = "Inventory:<br /><b>" + message + "</b>"
+  if window.location.search is "?debug=true"
+    # updates the inventory field of the UI
+    document.getElementById('ui_inventory').innerHTML = "Inventory:<br /><b>" + message + "</b>"
 
 
 ui_room = (message = "Room") ->
-  # updates the room field of the UI
-  document.getElementById('ui_room').innerHTML = message
+  if window.location.search is "?debug=true"
+    # updates the room field of the UI
+    document.getElementById('ui_room').innerHTML = message
 
 
 clone = (obj) ->

@@ -6,27 +6,33 @@ ui_log = function(message, message_type) {
   if (message_type == null) {
     message_type = '';
   }
-  message_color = "notif-" + message_type;
-  date = new Date;
-  n = date.toDateString();
-  time = date.toLocaleTimeString();
-  old_content = document.getElementById('ui_notification').innerHTML;
-  new_content = '<div class=\'notification ' + message_color + '\'><span class=\'ui_time\'>' + time + '</span><br />' + message + '</div>';
-  return document.getElementById('ui_notification').innerHTML = new_content + old_content;
+  if (window.location.search === "?debug=true") {
+    message_color = "notif-" + message_type;
+    date = new Date;
+    n = date.toDateString();
+    time = date.toLocaleTimeString();
+    old_content = document.getElementById('ui_notification').innerHTML;
+    new_content = '<div class=\'notification ' + message_color + '\'><span class=\'ui_time\'>' + time + '</span><br />' + message + '</div>';
+    return document.getElementById('ui_notification').innerHTML = new_content + old_content;
+  }
 };
 
 ui_inventory = function(message) {
   if (message == null) {
     message = "Your inventory is empty.";
   }
-  return document.getElementById('ui_inventory').innerHTML = "Inventory:<br /><b>" + message + "</b>";
+  if (window.location.search === "?debug=true") {
+    return document.getElementById('ui_inventory').innerHTML = "Inventory:<br /><b>" + message + "</b>";
+  }
 };
 
 ui_room = function(message) {
   if (message == null) {
     message = "Room";
   }
-  return document.getElementById('ui_room').innerHTML = message;
+  if (window.location.search === "?debug=true") {
+    return document.getElementById('ui_room').innerHTML = message;
+  }
 };
 
 clone = function(obj) {
