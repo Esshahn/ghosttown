@@ -51,3 +51,21 @@ clone = (obj) ->
     newInstance[key] = clone obj[key]
 
   return newInstance
+
+
+changeImage = (id) ->
+  the_img = document.getElementById(id)
+  x = the_img.src.split('/')
+  t = x.length - 1
+  y = x[t]
+  
+  if y == 'knob_left.png'
+    the_img.src = './img/knob_right.png'
+    
+  if y == 'knob_right.png'
+    the_img.src = './img/knob_left.png'
+
+  if id is "knob_scanlines"
+    display.toggleCRT()
+
+  return

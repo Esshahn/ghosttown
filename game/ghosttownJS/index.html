@@ -1,7 +1,28 @@
 <!DOCTYPE html>
-<html>
-<link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+<head>
+<title>Ghost Town JS - A JavaScript remake of the Commodore C16 game.</title>
+<meta name="description" content="A remake of the C16 game Ghost Town in JavaScript.">
+<meta name="author" content="Ingo Hinterding">
+<meta charset="UTF-8">
+<meta property="og:title" content="Ghost Town JS">
+<!--<meta property="og:image" content="link_to_image">-->
+<meta property="og:description" content="Ghost Town JS, a JavaScript remake of the Commodore C16 game!">
 
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:description" content="Ghost Town JS, a JavaScript remake of the Commodore C16 game!"/>
+<meta name="twitter:title" content="Ghost Town JS"/>
+<meta name="twitter:creator" content="@awsm9000"/>
+
+<link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-40925561-2', 'awsm.de');
+ga('send', 'pageview');
+</script>
 <script type="text/javascript" src="vendor/pixi.min.js"></script>
 <script type="text/javascript" src="vendor/crt_emulator.js"></script>
 <script type="text/javascript" src="vendor/howler.min.js"></script>
@@ -16,10 +37,10 @@
 <script type="text/javascript" src="js/BinaryImport.js"></script>
 <script type="text/javascript" src="js/Player.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
-
+</head>
 <body onload="init()">
 <!--
-    <div id="top-spacer"></div>  
+      
 
   <div id= "ui_container">
     <div id="ui_screen_selector">
@@ -42,19 +63,70 @@
         <button onclick="room.set(17)">17</button>
         <button onclick="room.set(18)">18</button>
         <button onclick="room.set(19)">19</button>
-        <button onclick="crtEmulator.toggleFullScreen();">FULLSCREEN</button>
-        <button onclick="display.toggleCRT();">TOGGLE CRT SHADER</button>
-        <button onclick="display.toggleCRT();">TOGGLE AUDIO</button>
+
     </div>
     <div id="ui_room"></div>
     <div id="ui_inventory"></div>
     <div id="ui_notification"></div>
   </div>
 -->
+
+<img id="knob_scanlines" onclick="changeImage('knob_scanlines');" src="img/knob_right.png" />
+<img id="knob_fullscreen" onclick="crtEmulator.toggleFullScreen();" src="img/knob_left.png" />
+<div id="top-spacer"></div>
 <div id="tv">
+
   <img class='img' id='toucharea' src="img/tv-web.png" alt="" />
   <div id="game"></div>
+
 </div>
- 
+ <div id="github_link">
+   <a href="https://github.com/Esshahn/ghosttown"><img src="img/forkme.png" alt="Fork me on Github" /></a>  
+ </div>
+ <div id="spacer"></div>
+ <div id="text-content">
+
+    <h1>Ghost Town JS</h1>
+    <h2>A JavaScript remake of the Commodore C16, C116 & Plus/4 game</h2>
+    <h3>Controls</h3>
+    <p>Press "A" for german version<br/>Press "B" for english version<br/>Press "C" for credits info</p>
+    <p>When the game is loaded (grey Ghost Town title screen)<br/>Press "Space" to start the game<br/>Use cursor keys to move and space bar as fire button</p>
+
+
+    <h3>About the game</h3>
+    <p>Ghost Town was written by Udo Gertz with design by Peter Hartmann in 1985. If it came out today, one would classify it as Survival Horror Adventure. It was made for the Commodore 264 series C16, C116 and the Plus/4. The game was available for PAL regions only, had a german and english version and was able to run on 16k RAM.
+    </p>
+
+    <h3>About the remake</h3>
+    <p>Why am I doing this? Basically, I love creating small games and demos (see <a href="http://www.awsm.de">http://www.awsm.de</a> for more) and Ghost Town was one of the earliest games I owned, played and still remember. Even after 25 years I get goose bumps when I see the drop dead ugly player character and listen to the fabulously annoying title music (pulled off by TED, the mutant one-eyed dead frog brother of SID, the golden-dolphin-blowhole equipped rainbow-squirting unicorn of soundchips). For a kid, Ghost Town was a very hard game, cruel even. We spend so many hours in front of the TV, afraid to make another step that could cause permanent death.</p>
+    <p>
+    If you want to learn something new, it's usually a good idea to set yourself a goal you are excited on. I always wanted to look at the hidden side of Ghost Town: the code that brings this small world to life. That's why I took this remake as an opportunity to dive into some technologies I wasn't familiar with (in this case pixi.js and CoffeeScript).
+    </p>
+    <p>
+    This remake is a pixel perfect rendition of the original. It reads in the binary data from the game and parses it to be displayed in canvas. Only the game logic (like what happens when the player picks up an item) is added.
+    </p>
+
+    <h3>Links and other stuff</h3>
+    <p>
+    I made the source code of the game available on Github: 
+    <a href="https://github.com/Esshahn/ghosttown">Ghost Town JS on Github</a>
+    <br />
+    I documented my creation process a bit, read my ramblings here: 
+    <a href="http://ghosttownhtml.tumblr.com/">http://ghosttownhtml.tumblr.com/</a>
+    <br />
+    You can download the original game an run it in Yape or Vice: <a href="http://plus4world.powweb.com/dl/games/g/ghost_town.prg">ghost_town.prg on plus4world</a>
+    <br />
+    The official solution made by Kingsoft:&nbsp;
+    <a href="http://plus4world.powweb.com/dl/maps/ghosttown/kingsoft_ghost_town_solution_1.gif">[1]</a>&nbsp;
+    <a href="http://plus4world.powweb.com/dl/maps/ghosttown/kingsoft_ghost_town_solution_2.gif">[2]</a>&nbsp;
+    <a href="http://plus4world.powweb.com/dl/maps/ghosttown/kingsoft_ghost_town_solution_3.gif">[3]</a>&nbsp;
+    <a href="http://plus4world.powweb.com/dl/maps/ghosttown/kingsoft_ghost_town_solution_4.gif">[4]</a>&nbsp;
+    <a href="http://plus4world.powweb.com/dl/maps/ghosttown/kingsoft_ghost_town_solution_5.gif">[5]</a>&nbsp;
+    <a href="http://plus4world.powweb.com/dl/maps/ghosttown/kingsoft_ghost_town_solution_6.gif">[6]</a>&nbsp;
+    <a href="http://plus4world.powweb.com/dl/maps/ghosttown/kingsoft_ghost_town_solution_7.gif">[7]</a>&nbsp;
+    <br/>A walkthrough in english language made by Norbert Kintzler:&nbsp;
+    <a href="http://plus4world.powweb.com/dl/maps/ghosttown/ghosttown_map.gif">Walkthrough in english</a>
+    </p>
+</div>
 </body>
 </html>

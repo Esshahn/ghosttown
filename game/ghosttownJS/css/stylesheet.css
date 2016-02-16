@@ -3,15 +3,19 @@ html, body
 {
   margin: 0;
   padding: 0;
+  color: #dddddd;
+
 }
 
 
 body
 {
-  background-color: #447777;
+  background-color: #000000;
   font-size: 12px;
-  font-family: sans-serif;
-
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  background-image: url("../img/bg_woods.jpg");
+  background-repeat:repeat-x;
+  background-repeat:repeat-y;
 }
 
 #ui_container
@@ -27,15 +31,11 @@ body
 #ui_notification
 {
   overflow   : auto;
-
-
 }
 
 #ui_screen_selector
 {
-
  margin-bottom: 10px;
-
 }
 
 
@@ -46,7 +46,6 @@ body
   padding         : 4px;
   margin-bottom   : 10px;
   min-height      : 60px;
-
   -webkit-box-shadow: 0px 11px 18px -4px rgba(0,0,0,0.7);
   -moz-box-shadow:    0px 11px 18px -4px rgba(0,0,0,0.7);
   box-shadow:         0px 11px 18px -4px rgba(0,0,0,0.7);
@@ -114,22 +113,29 @@ body
   margin: 10px;
 }
 
+#spacer{
+  margin: 60px;
+  clear: both;
+}
 
 a
 {
-  color: #8AD284;
+  color: #00bbff;
   text-decoration: none;
 }
 
 canvas
 {
-  -webkit-box-shadow: 0px 11px 23px -1px rgba(0,0,0,0.7);
-  -moz-box-shadow:    0px 11px 23px -1px rgba(0,0,0,0.7);
-  box-shadow:         0px 11px 23px -1px rgba(0,0,0,0.7);
   position:relative;
   left:50px;
   top:180px;
   z-index:1;
+}
+
+#footer {
+  padding-top: 100px;
+  font-style: italic;
+  color: #ffffff;
 }
 
 button
@@ -151,7 +157,7 @@ button:hover
 }
 
 #game{
-
+  
 }
 
 .img{
@@ -161,6 +167,76 @@ button:hover
 
 #tv
 {
-  margin: auto;
-  background-color: #ff0000;
+  width: 1100px;
+  display: table;
+  margin: 0 auto;
+}
+
+#github_link
+{
+  position: fixed;
+  right: 0px;
+  top: 0px;  
+}
+
+h1 {
+  color: #00bbff;
+  font-weight:normal;
+  text-transform: uppercase;
+  margin: 0px;
+  margin-top: 40px;
+  font-size: 48px;
+  text-align: center;
+}
+
+h2 {
+  color: #22ddff;
+  font-weight:normal;
+  font-size: 20px;
+  text-align: center;
+}
+
+h3 {
+  color: #22ddff;
+  font-weight:normal;
+  font-size: 22px;
+  margin-left: 100px;
+  margin-top: 60px;
+}
+
+#text-content
+{
+  position: relative;
+  top: 300px;
+  width: 1100px;
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #aaaaaa;
+  display: table;
+  margin: 0 auto;
+  margin-bottom: 80px;
+  padding-bottom: 60px;
+}
+
+p
+{
+  font-size: 18px;
+  margin-left: 100px;
+  margin-right: 100px;
+  line-height: 30px;
+}
+
+#knob_scanlines
+{
+  position: relative;
+  top: 619px;
+  left: 973px;
+  z-index: 4000;
+}
+
+#knob_fullscreen
+{
+  position: relative;
+  top: 619px;
+  left: 943px;
+  z-index: 4000;
 }
