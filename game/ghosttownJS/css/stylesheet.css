@@ -228,15 +228,15 @@ p
 #knob_scanlines
 {
   position: relative;
-  top: 619px;
-  left: 973px;
+  top: -44px;
+  left: 859px;
   z-index: 4000;
 }
 
 #knob_fullscreen
 {
   position: relative;
-  top: 619px;
-  left: 943px;
+  top: -44px;
+  left: 834px;
   z-index: 4000;
 }
