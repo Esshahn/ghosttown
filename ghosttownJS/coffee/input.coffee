@@ -99,6 +99,30 @@ class KeyboardController
         load_menu.step11()
         return
 
+    # global options always available
+    # F = fullscreen
+    # S = scanlines
+    # V = volume
+
+    @keys[70] = ->
+      # F
+      # toggle full screen mode
+      crtEmulator.toggleFullScreen()
+      return
+
+    @keys[83] = ->
+      # S
+      # toggle scanlines
+      changeImage 'knob_scanlines'
+      return
+
+    @keys[86] = ->
+      # V
+      # toggle volume
+      changeVolume 'knob_volume'
+      return
+
+
     document.onkeydown = (event) =>
       key = (event or window.event).keyCode   
       if !(key of @keys)

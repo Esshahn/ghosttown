@@ -170,6 +170,7 @@ button:hover
   width: 1100px;
   display: table;
   margin: 0 auto;
+  height: 600px;
 }
 
 #github_link
@@ -179,15 +180,16 @@ button:hover
   top: 0px;  
 }
 
+
 h1 {
-  color: #00bbff;
-  font-weight:normal;
-  text-transform: uppercase;
-  margin: 0px;
-  margin-top: 40px;
-  font-size: 48px;
-  text-align: center;
+line-height: 1em;
+color: #7ffcf7;
+font-size: 88px;
+text-align: center;
+margin-bottom: 0px;
+text-shadow:0px 0px 0 rgb(88,255,254),0px 1px 0 rgb(76,203,212),0px 2px 0 rgb(63,190,199),0px 3px 0 rgb(51,178,187),0px 4px 0 rgb(38,165,174),0px 5px 0 rgb(25,152,161),0px 6px 0 rgb(13,140,149),0px 7px 0 rgb(0,127,136),0px 8px 0 rgb(-12,115,124),0px 9px 0 rgb(-25,102,111), 0px 10px 0 rgb(-38,89,98),0px 11px 10px rgba(0,0,0,0.85),0px 11px 1px rgba(0,0,0,0.5),0px 0px 10px rgba(0,0,0,.2);
 }
+
 
 h2 {
   color: #22ddff;
@@ -238,5 +240,13 @@ p
   position: relative;
   top: -44px;
   left: 834px;
+  z-index: 4000;
+}
+
+#knob_volume
+{
+  position: relative;
+  top: -120px;
+  left: 675px;
   z-index: 4000;
 }

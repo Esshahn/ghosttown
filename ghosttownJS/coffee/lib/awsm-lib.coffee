@@ -59,13 +59,29 @@ changeImage = (id) ->
   t = x.length - 1
   y = x[t]
   
-  if y == 'knob_left.png'
-    the_img.src = './img/knob_right.png'
+  if y == 'knob-left.png'
+    the_img.src = './img/knob-right.png'
     
-  if y == 'knob_right.png'
-    the_img.src = './img/knob_left.png'
+  if y == 'knob-right.png'
+    the_img.src = './img/knob-left.png'
 
   if id is "knob_scanlines"
     display.toggleCRT()
 
+  return
+
+changeVolume = (id) ->
+  the_img = document.getElementById(id)
+  x = the_img.src.split('/')
+  t = x.length - 1
+  y = x[t]
+  
+  if y == 'knob-volume-left.png'
+    the_img.src = './img/knob-volume-middle.png'
+    if sound?
+      sound.unmute()
+  if y == 'knob-volume-middle.png'
+    the_img.src = './img/knob-volume-left.png'
+    if sound?
+      sound.mute()
   return

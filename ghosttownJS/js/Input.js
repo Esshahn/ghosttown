@@ -95,6 +95,15 @@ KeyboardController = (function() {
         }
       };
     }
+    this.keys[70] = function() {
+      crtEmulator.toggleFullScreen();
+    };
+    this.keys[83] = function() {
+      changeImage('knob_scanlines');
+    };
+    this.keys[86] = function() {
+      changeVolume('knob_volume');
+    };
     document.onkeydown = (function(_this) {
       return function(event) {
         var key;
