@@ -92,12 +92,14 @@ changeVolume = function(id) {
   if (y === 'knob-volume-left.png') {
     the_img.src = './img/knob-volume-middle.png';
     if (typeof sound !== "undefined" && sound !== null) {
+      sound.isMute = false;
       sound.unmute();
     }
   }
   if (y === 'knob-volume-middle.png') {
     the_img.src = './img/knob-volume-left.png';
     if (typeof sound !== "undefined" && sound !== null) {
+      sound.isMute = true;
       sound.mute();
     }
   }

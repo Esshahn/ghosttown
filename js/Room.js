@@ -79,7 +79,9 @@ Room = (function() {
 
   Room.prototype.die_timeout = function(millisecs) {
     this.millisecs = millisecs != null ? millisecs : 8 * 1000;
-    sound.fade(0.3, 1.0, 6000);
+    if (!sound.isMute) {
+      sound.fade(0.3, 1.0, 6000);
+    }
     player.reset();
     controls.destroy();
     return setTimeout((function(_this) {
@@ -196,7 +198,9 @@ Room = (function() {
     } else {
       this.playround_data.intro = false;
       controls.init("game", 60);
-      sound.volume(0.3);
+      if (!sound.isMute) {
+        sound.volume(0.3);
+      }
       return this.set(1);
     }
   };
@@ -206,7 +210,9 @@ Room = (function() {
     controls.init("title", 300);
     this.other(1, charset_commodore, COLOR_YELLOW);
     this.init();
-    sound.volume(1);
+    if (!sound.isMute) {
+      sound.volume(1);
+    }
     return setTimeout((function(_this) {
       return function() {
         return _this.other(1, charset_commodore, COLOR_GREY);

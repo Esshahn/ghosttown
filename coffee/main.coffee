@@ -70,7 +70,6 @@ start_game = ->
 
   # init the sound
   @sound = new Howl({urls: ['sound/ghost-town-loop.ogg'],  autoplay: true, loop: true, volume: 1.0})
-  #@sound.volume 0
 
   # some UI status to kick notifications off
   ui_log("Ghost Town JS. Current build: 16.01.22","green")

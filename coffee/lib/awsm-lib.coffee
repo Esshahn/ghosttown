@@ -79,9 +79,11 @@ changeVolume = (id) ->
   if y == 'knob-volume-left.png'
     the_img.src = './img/knob-volume-middle.png'
     if sound?
+      sound.isMute = false
       sound.unmute()
   if y == 'knob-volume-middle.png'
     the_img.src = './img/knob-volume-left.png'
     if sound?
+      sound.isMute = true
       sound.mute()
   return

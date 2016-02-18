@@ -105,7 +105,7 @@ class Room
   # till the title screen is shown again
 
   die_timeout : (@millisecs = 8 * 1000 )->
-    sound.fade(0.3,1.0,6000)
+    sound.fade(0.3,1.0,6000) if not sound.isMute
     player.reset()
     controls.destroy()
     setTimeout( =>      
@@ -248,7 +248,8 @@ class Room
       @playround_data.intro = false
       #controls.destroy()
       controls.init "game", 60
-      sound.volume(0.3)
+
+      sound.volume(0.3) if not sound.isMute 
       @set(1)
 
 #-------------------------------------------------------------------
@@ -259,7 +260,7 @@ class Room
     controls.init "title", 300
     @other(1, charset_commodore, COLOR_YELLOW)
     @init()
-    sound.volume(1)
+    sound.volume(1) if not sound.isMute
     setTimeout( =>
       @other(1, charset_commodore, COLOR_GREY)      
     ,6 * 1000)
