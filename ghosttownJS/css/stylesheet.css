@@ -120,8 +120,14 @@ body
 
 a
 {
-  color: #00bbff;
+  color: #22ddff;
   text-decoration: none;
+}
+
+a:hover
+{
+
+  text-decoration: underline;
 }
 
 canvas
@@ -202,7 +208,7 @@ h3 {
   color: #22ddff;
   font-weight:normal;
   font-size: 22px;
-  margin-left: 100px;
+  margin-left: 10%;
   margin-top: 60px;
 }
 
@@ -211,7 +217,7 @@ h3 {
   position: relative;
   top: 300px;
   width: 1100px;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.6);
   border: 1px solid #aaaaaa;
   display: table;
   margin: 0 auto;
@@ -222,8 +228,8 @@ h3 {
 p
 {
   font-size: 18px;
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 12%;
+  margin-right: 18%;
   line-height: 30px;
 }
 

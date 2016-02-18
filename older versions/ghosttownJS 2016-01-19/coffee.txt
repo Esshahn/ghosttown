@@ -1,1 +1,0 @@
-coffee -b -m -o js/ -cw coffee/
