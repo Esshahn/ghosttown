@@ -13,13 +13,15 @@
 ## Current version
 
 Version 16-02-18 - Release version
+
 The game is fully completed and should work fine in most modern browsers.
 You can play it here: http://www.awsm.de/ghosttown
 
 
 ## Game Controls
 
-Press "A" for german version<br/>Press "B" for english version<br/>Press "C" for credits info
+Press "A" for german version<br/>Press "B" for english version
+Press "C" for credits info
 When the game is loaded (grey Ghost Town title screen)
 Press "Space" to start the game
 Use cursor keys to move and space bar as fire button
